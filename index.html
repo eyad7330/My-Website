@@ -44,107 +44,15 @@
   import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
   import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-  <meta charset="UTF-8">
-  <title>PhysioCare - حجز موعد</title>
-  <style>
-    body { font-family: 'Cairo', sans-serif; background: #f2f2f2; padding: 20px; direction: rtl; }
-    form { background: white; padding: 20px; border-radius: 10px; max-width: 500px; margin: auto; }
-    label { display: block; margin-top: 10px; }
-    input, select { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
-    button { margin-top: 15px; padding: 10px 20px; background: #00aaff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #0088cc; }
-  </style>
-</head>
-<body>
-
-<h2 style="text-align:center;">🩺 حجز موعد في PhysioCare</h2>
-
-<form id="bookingForm">
-  <label>الاسم الكامل:</label>
-  <input type="text" id="name" required>
-
-  <label>رقم الهاتف:</label>
-  <input type="tel" id="phone" required>
-
-  <label>اختيار الشيفت:</label>
-  <select id="shift">
-    <option value="صباحي">صباحي</option>
-    <option value="مسائي">مسائي</option>
-  </select>
-
-  <label>شركة التأمين:</label>
-  <input type="text" id="insurance">
-
-  <label>رفع الملفات (6 ملفات كحد أقصى):</label>
-  <input type="file" id="files" multiple>
-
-  <button type="submit">احجز الآن</button>
-</form>
-
-<!-- Firebase -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-  import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
-
   // بيانات مشروعك من Firebase Console
   const firebaseConfig = {
-    apiKey: "AIzaSyDxtvM3HMRRvRY-9P99vlh7J0-B0_nK_Tw",
-    authDomain: "physiocare-8e33b.firebaseapp.com",
-    projectId: "physiocare-8e33b",
-    storageBucket: "physiocare-8e33b.appspot.com",
-    messagingSenderId: "646832324701",
-    appId: "1:646832324701:web:13763f6b8cd34a5a63de34"
-  };
-
-  // تهيئة Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const storage = getStorage(app);
-
-  const form = document.getElementById('bookingForm');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const name = document.getElementById('name').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const shift = document.getElementById('shift').value;
-    const insurance = document.getElementById('insurance').value.trim();
-    const files = document.getElementById('files').files;
-
-    try {
-      // حفظ البيانات في Firestore
-      const docRef = await addDoc(collection(db, "bookings"), {
-        name,
-        phone,
-        shift,
-        insurance,
-        createdAt: serverTimestamp()
-      });
-
-      // رفع الملفات إلى Storage
-      const uploads = [];
-      for (let file of files) {
-        const fileRef = ref(storage, `bookings/${docRef.id}/${file.name}`);
-        uploads.push(uploadBytes(fileRef, file));
-      }
-
-      await Promise.all(uploads);
-
-      alert("✅ تم الحجز ورفع الملفات بنجاح!");
-      form.reset();
-    } catch (error) {
-      console.error("❌ خطأ:", error);
-      alert("حصلت مشكلة أثناء الحجز، حاول تاني.");
-    }
-  });
-</script>
-
-</body>
-</html>
+  apiKey: "AIzaSyA6_OACwpwaFSiX8jfsjS0_bt_EfIc4rhY",
+  authDomain: "physiocare-booking.firebaseapp.com",
+  projectId: "physiocare-booking",
+  storageBucket: "physiocare-booking.firebasestorage.app",
+  messagingSenderId: "815959251074",
+  appId: "1:815959251074:web:cfd13396b4072b90ccbc9b",
+  measurementId: "G-HBYJGQRVBB"
   };
 
   // تهيئة Firebase
