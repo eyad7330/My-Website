@@ -1,41 +1,89 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>حجز جلسة علاج طبيعي - PhysioCare</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script defer src="script.js"></script>
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حجز جلسات علاج طبيعي</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <h1>نظام حجز الجلسات - PhysioCare</h1>
-  </header>
 
-  <section id="shift-selector">
-    <button onclick="showShift('morning')">الشيفت الصباحي</button>
-    <button onclick="showShift('evening')">الشيفت المسائي</button>
-  </section>
+    <header class="main-header">
+        <div class="container">
+            <h1>المركز المتخصص للعلاج الطبيعي</h1>
+            <p>صحتك تبدأ من هنا. احجز جلستك الآن.</p>
+        </div>
+    </header>
 
-  <section id="appointment-table">
-    <!-- يتم ملؤه ديناميكيًا من Firestore -->
-  </section>
+    <main class="container">
+        <section id="booking-section">
+            <h2>اختر موعدك</h2>
+            <p class="subtitle">اختر اليوم المناسب لك ثم حدد الموعد المتاح من الشيفت الصباحي أو المسائي.</p>
 
-  <section id="booking-form" style="display:none;">
-    <h2>نموذج حجز الجلسة</h2>
-    <form id="form">
-      <input type="text" name="name" placeholder="الاسم بالكامل" required />
-      <input type="tel" name="phone" placeholder="رقم الهاتف الأساسي" required />
-      <input type="tel" name="altPhone" placeholder="رقم هاتف إضافي (اختياري)" />
-      <input type="text" name="insurance" placeholder="شركة التأمين" required />
-      <input type="file" name="files" id="files" multiple accept="image/*,.pdf" />
-      <button type="submit">تأكيد الحجز</button>
-    </form>
-    <p id="status"></p>
-  </section>
+            <div class="date-picker-wrapper">
+                <label for="session-date">اختر تاريخ الجلسة:</label>
+                <input type="date" id="session-date" name="session-date">
+            </div>
+
+            <div id="shifts-container" class="hidden">
+                <div class="shift">
+                    <h3><i class="icon-sun"></i>الشيفت الصباحي (10:30ص - 4:30م)</h3>
+                    <div class="time-slots" id="morning-shift">
+                        </div>
+                </div>
+
+                <div class="shift">
+                    <h3><i class="icon-moon"></i>الشيفت المسائي (4:30م - 10:30م)</h3>
+                    <div class="time-slots" id="evening-shift">
+                        </div>
+                </div>
+            </div>
+
+            <div id="booking-form-container" class="hidden">
+                <h3>تأكيد الحجز للموعد المختار: <span id="selected-time-display"></span></h3>
+                <form id="booking-form">
+                    <div class="form-group">
+                        <label for="full-name">الاسم الثلاثي</label>
+                        <input type="text" id="full-name" placeholder="مثال: محمد أحمد علي" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone-number">رقم الهاتف (أساسي)</label>
+                        <input type="tel" id="phone-number" placeholder="مثال: 01xxxxxxxxx" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="optional-phone-number">رقم هاتف آخر (اختياري)</label>
+                        <input type="tel" id="optional-phone-number" placeholder="رقم هاتف إضافي">
+                    </div>
+                    <div class="form-group">
+                        <label for="insurance-company">شركة التأمين (إن وجدت)</label>
+                        <input type="text" id="insurance-company" placeholder="اسم شركة التأمين">
+                    </div>
+                    <div class="form-group">
+                        <label for="file-upload">رفع ملفات (صورة أو PDF)</label>
+                        <input type="file" id="file-upload" accept="image/*,application/pdf">
+                        <small>يمكنك رفع روشتة أو تقارير طبية</small>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" id="submit-booking-btn">تأكيد الحجز</button>
+                        <div id="loader" class="loader hidden"></div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 - جميع الحقوق محفوظة للمركز المتخصص للعلاج الطبيعي.</p>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"></script>
+    
+    <script src="script.js"></script>
+
 </body>
 </html>
