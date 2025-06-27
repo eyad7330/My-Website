@@ -6,199 +6,111 @@
     <title>PhysioCare - مركز العلاج الطبيعي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
+        /* All the previous CSS code is the same */
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+        :root{--logo-green:#8DC63F;--logo-blue:#005A9C;--logo-gray:#6D6E71;--text-dark:#333333;--background-light:#f7f9f8;--white:#ffffff;}
+        body{font-family:'Cairo', sans-serif;margin:0;background-color:var(--white);color:var(--text-dark);}
+        .container{width:90%;max-width:1200px;margin:0 auto;}
+        .navbar{display:flex;justify-content:space-between;align-items:center;background-color:var(--white);padding:10px 0;border-bottom:1px solid #e0e0e0;position:sticky;top:0;z-index:1000;transition:box-shadow 0.3s ease;}
+        .navbar.scrolled{box-shadow:0 4px 12px rgba(0, 0, 0, 0.08);}
+        .logo-img{width:180px;height:auto;}
+        .navbar .nav-links a{color:var(--logo-gray);text-decoration:none;margin:0 20px;font-weight:600;font-size:17px;transition:color 0.3s;}
+        .navbar .nav-links a:hover, .navbar .nav-links a.active{color:var(--logo-green);}
+        .cta-button{background-color:var(--logo-blue);color:var(--white);padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;transition:all 0.3s ease;box-shadow:0 4px 10px rgba(0, 90, 156, 0.2);}
+        .cta-button:hover{background-color:#00487d;transform:translateY(-2px);box-shadow:0 6px 15px rgba(0, 90, 156, 0.3);}
+        .hero{background-color:var(--background-light);text-align:center;padding:80px 20px;}
+        .hero h1{font-size:50px;font-weight:700;color:var(--text-dark);margin-bottom:15px;}
+        .hero h1 span{color:var(--logo-green);}
+        .hero p{font-size:20px;color:var(--logo-gray);max-width:750px;margin:0 auto 40px;line-height:1.7;}
+        .section{padding:80px 0;}
+        .section-title{text-align:center;font-size:38px;margin-bottom:15px;font-weight:700;color:var(--text-dark);}
+        .title-underline{width:90px;height:4px;background:linear-gradient(to right, var(--logo-green), var(--logo-blue));margin:0 auto 60px auto;border-radius:2px;}
+        .branches-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:25px;}
+        .branch-card{background-color:var(--white);border:1px solid #e0e0e0;padding:20px 30px;border-radius:10px;font-weight:600;font-size:17px;display:flex;align-items:center;gap:12px;transition:all 0.3s ease; cursor: pointer;} /* Added cursor:pointer */
+        .branch-card i{color:var(--logo-green);font-size:20px;}
+        .branch-card:hover{transform:translateY(-5px);box-shadow:0 8px 25px rgba(0, 0, 0, 0.08);border-color:var(--logo-green);}
+        .footer{background-color:#2b2b2b;color:#ccc;padding:60px 0 20px 0;}
+        .footer .container{text-align:center;}
+        .footer-logo{width:200px;margin-bottom:25px;}
+        .footer .footer-links a{color:#ccc;text-decoration:none;margin:0 15px;transition:color 0.3s;}
+        .footer .footer-links a:hover{color:var(--logo-green);}
+        .footer-copyright{margin-top:40px;padding-top:20px;border-top:1px solid #444;color:#888;}
 
-        :root {
-            /* Colors from your logo */
-            --logo-green: #8DC63F;
-            --logo-blue: #005A9C;
-            --logo-gray: #6D6E71;
-            --text-dark: #333333;
-            --background-light: #f7f9f8;
-            --white: #ffffff;
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            margin: 0;
-            background-color: var(--white);
-            color: var(--text-dark);
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* --- Navigation Bar --- */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--white);
-            padding: 10px 0;
-            border-bottom: 1px solid #e0e0e0;
-            position: sticky;
+        /* --- New Modal Styles --- */
+        .modal-overlay {
+            position: fixed;
             top: 0;
-            z-index: 1000;
-            transition: box-shadow 0.3s ease;
-        }
-
-        .navbar.scrolled {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        
-        .logo-img {
-            width: 180px; /* Adjust size as needed */
-            height: auto;
-        }
-
-        .navbar .nav-links a {
-            color: var(--logo-gray);
-            text-decoration: none;
-            margin: 0 20px;
-            font-weight: 600;
-            font-size: 17px;
-            transition: color 0.3s;
-        }
-
-        .navbar .nav-links a:hover, .navbar .nav-links a.active {
-            color: var(--logo-green);
-        }
-
-        .cta-button {
-            background-color: var(--logo-blue);
-            color: var(--white);
-            padding: 12px 28px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 90, 156, 0.2);
-        }
-
-        .cta-button:hover {
-            background-color: #00487d;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 90, 156, 0.3);
-        }
-
-        /* --- Hero Section --- */
-        .hero {
-            background-color: var(--background-light);
-            text-align: center;
-            padding: 80px 20px;
-        }
-        
-        .hero h1 {
-            font-size: 50px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 15px;
-        }
-        
-        .hero h1 span {
-            color: var(--logo-green);
-        }
-
-        .hero p {
-            font-size: 20px;
-            color: var(--logo-gray);
-            max-width: 750px;
-            margin: 0 auto 40px;
-            line-height: 1.7;
-        }
-        
-        /* --- General Section Styling --- */
-        .section {
-            padding: 80px 0;
-        }
-        .section-title {
-            text-align: center;
-            font-size: 38px;
-            margin-bottom: 15px;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-        .title-underline {
-            width: 90px;
-            height: 4px;
-            background: linear-gradient(to right, var(--logo-green), var(--logo-blue));
-            margin: 0 auto 60px auto;
-            border-radius: 2px;
-        }
-
-        /* --- Branches Section --- */
-        .branches-grid {
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 25px;
-        }
-
-        .branch-card {
-            background-color: var(--white);
-            border: 1px solid #e0e0e0;
-            padding: 20px 30px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 17px;
-            display: flex;
             align-items: center;
-            gap: 12px;
-            transition: all 0.3s ease;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
         }
-
-        .branch-card i {
-            color: var(--logo-green);
-            font-size: 20px;
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
-        
-        .branch-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-            border-color: var(--logo-green);
+        .modal-content {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 700px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s;
         }
-
-        /* --- Footer --- */
-        .footer {
-            background-color: #2b2b2b;
-            color: #ccc;
-            padding: 60px 0 20px 0;
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
         }
-        .footer .container {
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #aaa;
+        }
+        .modal-content h3 {
+            font-size: 28px;
+            color: var(--logo-blue);
+            margin-top: 0;
+            margin-bottom: 20px;
             text-align: center;
         }
-        .footer-logo {
-            width: 200px;
+        .modal-content p {
+            font-size: 18px;
+            line-height: 1.8;
+            text-align: center;
             margin-bottom: 25px;
         }
-        .footer .footer-links a {
-            color: #ccc;
-            text-decoration: none;
-            margin: 0 15px;
-            transition: color 0.3s;
+        .map-container {
+            width: 100%;
+            height: 350px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
         }
-        .footer .footer-links a:hover {
-            color: var(--logo-green);
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
         }
-        .footer-copyright {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #444;
-            color: #888;
-        }
-
     </style>
 </head>
 <body>
 
     <nav class="navbar" id="navbar">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="#home">
-                <img src="image.png" alt="PhysioCare Logo" class="logo-img">
-            </a>
+            <a href="#home"><img src="image.png" alt="PhysioCare Logo" class="logo-img"></a>
             <div class="nav-links">
                 <a href="#home" class="active">الرئيسية</a>
                 <a href="#services">خدماتنا</a>
@@ -208,7 +120,6 @@
             <a href="#booking" class="cta-button">احجز موعدك</a>
         </div>
     </nav>
-
     <header class="hero" id="home">
         <div class="container">
             <h1>عافيتك تبدأ هنا في <span>PhysioCare</span></h1>
@@ -217,38 +128,68 @@
         </div>
     </header>
 
+
     <main>
         <section class="section" id="branches">
             <div class="container">
                 <h2 class="section-title">فروعنا بالقرب منك</h2>
                 <div class="title-underline"></div>
                 <div class="branches-grid">
-                    <div class="branch-card"><i class="fa-solid fa-map-marker-alt"></i> أركان مول، الشيخ زايد</div>
-                    <div class="branch-card"><i class="fa-solid fa-map-marker-alt"></i> إيدن مول، الشيخ زايد</div>
-                    <div class="branch-card"><i class="fa-solid fa-map-marker-alt"></i> المعادي</div>
-                    <div class="branch-card"><i class="fa-solid fa-map-marker-alt"></i> المهندسين</div>
-                    <div class="branch-card"><i class="fa-solid fa-map-marker-alt"></i> التجمع الخامس</div>
+                    <div class="branch-card" data-branch="arkan">
+                        <i class="fa-solid fa-map-marker-alt"></i> أركان مول، الشيخ زايد
+                    </div>
+                    <div class="branch-card" data-branch="eden">
+                        <i class="fa-solid fa-map-marker-alt"></i> إيدن مول، الشيخ زايد
+                    </div>
+                    <div class="branch-card" data-branch="maadi">
+                        <i class="fa-solid fa-map-marker-alt"></i> المعادي
+                    </div>
+                    <div class="branch-card" data-branch="mohandessin">
+                        <i class="fa-solid fa-map-marker-alt"></i> المهندسين
+                    </div>
+                    <div class="branch-card" data-branch="tagamoa">
+                        <i class="fa-solid fa-map-marker-alt"></i> التجمع الخامس
+                    </div>
                 </div>
             </div>
         </section>
     </main>
-
+    
     <footer class="footer">
         <div class="container">
             <img src="image.png" alt="PhysioCare Logo" class="footer-logo">
-            <p class="footer-links">
-                 <a href="#home">الرئيسية</a> |
-                 <a href="#services">خدماتنا</a> |
-                 <a href="#branches">فروعنا</a> |
-                 <a href="#contact">تواصل معنا</a>
-            </p>
-            <div class="footer-copyright">
-                <p>&copy; 2025 PhysioCare. كل الحقوق محفوظة.</p>
-            </div>
+            <p class="footer-links"><a href="#home">الرئيسية</a> |<a href="#services">خدماتنا</a> |<a href="#branches">فروعنا</a> |<a href="#contact">تواصل معنا</a></p>
+            <div class="footer-copyright"><p>&copy; 2025 PhysioCare. كل الحقوق محفوظة.</p></div>
         </div>
     </footer>
 
+
+    <div id="modal-container">
+        <div class="modal-overlay" id="modal-arkan">
+            <div class="modal-content">
+                <button class="modal-close">&times;</button>
+                <h3>فرع أركان مول، الشيخ زايد</h3>
+                <p>العنوان: الدور الثالث، أركان بلازا، مدخل 4، الشيخ زايد.</p>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454.436113929443!2d31.01166681511456!3d30.02434548189033!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14585a7db7a8632f%3A0x446d1d2b865a782a!2sArkan%20Plaza!5e0!3m2!1sen!2seg!4v1625841111953!5m2!1sen!2seg" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="modal-overlay" id="modal-eden">
+            <div class="modal-content">
+                <button class="modal-close">&times;</button>
+                <h3>فرع إيدن مول، الشيخ زايد</h3>
+                <p>العنوان: (أضف العنوان التفصيلي هنا)</p>
+                <div class="map-container">
+                    <p style="padding-top:100px;">(أضف كود خريطة جوجل هنا)</p>
+                </div>
+            </div>
+        </div>
+         </div>
+
+
     <script>
+        // Navbar scroll effect
         const navbar = document.getElementById('navbar');
         window.onscroll = function () {
             if (window.scrollY > 50) {
@@ -257,6 +198,36 @@
                 navbar.classList.remove('scrolled');
             }
         };
+
+        // --- New Modal Logic ---
+        const branchCards = document.querySelectorAll('.branch-card');
+        const modalContainer = document.getElementById('modal-container');
+        const modals = document.querySelectorAll('.modal-overlay');
+
+        branchCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const branchId = card.getAttribute('data-branch');
+                const targetModal = document.getElementById('modal-' + branchId);
+                if(targetModal) {
+                    targetModal.classList.add('active');
+                }
+            });
+        });
+
+        modals.forEach(modal => {
+            const closeButton = modal.querySelector('.modal-close');
+            closeButton.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+
+            // Close modal by clicking on the overlay
+            modal.addEventListener('click', (event) => {
+                if(event.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+
     </script>
 
 </body>
