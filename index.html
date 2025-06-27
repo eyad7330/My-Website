@@ -1,169 +1,31 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PhysioCare | مركز العلاج الطبيعي</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Cairo', sans-serif;
-    }
+<!-- أضف هذا الجزء بعد قسم الشيفت مباشرة -->
+<section class="booking-form">
+  <h3>احجز موعدك الآن</h3>
+  <form id="appointmentForm" enctype="multipart/form-data">
+    <label for="name">الاسم الكامل:</label>
+    <input type="text" id="name" name="name" required>
 
-    body {
-      background-color: #f5f7fa;
-      color: #222;
-      line-height: 1.6;
-    }
+    <label for="phone">رقم الهاتف:</label>
+    <input type="tel" id="phone" name="phone" required>
 
-    header {
-      background-color: #0a3d62;
-      color: white;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    <label for="altPhone">رقم هاتف بديل (اختياري):</label>
+    <input type="tel" id="altPhone" name="altPhone">
 
-    header h1 {
-      font-size: 24px;
-    }
+    <label for="insurance">شركة التأمين:</label>
+    <input type="text" id="insurance" name="insurance">
 
-    nav a {
-      color: white;
-      margin: 0 10px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+    <label for="shift">اختر الشيفت:</label>
+    <select id="shift" name="shift" required>
+      <option value="morning">الشيفت الصباحي</option>
+      <option value="evening">الشيفت المسائي</option>
+    </select>
 
-    .hero {
-      background: linear-gradient(to right, #0a3d62, #3c6382);
-      color: white;
-      text-align: center;
-      padding: 80px 20px;
-    }
+    <label for="date">تاريخ الجلسة:</label>
+    <input type="date" id="date" name="date" required>
 
-    .hero h2 {
-      font-size: 36px;
-      margin-bottom: 20px;
-    }
+    <label for="files">رفع ملفات (حد أقصى 8):</label>
+    <input type="file" id="files" name="files[]" multiple accept=".pdf, image/*" max="8">
 
-    .hero p {
-      font-size: 18px;
-      margin-bottom: 30px;
-    }
-
-    .hero a {
-      display: inline-block;
-      background-color: #f39c12;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 25px;
-      text-decoration: none;
-      font-size: 18px;
-      transition: background 0.3s ease;
-    }
-
-    .hero a:hover {
-      background-color: #e67e22;
-    }
-
-    .shifts {
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    .shifts h3 {
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-
-    .shift-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    .shift {
-      background-color: white;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
-    }
-
-    .shift:hover {
-      transform: translateY(-5px);
-    }
-
-    .shift h4 {
-      color: #0a3d62;
-      margin-bottom: 10px;
-    }
-
-    footer {
-      background-color: #0a3d62;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      font-size: 14px;
-      margin-top: 40px;
-    }
-
-    @media (max-width: 768px) {
-      .hero h2 {
-        font-size: 28px;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <header>
-    <h1>PhysioCare</h1>
-    <nav>
-      <a href="#">الرئيسية</a>
-      <a href="#">من نحن</a>
-      <a href="#">احجز الآن</a>
-      <a href="#">تواصل معنا</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <h2>أفضل رعاية علاج طبيعي في مكان واحد</h2>
-    <p>نحن هنا لمساعدتك على الشفاء والعودة لحياتك بأفضل صحة وعافية</p>
-    <a href="#">احجز موعدك الآن</a>
-  </section>
-
-  <section class="shifts">
-    <h3>اختر الشيفت المناسب لك</h3>
-    <div class="shift-grid">
-      <div class="shift">
-        <h4>الشيفت الصباحي</h4>
-        <p>من 10:30 صباحًا إلى 4:30 مساءً</p>
-        <p>يضم نخبة من الأطباء المختصين بالعلاج الطبيعي</p>
-      </div>
-      <div class="shift">
-        <h4>الشيفت المسائي</h4>
-        <p>من 4:30 مساءً إلى 10:30 مساءً</p>
-        <p>راحة، جودة، وخدمة ممتازة في المساء</p>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 PhysioCare. جميع الحقوق محفوظة.</p>
-  </footer>
-
-</body>
-</html>
+    <button type="submit">إرسال الطلب</button>
+  </form>
+</section>
