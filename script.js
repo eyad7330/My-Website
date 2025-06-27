@@ -1,10 +1,5 @@
-// --- الإعداد المبدئي ---
-// 1. اذهب إلى https://firebase.google.com/
-// 2. أنشئ مشروعًا جديدًا.
-// 3. من لوحة تحكم المشروع، اذهب إلى إعدادات المشروع (Project settings).
-// 4. تحت تبويب "General"، انزل للأسفل إلى "Your apps" واختر أيقونة الويب (</>).
-// 5. سجل تطبيقك وستحصل على firebaseConfig. انسخها والصقها هنا.
-
+// --- إعداد Firebase ---
+// !! هام: ضع إعدادات Firebase الخاصة بك هنا !!
 const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "YOUR_AUTH_DOMAIN",
@@ -21,84 +16,61 @@ const storage = firebase.storage();
 
 // --- عناصر الصفحة ---
 const dateInput = document.getElementById('session-date');
+const dateError = document.getElementById('date-error');
 const morningShiftContainer = document.getElementById('morning-shift');
 const eveningShiftContainer = document.getElementById('evening-shift');
-const shiftsContainer = document.getElementById('shifts-container');
-const bookingFormContainer = document.getElementById('booking-form-container');
+const step1 = document.getElementById('step-1');
+const step2 = document.getElementById('step-2');
+const step3 = document.getElementById('step-3');
 const selectedTimeDisplay = document.getElementById('selected-time-display');
 const bookingForm = document.getElementById('booking-form');
 const submitBtn = document.getElementById('submit-booking-btn');
+const btnText = document.querySelector('.btn-text');
 const loader = document.getElementById('loader');
+const fileInput = document.getElementById('file-upload');
+const fileNameDisplay = document.getElementById('file-name-display');
 
 // --- إعدادات المواعيد ---
 const sessionDuration = 40; // دقائق
 let selectedSlot = null;
 
 // --- وظائف ---
-
-// دالة لتوليد المواعيد
 function generateTimeSlots() {
-    // إفراغ الحاويات
     morningShiftContainer.innerHTML = '';
     eveningShiftContainer.innerHTML = '';
-
-    const createSlot = (hour, minute, shift) => {
+    const createSlot = (hour, minute, shiftContainer) => {
         const time = new Date();
         time.setHours(hour, minute, 0, 0);
         const timeString = time.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-        
         const slot = document.createElement('div');
         slot.classList.add('time-slot', 'available');
         slot.dataset.time = timeString;
         slot.innerText = timeString;
-        
-        if (shift === 'morning') {
-            morningShiftContainer.appendChild(slot);
-        } else {
-            eveningShiftContainer.appendChild(slot);
-        }
+        shiftContainer.appendChild(slot);
     };
     
-    // الشيفت الصباحي (من 10:30 إلى 16:10)
     let morningTime = new Date();
     morningTime.setHours(10, 30, 0, 0);
-    for (let i = 0; i < 5; i++) { // 5 مواعيد صباحية (مثال)
-        createSlot(morningTime.getHours(), morningTime.getMinutes(), 'morning');
+    for (let i = 0; i < 5; i++) {
+        createSlot(morningTime.getHours(), morningTime.getMinutes(), morningShiftContainer);
         morningTime.setMinutes(morningTime.getMinutes() + sessionDuration);
     }
     
-    // الشيفت المسائي (من 16:30 إلى 22:10)
     let eveningTime = new Date();
     eveningTime.setHours(16, 30, 0, 0);
-    for (let i = 0; i < 4; i++) { // 4 مواعيد مسائية (مثال)
-        createSlot(eveningTime.getHours(), eveningTime.getMinutes(), 'evening');
+    for (let i = 0; i < 4; i++) {
+        createSlot(eveningTime.getHours(), eveningTime.getMinutes(), eveningShiftContainer);
         eveningTime.setMinutes(eveningTime.getMinutes() + sessionDuration);
     }
 }
 
-
-// دالة لتحديث المواعيد المتاحة بناءً على حجوزات Firebase
 async function updateAvailableSlots(selectedDate) {
-    if (!selectedDate) return;
-    
-    // جعل كل المواعيد متاحة مبدئيًا
     document.querySelectorAll('.time-slot').forEach(slot => {
-        slot.classList.remove('booked', 'selected');
-        slot.classList.add('available');
+        slot.className = 'time-slot available';
     });
-
-    // جلب الحجوزات من Firestore للتاريخ المحدد
-    const bookingsRef = db.collection('bookings');
-    const snapshot = await bookingsRef.where('date', '==', selectedDate).get();
-
-    if (snapshot.empty) {
-        console.log('لا توجد حجوزات لهذا اليوم.');
-        return;
-    }
-
+    const snapshot = await db.collection('bookings').where('date', '==', selectedDate).get();
     snapshot.forEach(doc => {
-        const bookedTime = doc.data().time;
-        const bookedSlot = document.querySelector(`.time-slot[data-time="${bookedTime}"]`);
+        const bookedSlot = document.querySelector(`.time-slot[data-time="${doc.data().time}"]`);
         if (bookedSlot) {
             bookedSlot.classList.remove('available');
             bookedSlot.classList.add('booked');
@@ -106,62 +78,58 @@ async function updateAvailableSlots(selectedDate) {
     });
 }
 
-
 // --- الأحداث (Event Listeners) ---
-
-// تحديد تاريخ أدنى (اليوم)
 dateInput.min = new Date().toISOString().split("T")[0];
 
-// عند تغيير التاريخ
 dateInput.addEventListener('change', () => {
     const selectedDate = dateInput.value;
     if (selectedDate) {
+        dateError.classList.add('hidden');
         generateTimeSlots();
         updateAvailableSlots(selectedDate);
-        shiftsContainer.classList.remove('hidden');
-        bookingFormContainer.classList.add('hidden'); // إخفاء الفورم عند تغيير اليوم
+        step2.classList.add('active');
+        step3.classList.remove('active');
         selectedSlot = null;
     } else {
-        shiftsContainer.classList.add('hidden');
+        dateError.classList.remove('hidden');
+        step2.classList.remove('active');
     }
 });
 
-
-// عند اختيار موعد
-shiftsContainer.addEventListener('click', (e) => {
+step2.addEventListener('click', (e) => {
     const target = e.target;
     if (target.classList.contains('available')) {
-        // إزالة التحديد السابق إن وجد
         const previouslySelected = document.querySelector('.time-slot.selected');
         if (previouslySelected) {
             previouslySelected.classList.remove('selected');
         }
-
-        // تحديد الموعد الجديد
         target.classList.add('selected');
         selectedSlot = target.dataset.time;
-        
-        // إظهار الفورم
-        bookingFormContainer.classList.remove('hidden');
         selectedTimeDisplay.innerText = `${selectedSlot} - بتاريخ ${dateInput.value}`;
-        bookingFormContainer.scrollIntoView({ behavior: 'smooth' });
+        step3.classList.add('active');
+        step3.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 });
 
+fileInput.addEventListener('change', () => {
+    if (fileInput.files.length > 0) {
+        fileNameDisplay.textContent = fileInput.files[0].name;
+    } else {
+        fileNameDisplay.textContent = 'رفع ملف (روشتة، تقرير)';
+    }
+});
 
-// عند تقديم الفورم (الحجز)
 bookingForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-
     if (!selectedSlot || !dateInput.value) {
         alert('الرجاء اختيار تاريخ وموعد أولاً.');
         return;
     }
     
-    submitBtn.disabled = true;
     loader.classList.remove('hidden');
+    btnText.classList.add('hidden');
+    submitBtn.disabled = true;
 
-    // 1. جمع البيانات
     const bookingData = {
         name: document.getElementById('full-name').value,
         phone: document.getElementById('phone-number').value,
@@ -172,39 +140,36 @@ bookingForm.addEventListener('submit', async (e) => {
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
     };
     
-    // 2. رفع الملف إن وجد
-    const file = document.getElementById('file-upload').files[0];
-    if (file) {
+    if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
         const filePath = `uploads/${Date.now()}_${file.name}`;
         const fileRef = storage.ref(filePath);
         try {
             const uploadTask = await fileRef.put(file);
-            const downloadURL = await uploadTask.ref.getDownloadURL();
-            bookingData.fileURL = downloadURL;
+            bookingData.fileURL = await uploadTask.ref.getDownloadURL();
         } catch (error) {
-            console.error("خطأ في رفع الملف: ", error);
-            alert("حدث خطأ أثناء رفع الملف، يرجى المحاولة مرة أخرى.");
-            submitBtn.disabled = false;
+            console.error("File upload error:", error);
+            alert("حدث خطأ أثناء رفع الملف.");
             loader.classList.add('hidden');
+            btnText.classList.remove('hidden');
+            submitBtn.disabled = false;
             return;
         }
     }
 
-    // 3. حفظ بيانات الحجز في Firestore
     try {
         await db.collection('bookings').add(bookingData);
-        alert('تم تأكيد حجزك بنجاح!');
-        
-        // إعادة تعيين الصفحة
+        alert('تم تأكيد حجزك بنجاح! نتطلع لرؤيتك في PhysioCare.');
         bookingForm.reset();
-        bookingFormContainer.classList.add('hidden');
-        updateAvailableSlots(dateInput.value); // تحديث المواعيد لإظهار الموعد الجديد كمحجوز
-
+        fileNameDisplay.textContent = 'رفع ملف (روشتة، تقرير)';
+        step3.classList.remove('active');
+        updateAvailableSlots(dateInput.value);
     } catch (error) {
-        console.error("خطأ في الحجز: ", error);
+        console.error("Booking error:", error);
         alert("فشل الحجز، يرجى المحاولة مرة أخرى.");
     } finally {
-        submitBtn.disabled = false;
         loader.classList.add('hidden');
+        btnText.classList.remove('hidden');
+        submitBtn.disabled = false;
     }
 });
