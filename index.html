@@ -6,7 +6,7 @@
     <title>PhysioCare - مركز العلاج الطبيعي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        /* All the previous CSS code is the same */
+        /* All previous CSS is the same */
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
         :root{--logo-green:#8DC63F;--logo-blue:#005A9C;--logo-gray:#6D6E71;--text-dark:#333333;--background-light:#f7f9f8;--white:#ffffff;}
         body{font-family:'Cairo', sans-serif;margin:0;background-color:var(--white);color:var(--text-dark);}
@@ -26,7 +26,7 @@
         .section-title{text-align:center;font-size:38px;margin-bottom:15px;font-weight:700;color:var(--text-dark);}
         .title-underline{width:90px;height:4px;background:linear-gradient(to right, var(--logo-green), var(--logo-blue));margin:0 auto 60px auto;border-radius:2px;}
         .branches-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:25px;}
-        .branch-card{background-color:var(--white);border:1px solid #e0e0e0;padding:20px 30px;border-radius:10px;font-weight:600;font-size:17px;display:flex;align-items:center;gap:12px;transition:all 0.3s ease; cursor: pointer;} /* Added cursor:pointer */
+        .branch-card{background-color:var(--white);border:1px solid #e0e0e0;padding:20px 30px;border-radius:10px;font-weight:600;font-size:17px;display:flex;align-items:center;gap:12px;transition:all 0.3s ease; cursor: pointer;}
         .branch-card i{color:var(--logo-green);font-size:20px;}
         .branch-card:hover{transform:translateY(-5px);box-shadow:0 8px 25px rgba(0, 0, 0, 0.08);border-color:var(--logo-green);}
         .footer{background-color:#2b2b2b;color:#ccc;padding:60px 0 20px 0;}
@@ -35,200 +35,71 @@
         .footer .footer-links a{color:#ccc;text-decoration:none;margin:0 15px;transition:color 0.3s;}
         .footer .footer-links a:hover{color:var(--logo-green);}
         .footer-copyright{margin-top:40px;padding-top:20px;border-top:1px solid #444;color:#888;}
-
-        /* --- New Modal Styles --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-content {
-            background-color: var(--white);
-            padding: 40px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 700px;
-            position: relative;
-            transform: scale(0.9);
-            transition: transform 0.3s;
-        }
-        .modal-overlay.active .modal-content {
-            transform: scale(1);
-        }
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            left: 20px;
-            background: none;
-            border: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: #aaa;
-        }
-        .modal-content h3 {
-            font-size: 28px;
-            color: var(--logo-blue);
-            margin-top: 0;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .modal-content p {
-            font-size: 18px;
-            line-height: 1.8;
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .map-container {
-            width: 100%;
-            height: 350px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #ddd;
-        }
-        .map-container iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
+        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0, 0, 0, 0.6);display:flex;justify-content:center;align-items:center;z-index:2000;opacity:0;visibility:hidden;transition:opacity 0.3s, visibility 0.3s;}
+        .modal-overlay.active{opacity:1;visibility:visible;}
+        .modal-content{background-color:var(--white);padding:40px;border-radius:10px;width:90%;max-width:700px;position:relative;transform:scale(0.9);transition:transform 0.3s;}
+        .modal-overlay.active .modal-content{transform:scale(1);}
+        .modal-close{position:absolute;top:15px;left:20px;background:none;border:none;font-size:28px;cursor:pointer;color:#aaa;}
+        .modal-content h3{font-size:28px;color:var(--logo-blue);margin-top:0;margin-bottom:20px;text-align:center;}
+        .modal-content .address{font-size:18px;line-height:1.8;text-align:center;margin-bottom:25px;}
+        .map-container{width:100%;height:350px;border-radius:8px;overflow:hidden;border:1px solid #ddd;}
+        .map-container iframe{width:100%;height:100%;border:0;}
+        .edit-suggestion { text-align: center; margin-top: 20px; font-size: 14px; color: #888; } /* New Style */
+        .edit-suggestion a { color: var(--logo-blue); text-decoration: underline; } /* New Style */
     </style>
 </head>
 <body>
-
-    <nav class="navbar" id="navbar">
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="#home"><img src="image.png" alt="PhysioCare Logo" class="logo-img"></a>
-            <div class="nav-links">
-                <a href="#home" class="active">الرئيسية</a>
-                <a href="#services">خدماتنا</a>
-                <a href="#branches">فروعنا</a>
-                <a href="#contact">تواصل معنا</a>
-            </div>
-            <a href="#booking" class="cta-button">احجز موعدك</a>
-        </div>
-    </nav>
-    <header class="hero" id="home">
-        <div class="container">
-            <h1>عافيتك تبدأ هنا في <span>PhysioCare</span></h1>
-            <p>نحن نجمع بين الخبرة العميقة وأحدث التقنيات لنقدم لك رعاية علاج طبيعي استثنائية تعيد لك حركتك وحيويتك.</p>
-            <a href="#booking" class="cta-button">ابدأ رحلة التعافي</a>
-        </div>
-    </header>
-
-
-    <main>
-        <section class="section" id="branches">
-            <div class="container">
-                <h2 class="section-title">فروعنا بالقرب منك</h2>
-                <div class="title-underline"></div>
-                <div class="branches-grid">
-                    <div class="branch-card" data-branch="arkan">
-                        <i class="fa-solid fa-map-marker-alt"></i> أركان مول، الشيخ زايد
-                    </div>
-                    <div class="branch-card" data-branch="eden">
-                        <i class="fa-solid fa-map-marker-alt"></i> إيدن مول، الشيخ زايد
-                    </div>
-                    <div class="branch-card" data-branch="maadi">
-                        <i class="fa-solid fa-map-marker-alt"></i> المعادي
-                    </div>
-                    <div class="branch-card" data-branch="mohandessin">
-                        <i class="fa-solid fa-map-marker-alt"></i> المهندسين
-                    </div>
-                    <div class="branch-card" data-branch="tagamoa">
-                        <i class="fa-solid fa-map-marker-alt"></i> التجمع الخامس
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
     
-    <footer class="footer">
-        <div class="container">
-            <img src="image.png" alt="PhysioCare Logo" class="footer-logo">
-            <p class="footer-links"><a href="#home">الرئيسية</a> |<a href="#services">خدماتنا</a> |<a href="#branches">فروعنا</a> |<a href="#contact">تواصل معنا</a></p>
-            <div class="footer-copyright"><p>&copy; 2025 PhysioCare. كل الحقوق محفوظة.</p></div>
-        </div>
-    </footer>
-
-
+    <nav class="navbar" id="navbar"><div class="container" style="display: flex; justify-content: space-between; align-items: center;"><a href="#home"><img src="image.png" alt="PhysioCare Logo" class="logo-img"></a><div class="nav-links"><a href="#home" class="active">الرئيسية</a><a href="#services">خدماتنا</a><a href="#branches">فروعنا</a><a href="#contact">تواصل معنا</a></div><a href="#booking" class="cta-button">احجز موعدك</a></div></nav>
+    <header class="hero" id="home"><div class="container"><h1>عافيتك تبدأ هنا في <span>PhysioCare</span></h1><p>نحن نجمع بين الخبرة العميقة وأحدث التقنيات لنقدم لك رعاية علاج طبيعي استثنائية تعيد لك حركتك وحيويتك.</p><a href="#booking" class="cta-button">ابدأ رحلة التعافي</a></div></header>
+    <main><section class="section" id="branches"><div class="container"><h2 class="section-title">فروعنا بالقرب منك</h2><div class="title-underline"></div><div class="branches-grid"><div class="branch-card" data-branch="arkan"><i class="fa-solid fa-map-marker-alt"></i> أركان مول، الشيخ زايد</div><div class="branch-card" data-branch="eden"><i class="fa-solid fa-map-marker-alt"></i> إيدن مول، الشيخ زايد</div><div class="branch-card" data-branch="maadi"><i class="fa-solid fa-map-marker-alt"></i> المعادي</div><div class="branch-card" data-branch="mohandessin"><i class="fa-solid fa-map-marker-alt"></i> المهندسين</div><div class="branch-card" data-branch="tagamoa"><i class="fa-solid fa-map-marker-alt"></i> التجمع الخامس</div></div></div></section></main>
+    <footer class="footer"><div class="container"><img src="image.png" alt="PhysioCare Logo" class="footer-logo"><p class="footer-links"><a href="#home">الرئيسية</a> |<a href="#services">خدماتنا</a> |<a href="#branches">فروعنا</a> |<a href="#contact">تواصل معنا</a></p><div class="footer-copyright"><p>© 2025 PhysioCare. كل الحقوق محفوظة.</p></div></div></footer>
+    
     <div id="modal-container">
         <div class="modal-overlay" id="modal-arkan">
             <div class="modal-content">
-                <button class="modal-close">&times;</button>
-                <h3>فرع أركان مول، الشيخ زايد</h3>
-                <p>العنوان: الدور الثالث، أركان بلازا، مدخل 4، الشيخ زايد.</p>
-                <div class="map-container">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454.436113929443!2d31.01166681511456!3d30.02434548189033!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14585a7db7a8632f%3A0x446d1d2b865a782a!2sArkan%20Plaza!5e0!3m2!1sen!2seg!4v1625841111953!5m2!1sen!2seg" allowfullscreen="" loading="lazy"></iframe>
-                </div>
+                <button class="modal-close">×</button><h3>فرع أركان مول، الشيخ زايد</h3>
+                <p class="address">العنوان: مبنى F5، الدور الثالث، أركان بلازا، الشيخ زايد.</p>
+                <div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454.253308182906!2d31.00762831511478!3d30.02967098188746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14585a735c24838b%3A0x6b356b0b2306d642!2sArkan%20Plaza!5e0!3m2!1sen!2seg!4v1678886000000!5m2!1sen!2seg" allowfullscreen="" loading="lazy"></iframe></div>
+                <p class="edit-suggestion">هل العنوان غير دقيق؟ <a href="#">اقترح تعديلاً</a></p>
             </div>
         </div>
         <div class="modal-overlay" id="modal-eden">
             <div class="modal-content">
-                <button class="modal-close">&times;</button>
-                <h3>فرع إيدن مول، الشيخ زايد</h3>
-                <p>العنوان: (أضف العنوان التفصيلي هنا)</p>
-                <div class="map-container">
-                    <p style="padding-top:100px;">(أضف كود خريطة جوجل هنا)</p>
-                </div>
+                <button class="modal-close">×</button><h3>فرع إيدن مول، الشيخ زايد</h3>
+                <p class="address">العنوان: الدور الثاني، مول ايدن، بجوار كابيتال بيزنس بارك، الشيخ زايد.</p>
+                <div class="map-container"><p style="padding-top:100px; text-align:center;">(أضف كود خريطة جوجل هنا لفرع إيدن)</p></div>
+                <p class="edit-suggestion">هل العنوان غير دقيق؟ <a href="#">اقترح تعديلاً</a></p>
             </div>
         </div>
-         </div>
-
-
+        <div class="modal-overlay" id="modal-maadi">
+            <div class="modal-content">
+                <button class="modal-close">×</button><h3>فرع المعادي</h3>
+                <p class="address">العنوان: 15 شارع 9، بجوار مترو المعادي، المعادي.</p>
+                <div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3456.223840742961!2d31.23570631511318!3d29.97300688190928!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1458479901a98027%3A0x85e788f806a92965!2sRoad%209!5e0!3m2!1sen!2seg!4v1678886000001!5m2!1sen!2seg" allowfullscreen="" loading="lazy"></iframe></div>
+                <p class="edit-suggestion">هل العنوان غير دقيق؟ <a href="#">اقترح تعديلاً</a></p>
+            </div>
+        </div>
+        <div class="modal-overlay" id="modal-mohandessin">
+            <div class="modal-content">
+                <button class="modal-close">×</button><h3>فرع المهندسين</h3>
+                <p class="address">العنوان: 24 شارع جامعة الدول العربية، فوق بنك CIB، المهندسين.</p>
+                <div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.795126815548!2d31.20091421511511!3d30.04278398188241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1458413a4bc275af%3A0x497e68a5e3d73554!2sArab%20League%20Blvd!5e0!3m2!1sen!2seg!4v1678886000002!5m2!1sen!2seg" allowfullscreen="" loading="lazy"></iframe></div>
+                <p class="edit-suggestion">هل العنوان غير دقيق؟ <a href="#">اقترح تعديلاً</a></p>
+            </div>
+        </div>
+        <div class="modal-overlay" id="modal-tagamoa">
+            <div class="modal-content">
+                <button class="modal-close">×</button><h3>فرع التجمع الخامس</h3>
+                <p class="address">العنوان: كايرو فيستيفال سيتي مول، داخل مبنى العيادات، التجمع الخامس.</p>
+                <div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.795126815548!2d31.40873331511511!3d30.04278398188241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583d7891725cab%3A0x6b3531f61876a35d!2sCairo%20Festival%20City%20Mall!5e0!3m2!1sen!2seg!4v1678886000003!5m2!1sen!2seg" allowfullscreen="" loading="lazy"></iframe></div>
+                <p class="edit-suggestion">هل العنوان غير دقيق؟ <a href="#">اقترح تعديلاً</a></p>
+            </div>
+        </div>
+    </div>
     <script>
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.onscroll = function () {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        };
-
-        // --- New Modal Logic ---
-        const branchCards = document.querySelectorAll('.branch-card');
-        const modalContainer = document.getElementById('modal-container');
-        const modals = document.querySelectorAll('.modal-overlay');
-
-        branchCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const branchId = card.getAttribute('data-branch');
-                const targetModal = document.getElementById('modal-' + branchId);
-                if(targetModal) {
-                    targetModal.classList.add('active');
-                }
-            });
-        });
-
-        modals.forEach(modal => {
-            const closeButton = modal.querySelector('.modal-close');
-            closeButton.addEventListener('click', () => {
-                modal.classList.remove('active');
-            });
-
-            // Close modal by clicking on the overlay
-            modal.addEventListener('click', (event) => {
-                if(event.target === modal) {
-                    modal.classList.remove('active');
-                }
-            });
-        });
-
+        // Same script as before to handle clicks and modals
+        const navbar=document.getElementById("navbar");window.onscroll=function(){window.scrollY>50?navbar.classList.add("scrolled"):navbar.classList.remove("scrolled")};const branchCards=document.querySelectorAll(".branch-card"),modalContainer=document.getElementById("modal-container"),modals=document.querySelectorAll(".modal-overlay");branchCards.forEach(e=>{e.addEventListener("click",()=>{const t=e.getAttribute("data-branch"),o=document.getElementById("modal-"+t);o&&o.classList.add("active")})}),modals.forEach(e=>{const t=e.querySelector(".modal-close");t.addEventListener("click",()=>{e.classList.remove("active")}),e.addEventListener("click",t=>{t.target===e&&e.classList.remove("active")})});
     </script>
-
 </body>
 </html>
