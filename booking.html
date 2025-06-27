@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>حجز مواعيد فيزيوكير</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>حجز مواعيد فيزيوكير</h1>
+
+  <div id="schedule-container">
+    <p>اختر الموعد المناسب من الجدول:</p>
+    <table id="schedule-table" border="1">
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th>الشيفت الصبح (10:30 - 4:30)</th>
+          <th>الشيفت المغرب (4:30 - 10:30)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- الجدول هنا هيتعمل تلقائياً بالجافاسكريبت -->
+      </tbody>
+    </table>
+  </div>
+
+  <div id="booking-form" style="display:none; margin-top:20px;">
+    <h2>تأكيد الحجز</h2>
+    <form id="form">
+      <label>اسمك: <input type="text" id="name" required /></label><br/><br/>
+      <label>رقم الهاتف: <input type="tel" id="phone" required /></label><br/><br/>
+      <input type="hidden" id="selected-day" />
+      <input type="hidden" id="selected-shift" />
+      <button type="submit">احجز الآن</button>
+    </form>
+  </div>
+
+  <script>
+    // بيانات الأيام والشيفتات (الجمعة إجازة)
+    const days = ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
+    const shifts = ['الصبح', 'المغرب'];
+
+    // دكاترة مختلفين كل شيفت (مثال بسيط، نقدر نطور بعدين)
+    // هنا بنعرض خلايا قابلة للنقر للحجز
+
+    const tbody = document.querySelector('#schedule-table tbody');
+
+    days.forEach(day => {
+      const tr = document.createElement('tr');
+      const tdDay = document.createElement('td');
+      tdDay.textContent = day;
+      tr.appendChild(tdDay);
+
+      shifts.forEach(shift => {
+        const tdShift = document.createElement('td');
+        tdShift.textContent = `متاح للحجز`;
+        tdShift.style.cursor = 'pointer';
+        tdShift.style.backgroundColor = '#c8e6c9'; // أخضر فاتح
+
+        tdShift.addEventListener('click', () => {
+          document.getElementById('selected-day').value = day;
+          document.getElementById('selected-shift').value = shift;
+          document.getElementById('booking-form').style.display = 'block';
+          alert(`اخترت ${day} - الشيفت ${shift}`);
+        });
+
+        tr.appendChild(tdShift);
+      });
+
+      tbody.appendChild(tr);
+    });
+
+    // معالجة الحجز (هنا مجرد مثال بتخزين بيانات في الlocalStorage)
+    document.getElementById('form').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const day = document.getElementById('selected-day').value;
+      const shift = document.getElementById('selected-shift').value;
+
+      if (!name || !phone || !day || !shift) {
+        alert('من فضلك املأ كل البيانات');
+        return;
+      }
+
+      // تخزين الحجز (ممكن نغيرها لربط بقاعدة بيانات أو API بعدين)
+      const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+      bookings.push({ name, phone, day, shift, time: new Date().toISOString() });
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+
+      alert('تم الحجز بنجاح');
+      document.getElementById('booking-form').reset();
+      document.getElementById('booking-form').style.display = 'none';
+    });
+  </script>
+</body>
+</html>
