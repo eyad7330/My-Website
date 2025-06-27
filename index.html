@@ -1,134 +1,84 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>PhysioCare | حجز جلسة علاج طبيعي</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>جدول مواعيد فيزيوكير</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet"/>
   <style>
-    body { background-color: #f9f9f9; padding: 20px; direction: rtl; }
-    .table thead { background-color: #1e90ff; color: #fff; }
-    .available { background-color: #d4edda; cursor: pointer; }
-    .unavailable { background-color: #f8d7da; }
-    .form-section { margin-top: 30px; background: #fff; padding: 20px; border-radius: 10px; }
+    body {
+      background-color: #f9fbfc;
+      font-family: 'Arial', sans-serif;
+      padding: 30px;
+    }
+    h2 {
+      color: #0d6efd;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    table {
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    }
+    th, td {
+      text-align: center;
+      vertical-align: middle;
+    }
+    .available {
+      background-color: #d4edda;
+    }
+    .unavailable {
+      background-color: #f8f9fa;
+    }
+    .btn-book {
+      background-color: #198754;
+      color: white;
+      border: none;
+      padding: 5px 15px;
+      border-radius: 5px;
+    }
+    .btn-book:hover {
+      background-color: #157347;
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h2 class="text-center mb-4">نظام حجز جلسات العلاج الطبيعي - PhysioCare</h2>
+  <h2>جدول المواعيد - فيزيوكير</h2>
 
-    <table class="table table-bordered text-center">
-      <thead>
+  <div class="container">
+    <table class="table table-bordered">
+      <thead class="table-light">
         <tr>
-          <th>الوقت</th>
-          <th>سبت / اثنين / أربعاء</th>
-          <th>أحد / ثلاثاء / خميس</th>
+          <th>الشيفت</th>
+          <th>السبت / الإثنين / الأربعاء</th>
+          <th>الأحد / الثلاثاء / الخميس</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>10:30 ص - 4:30 م</td>
-          <td class="available" onclick="fillShift('صباحي', 'سبت/اتنين/أربع')">متاح</td>
-          <td class="available" onclick="fillShift('صباحي', 'أحد/ثلاث/خميس')">متاح</td>
+          <td>صباحي (10:30 ص - 4:30 م)</td>
+          <td class="available">
+            <button class="btn-book">متاح</button>
+          </td>
+          <td class="unavailable">
+            محجوز
+          </td>
         </tr>
         <tr>
-          <td>4:30 م - 10:30 م</td>
-          <td class="available" onclick="fillShift('مسائي', 'سبت/اتنين/أربع')">متاح</td>
-          <td class="available" onclick="fillShift('مسائي', 'أحد/ثلاث/خميس')">متاح</td>
+          <td>مسائي (4:30 م - 10:30 م)</td>
+          <td class="available">
+            <button class="btn-book">متاح</button>
+          </td>
+          <td class="available">
+            <button class="btn-book">متاح</button>
+          </td>
         </tr>
       </tbody>
     </table>
-
-    <div class="form-section">
-      <form id="booking-form">
-        <div class="mb-3">
-          <label class="form-label">الاسم</label>
-          <input type="text" class="form-control" id="name" required>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">رقم الهاتف</label>
-          <input type="tel" class="form-control" id="phone" required>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">الشيفت</label>
-          <input type="text" class="form-control" id="shift" readonly required>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">الأيام</label>
-          <input type="text" class="form-control" id="days" readonly required>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">شركة التأمين (اختياري)</label>
-          <input type="text" class="form-control" id="insurance">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">تحميل ملفات (بحد أقصى 6)</label>
-          <input type="file" id="attachments" class="form-control" multiple accept=".jpg,.png,.pdf,.jpeg">
-        </div>
-        <button type="submit" class="btn btn-primary w-100">احجز الآن</button>
-      </form>
-    </div>
   </div>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-  <script>
-    // ✅ عدل بيانات المشروع هنا
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const storage = firebase.storage();
-
-    function fillShift(shift, days) {
-      document.getElementById('shift').value = shift;
-      document.getElementById('days').value = days;
-    }
-
-    document.getElementById('booking-form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const shift = document.getElementById('shift').value;
-      const days = document.getElementById('days').value;
-      const insurance = document.getElementById('insurance').value;
-      const files = document.getElementById('attachments').files;
-
-      const uploadedFileURLs = [];
-
-      for (const file of files) {
-        const storageRef = storage.ref(`uploads/${Date.now()}_${file.name}`);
-        const snapshot = await storageRef.put(file);
-        const downloadURL = await snapshot.ref.getDownloadURL();
-        uploadedFileURLs.push(downloadURL);
-      }
-
-      await db.collection('appointments').add({
-        name,
-        phone,
-        shift,
-        days,
-        insurance,
-        files: uploadedFileURLs,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      alert("تم الحجز بنجاح!");
-      document.getElementById('booking-form').reset();
-    });
-  </script>
 
 </body>
 </html>
