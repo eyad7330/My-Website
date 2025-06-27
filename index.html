@@ -6,7 +6,6 @@
     <title>PhysioCare - مركز العلاج الطبيعي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        /* All previous CSS is the same, with additions for new sections */
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
         :root{--logo-green:#8DC63F;--logo-blue:#005A9C;--logo-gray:#6D6E71;--text-dark:#333333;--background-light:#f7f9f8;--white:#ffffff; --gold-color: #FFD700;}
         body{font-family:'Cairo', sans-serif;margin:0;background-color:var(--white);color:var(--text-dark); scroll-behavior: smooth;}
@@ -48,37 +47,44 @@
         .map-container iframe{width:100%;height:100%;border:0;}
         .edit-suggestion{text-align:center;margin-top:20px;font-size:14px;color:#888;}
         .edit-suggestion a{color:var(--logo-blue);text-decoration:underline;}
-
-        /* --- Updated Contact Modal Styles --- */
-        #contact-modal .contact-entry { text-align: center; margin-bottom: 25px; }
-        #contact-modal .entry-title { font-size: 16px; font-weight: 600; color: var(--logo-gray); margin-bottom: 8px; }
-        #contact-modal .phone-number { font-size: 28px; font-weight: 700; direction: ltr; color: var(--text-dark); margin-bottom: 15px; }
-        #contact-modal .contact-buttons a { text-decoration: none; color: white; padding: 12px 22px; border-radius: 8px; margin: 0 5px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.2s; }
-        #contact-modal .contact-buttons a:hover { transform: scale(1.05); }
-        .call-btn { background-color: var(--logo-blue); }
-        .whatsapp-btn { background-color: #25D366; }
-
-        /* --- New Services Section Styles --- */
-        #services { background-color: var(--background-light); }
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .service-card { background-color: var(--white); border-radius: 10px; text-align: center; padding: 40px 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: all 0.3s ease; border: 1px solid #eee;}
-        .service-card:hover { transform: translateY(-10px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); border-color: var(--logo-green);}
-        .service-card .icon { font-size: 45px; color: var(--logo-green); margin-bottom: 20px; }
-        .service-card h4 { font-size: 22px; font-weight: 700; margin-bottom: 15px; color: var(--logo-blue); }
-        .service-card p { font-size: 16px; line-height: 1.7; color: var(--logo-gray); }
+        #contact-modal .contact-entry{text-align:center;margin-bottom:25px;}
+        #contact-modal .entry-title{font-size:16px;font-weight:600;color:var(--logo-gray);margin-bottom:8px;}
+        #contact-modal .phone-number{font-size:28px;font-weight:700;direction:ltr;color:var(--text-dark);margin-bottom:15px;}
+        #contact-modal .contact-buttons a{text-decoration:none;color:white;padding:12px 22px;border-radius:8px;margin:0 5px;font-weight:600;display:inline-flex;align-items:center;gap:8px;transition:transform .2s;}
+        #contact-modal .contact-buttons a:hover{transform:scale(1.05);}
+        .call-btn{background-color:var(--logo-blue);}
+        .whatsapp-btn{background-color:#25D366;}
+        #services{background-color:var(--background-light);}
+        .services-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:30px;}
+        .service-card{background-color:var(--white);border-radius:10px;text-align:center;padding:40px 25px;box-shadow:0 5px 15px rgba(0,0,0,0.05);transition:all .3s ease;border:1px solid #eee;}
+        .service-card:hover{transform:translateY(-10px);box-shadow:0 12px 25px rgba(0,0,0,0.1);border-color:var(--logo-green);}
+        .service-card .icon{font-size:45px;color:var(--logo-green);margin-bottom:20px;}
+        .service-card h4{font-size:22px;font-weight:700;margin-bottom:15px;color:var(--logo-blue);}
+        .service-card p{font-size:16px;line-height:1.7;color:var(--logo-gray);}
     </style>
 </head>
 <body>
     <nav class="navbar" id="navbar">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="#home"><img src="logo.png" alt="PhysioCare Logo" class="logo-img"></a>
+            <a href="#home">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAbFBMVEX////AAD/////Kir/OTn//Pz/7Oz/ERH/ycn/ICD/tLT/2dn/ra3/YGD/pKT/gID/UFD/nZ3/X1//dHT/mJj/9fX/4uL/vr7/zMv/T0//MjL/h4f/rq7/amr/ZWX/Pj7/jY3/ysr/Vlb/fHz/lpaJ9eSBAAAGKUlEQVR4nO2d63qiMBCGCQSSqCiCiAfe//+3x4qCiFatCE3SOfc99xxrVrKks5kkSZMkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZL8R+T3y+CXy+uXxzL8uRz8G2S2L8u/lP8i3y7H8u/n59cX4Y+Ty2fX1+GPC4u/hB8Xl8/PL+GHC8vfw4eLyy8vhw8Xj7+IDxePXy+HDxeffyoeXLz+JjxYvP4mPVj8/jY8WLw+I94/fr/x8dYwI/588frd1mNE3D588frdrWMk3D5+8frdrWMh3B47vXj9jmtxCHdEj9/4/d7SItweOz1//e5rSXC7PXZ68frda0sIt8eO/76/3e09we3x45e/hG93e2+43b+/D/H7vb3V3L3+dE08/32/38v923k/27uXtPzw+fN27v+qRLy93k/f7/ez/3l1d/v73t7Dk5/v6e7uXtL4o72HDz/fd3f3tB4/vufw4dPd3d2tPTy+5/Dh093d3eoPD+95fPh0d/c2+7y3h49Pd3d3Ww/v7WHw6e7uruvh/d0+Hj7d3d2jPbx/9/Hw6e7unurh/d0+Hj7d3d2DPeTv8fHw6e7u7u5pPby3h8ent7u7+7qHN/fw93iI3e3t3gD+DncPz6f3u7t7/Q439/Dxeojd7b3jB3A5nB7e3u/ubuvh7w/38Ph6vLs3XAf3D+/h4dPd3W09vH/36e7u7unp8cnh9Yy3T3d3d496eA9Pbw+PT3f3dq33cHf3+Hg/e7ub+/d4eHh7e3p6eHg/vIdPd3e3dg8P7+7t7eHp8fDw7t7eHr7ez+72Hu7u8f7w7t7eHu7u7e3t7eHx/vB2dw+PT3d3d+3x4O7e3p6+3u/eXh4e7+4d7+7uHh8eHu/u7e3t4fH+/vb29PTw9PT0eA9//frd9fDh69+d1//+3i9+fLz9fQ5ffr2H7/d7e/gQv7/d7T38+OXvr/e7u3v48Yvfrx+//H0P//r23iP+e3/7L+KP3x+//B2//H2P3+9nd/f29u7p8fH08PTw9PT08PAeHu8P7++v/z99/fP/n9e/P/n65e/Pnz/+8cuvX/78+cvfr/9/+/oPv/z6+h++//rn58+ffv3y++vnH3/88tffnz/9+uXvr59/+fXXX3//+uuX/z9//vnnn3/+8u+vX/79/S+///7r15/8/fXXr9/+3l/++utXv//t7z/+9uvXv//t739//fW3P/7y269/+e1vf//tr1/+9vff//rbr1/++tvf//rb//vbX3/729/+9ve//vbXv/3tr3/761++/PXXP//y61++//r111/++uuXf//298/f/va3v3/765e//+2v//n1y1//8+uff/nt169ffvv165+//fbXX//y22//8uuffvnr//vrr1/+/Pnnr//556/++fVXf//y1/98+/uffv3XX//89dff/u2v//7y66+//u2v//nXX//89Vd//fXX//z116/++fXXv/7y669/+/XXf/3rr//59ddf//3Vf//y9//89dd///XX//z1V//8+qu//vqr//nyq7/++qu//vqrv/nyq3/+8qt//vqr//nyq7/+8mu///yq//nzq7/++qu//vqrv/nyi1/+/Orvv/zyi1/+/OLXv/zyi1//+uKrv/zi17/84te//OLXv/zyi1//+uKrv/zyi1//+uKrv/yyV3/55Vd//eVXf/nFV3/55Vd//eVXf/nFV3/55Vd//eVXf/nl17/88uuffvm11z/98muvf/r1L3/58muvf/rl117/9Mtvvf7pL7766l//5Vdff/XXv/zqq7/+8qu//vKrf/7yq3/+8qt//uXXv/zyq3/+8uuff/l11798+fXXv/zy665/+fLrrr7+5de++upXv/rqV7/66le/+urXv/rqV7/66le/+urXv/rqV7/66le/+urXv/rqV7/66ld/+/Vv//rt3/7127/967d/+/dv//rt3/7127/9+qu//vKrv/zyq7/+8uuff/l11z/98uuuffrlL7/8+l++/Orrrn/65de++vqL//i/N5d///l9//l9//l8fn3+fL6/f5/fbz//l8H35//vL0uS5J/M/wdIkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkvyf51+v7uI3+PdyAAAAAElFTkSuQmCC" alt="PhysioCare Logo" class="logo-img">
+            </a>
             <div class="nav-links">
-                <a href="#home" class="active">الرئيسية</a><a href="#services">خدماتنا</a><a href="#branches">فروعنا</a><a id="contact-us-link">تواصل معنا</a>
+                <a href="#home" class="active">الرئيسية</a>
+                <a href="#services">خدماتنا</a>
+                <a href="#branches">فروعنا</a>
+                <a id="contact-us-link">تواصل معنا</a>
             </div>
             <a href="#booking" class="cta-button">احجز موعدك</a>
         </div>
     </nav>
-    <header class="hero" id="home"></header>
+    <header class="hero" id="home">
+        <div class="container">
+            <h1>عافيتك تبدأ هنا في <span>PhysioCare</span></h1>
+            <p>نحن نجمع بين الخبرة العميقة وأحدث التقنيات لنقدم لك رعاية علاج طبيعي استثنائية تعيد لك حركتك وحيويتك.</p>
+            <a href="#booking" class="cta-button">ابدأ رحلة التعافي</a>
+        </div>
+    </header>
     
     <main>
         <section class="section" id="services">
@@ -120,12 +126,55 @@
             </div>
         </section>
 
-        <section class="section" id="branches"></section>
+        <section class="section" id="branches">
+             <div class="container">
+                <h2 class="section-title">فروعنا بالقرب منك</h2>
+                <div class="title-underline"></div>
+                <div class="branches-grid">
+                    <div class="branch-card" data-branch="arkan"><i class="fa-solid fa-map-marker-alt"></i> أركان مول، الشيخ زايد</div>
+                    <div class="branch-card featured" data-branch="eden"><i class="fa-solid fa-map-marker-alt"></i> إيدن مول، الشيخ زايد</div>
+                    <div class="branch-card" data-branch="maadi"><i class="fa-solid fa-map-marker-alt"></i> المعادي</div>
+                    <div class="branch-card" data-branch="mohandessin"><i class="fa-solid fa-map-marker-alt"></i> المهندسين</div>
+                    <div class="branch-card" data-branch="tagamoa"><i class="fa-solid fa-map-marker-alt"></i> التجمع الخامس</div>
+                </div>
+            </div>
+        </section>
     </main>
     
-    <footer class="footer"></footer>
+    <footer class="footer">
+        <div class="container">
+            <a href="#home">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAbFBMVEX////AAD/////Kir/OTn//Pz/7Oz/ERH/ycn/ICD/tLT/2dn/ra3/YGD/pKT/gID/UFD/nZ3/X1//dHT/mJj/9fX/4uL/vr7/zMv/T0//MjL/h4f/rq7/amr/ZWX/Pj7/jY3/ysr/Vlb/fHz/lpaJ9eSBAAAGKUlEQVR4nO2d63qiMBCGCQSSqCiCiAfe//+3x4qCiFatCE3SOfc99xxrVrKks5kkSZMkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZL8R+T3y+CXy+uXxzL8uRz8G2S2L8u/lP8i3y7H8u/n59cX4Y+Ty2fX1+GPC4u/hB8Xl8/PL+GHC8vfw4eLyy8vhw8Xj7+IDxePXy+HDxeffyoeXLz+JjxYvP4mPVj8/jY8WLw+I94/fr/x8dYwI/588frd1mNE3D588frdrWMk3D5+8frdrWMh3B47vXj9jmtxCHdEj9/4/d7SItweOz1//e5rSXC7PXZ68frda0sIt8eO/76/3e09we3x45e/hG93e2+43b+/D/H7vb3V3L3+dE08/32/38v923k/27uXtPzw+fN27v+qRLy93k/f7/ez/3l1d/v73t7Dk5/v6e7uXtL4o72HDz/fd3f3tB4/vufw4dPd3d2tPTy+5/Dh093d3eoPD+95fPh0d/c2+7y3h49Pd3d3Ww/v7WHw6e7uruvh/d0+Hj7d3d2jPbx/9/Hw6e7unurh/d0+Hj7d3d2DPeTv8fHw6e7u7u5pPby3h8ent7u7+7qHN/fw93iI3e3t3gD+DncPz6f3u7t7/Q439/Dxeojd7b3jB3A5nB7e3u/ubuvh7w/38Ph6vLs3XAf3D+/h4dPd3W09vH/36e7u7unp8cnh9Yy3T3d3d496eA9Pbw+PT3f3dq33cHf3+Hg/e7ub+/d4eHh7e3p6eHg/vIdPd3e3dg8P7+7t7eHp8fDw7t7eHr7ez+72Hu7u8f7w7t7eHu7u7e3t7eHx/vB2dw+PT3d3d+3x4O7e3p6+3u/eXh4e7+4d7+7uHh8eHu/u7e3t4fH+/vb29PTw9PT0eA9//frd9fDh69+d1//+3i9+fLz9fQ5ffr2H7/d7e/gQv7/d7T38+OXvr/e7u3v48Yvfrx+//L0P//r23iP+e3/7L+KP3x+//B2//H2P3+9nd/f29u7p8fH08PTw9PT08PAeHu8P7++v/z99/fP/n9e/P/n65e/Pnz/+8cuvX/78+cvfr/9/+/oPv/z6+h++//rn58+ffv3y++vnH3/88tffnz/9+uXvr59/+fXXX3//+uuX/z9//vnnn3/+8u+vX/79/S+///7r15/8/fXXr9/+3l/++utXv//t7z/+9uvXv//t739//fW3P/7y269/+e1vf//tr1/+9vff//rbr1/++tvf//rb//vbX3/729/+9ve//vbXv/3tr3/761++/PXXP//y61++//r111/++uuXf//298/f/va3v3/765e//+2v//n1y1//8+uff/nt169ffvv165+//fbXX//y22//8uuffvnr//vrr1/+/Pnnr//556/++fVXf//y1/98+/uffv3XX//89dff/u2v//7y66+//u2v//nXX//89Vd//fXX//z116/++fXXv/7y669/+/XXf/3rr//59ddf//3Vf//y9//89dd///XX//z1V//8+qu//vqr//nyq7/++qu//vqrv/nyq3/+8qt//vqr//nyq7/+8mu///yq//nzq7/++qu//vqrv/nyi1/+/Orvv/zyi1/+/OLXv/zyi1//+uKrv/zyi1//+uKrv/yyV3/55Vd//eVXf/nFV3/55Vd//eVXf/nFV3/55Vd//eVXf/nl17/88uuffvm11z/98muvf/r1L3/58muvf/rl117/9Mtvvf7pL7766l//5Vdff/XXv/zqq7/+8qu//vKrf/7yq3/+8qt//uXXv/zyq3/+8uuff/l11798+fXXv/zy665/+fLrrr7+5de++upXv/rqV7/66le/+urXv/rqV7/66le/+urXv/rqV7/66le/+urXv/rqV7/66ld/+/Vv//rt3/7127/967d/+/dv//rt3/7127/9+qu//vKrv/zyq7/+8uuff/l11z/98uuuffrlL7/8+l++/Orrrn/65de++vqL//i/N5d///l9//l9//l8fn3+fL6/f5/fbz//l8H35//vL0uS5J/M/wdIkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkvyf51+v7uI3+PdyAAAAAElFTkSuQmCC" alt="PhysioCare Logo" class="footer-logo">
+            </a>
+            <p class="footer-links">
+                 <a href="#home">الرئيسية</a> |
+                 <a href="#services">خدماتنا</a> |
+                 <a href="#branches">فروعنا</a> |
+                 <a id="contact-us-link">تواصل معنا</a>
+            </p>
+            <div class="footer-copyright">
+                <p>&copy; 2025 PhysioCare. كل الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
     
     <div id="modal-container">
+        <div class="modal-overlay" id="modal-arkan">
+            <div class="modal-content"><button class="modal-close">×</button><h3>فرع أركان مول، الشيخ زايد</h3><p class="address">العنوان: مبنى F5، الدور الثالث، أركان بلازا، الشيخ زايد.</p><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454.432617634033!2d30.97010181511456!3d30.02454198188982!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14585652b7129c57%3A0x442661503756247a!2sArkan%20Plaza!5e0!3m2!1sen!2seg!4v1672234567890" allowfullscreen="" loading="lazy"></iframe></div><p class="edit-suggestion">هل العنوان غير دقيق؟ <a href="#">اقترح تعديلاً</a></p></div>
+        </div>
+        <div class="modal-overlay" id="modal-eden">
+             <div class="modal-content"><button class="modal-close">×</button><h3>فرع إيدن مول، الشيخ زايد (الرئيسي)</h3><p class="address">العنوان: الحي الرابع، الشيخ زايد، محافظة الجيزة.</p><div class="map-container"><p style="padding-top:100px; text-align:center;">(أضف كود خريطة جوجل هنا لفرع إيدن)</p></div><p class="edit-suggestion">هل العنوان غير دقيق؟ <a href="#">اقترح تعديلاً</a></p></div>
+        </div>
+        <div class="modal-overlay" id="modal-maadi">
+            <div class="modal-content"><button class="modal-close">×</button><h3>فرع المعادي</h3><p class="address">العنوان: 15 شارع 9، بجوار مترو المعادي، المعادي.</p><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3456.408796129845!2d31.2330389151129!3d29.96773348191147!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1458479e937d126b%3A0x23522a573216853!2sStreet%209!5e0!3m2!1sen!2seg!4v1672234567891" allowfullscreen="" loading="lazy"></iframe></div><p class="edit-suggestion">هل العنوان غير دقيق؟ <a href="#">اقترح تعديلاً</a></p></div>
+        </div>
+        <div class="modal-overlay" id="modal-mohandessin">
+            <div class="modal-content"><button class="modal-close">×</button><h3>فرع المهندسين</h3><p class="address">العنوان: 24 شارع جامعة الدول العربية، فوق بنك CIB، المهندسين.</p><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.89728020619!2d31.1983573151151!3d30.0398039818842!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14584131a5e1284d%3A0x62a3c17758399309!2sGamal%20Salem%2C%20Ad%20Doqi%2C%20Dokki%2C%20Giza%20Governorate!5e0!3m2!1sen!2seg!4v1672234567892" allowfullscreen="" loading="lazy"></iframe></div><p class="edit-suggestion">هل العنوان غير دقيق؟ <a href="#">اقترح تعديلاً</a></p></div>
+        </div>
+        <div class="modal-overlay" id="modal-tagamoa">
+            <div class="modal-content"><button class="modal-close">×</button><h3>فرع التجمع الخامس</h3><p class="address">العنوان: كايرو فيستيفال سيتي مول، داخل مبنى العيادات، التجمع الخامس.</p><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454.290715397448!2d31.40889401511467!3d30.02856498188825!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583cdcc5555555%3A0x69f8e4354b423199!2sCairo%20Festival%20City%20Mall!5e0!3m2!1sen!2seg!4v1672234567893" allowfullscreen="" loading="lazy"></iframe></div><p class="edit-suggestion">هل العنوان غير دقيق؟ <a href="#">اقترح تعديلاً</a></p></div>
+        </div>
+        
         <div class="modal-overlay" id="contact-modal">
             <div class="modal-content">
                 <button class="modal-close">×</button>
@@ -136,7 +185,7 @@
                         <div class="phone-number">0102 444 3117</div>
                         <div class="contact-buttons">
                             <a href="tel:+201024443117" class="call-btn"><i class="fa-solid fa-phone"></i> اتصال</a>
-                            <a href="https://wa.me/201024443117" target="_blank" class="whatsapp-btn"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
+                            <a href="https://api.whatsapp.com/send?phone=201024443117" target="_blank" class="whatsapp-btn"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
                         </div>
                     </div>
                     <div class="contact-entry">
@@ -144,7 +193,7 @@
                         <div class="phone-number">0102 444 3118</div>
                         <div class="contact-buttons">
                             <a href="tel:+201024443118" class="call-btn"><i class="fa-solid fa-phone"></i> اتصال</a>
-                            <a href="https://wa.me/201024443118" target="_blank" class="whatsapp-btn"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
+                            <a href="https://api.whatsapp.com/send?phone=201024443118" target="_blank" class="whatsapp-btn"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
                         </div>
                     </div>
                 </div>
@@ -153,7 +202,6 @@
     </div>
 
     <script>
-        // Same JS code as before, no changes needed
         const navbar=document.getElementById("navbar");window.onscroll=function(){window.scrollY>50?navbar.classList.add("scrolled"):navbar.classList.remove("scrolled")};const contactLink=document.getElementById("contact-us-link"),contactModal=document.getElementById("contact-modal");function openModal(e){e&&e.classList.add("active")}function closeModal(){const e=document.querySelector(".modal-overlay.active");e&&e.classList.remove("active")}contactLink.addEventListener("click",()=>{openModal(contactModal)});const branchCards=document.querySelectorAll(".branch-card");branchCards.forEach(e=>{e.addEventListener("click",()=>{const t=e.getAttribute("data-branch"),o=document.getElementById("modal-"+t);openModal(o)})});const allModals=document.querySelectorAll(".modal-overlay");allModals.forEach(e=>{const t=e.querySelector(".modal-close");t&&t.addEventListener("click",closeModal),e.addEventListener("click",t=>{t.target===e&&closeModal()})});
     </script>
 </body>
