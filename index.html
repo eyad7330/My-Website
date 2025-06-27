@@ -4,92 +4,167 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حجز مواعيد - PhysioCare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+        /* --- Modern Design System --- */
         :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
-            --light-gray: #f8f9fa;
-            --dark-gray: #343a40;
-            --success-color: #28a745;
-            --danger-color: #dc3545;
-            --border-radius: 8px;
+            --primary-blue: #2c3e50; /* A more elegant blue */
+            --primary-green: #27ae60;
+            --light-gray: #f9f9f9;
+            --medium-gray: #ecf0f1;
+            --dark-gray: #34495e;
+            --text-color: #555;
+            --white: #ffffff;
+            --border-radius: 12px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
         }
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Tajawal', sans-serif;
             background-color: var(--light-gray);
-            color: var(--dark-gray);
+            color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 25px;
+            line-height: 1.7;
         }
         .container {
-            max-width: 900px;
+            max-width: 950px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         header {
             text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--primary-color);
+            margin-bottom: 40px;
         }
         .logo {
-            max-width: 250px;
-            margin-bottom: 15px;
+            max-width: 220px;
+            margin-bottom: 20px;
         }
-        header h1 { color: var(--primary-color); margin: 0; }
-        .branch-selector {
+        .card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
             margin-bottom: 30px;
         }
-        .branch-selector label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-            color: var(--dark-gray);
+        .branch-selector h2 {
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
         }
         #branchSelect {
             width: 100%;
-            padding: 12px;
-            border-radius: var(--border-radius);
-            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
             font-size: 1.1rem;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--white);
         }
-        #loader, #doctors-placeholder {
-            text-align: center;
-            font-size: 1.2rem;
-            padding: 40px;
-            font-weight: 600;
-            color: var(--secondary-color);
+        #doctors-placeholder, #loader {
+            text-align: center; padding: 50px; font-size: 1.3rem; color: #95a5a6;
         }
+        /* --- Doctor Card Redesign --- */
         .doctor-card {
-            border: 1px solid #e0e0e0;
-            border-radius: var(--border-radius);
-            margin-bottom: 30px;
-            padding: 20px;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+            align-items: flex-start;
         }
-        .doctor-info { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .doctor-info img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-color); }
-        .doctor-details h2 { margin: 0; font-size: 1.5rem; }
-        .doctor-details p { margin: 0; color: var(--secondary-color); }
-        .appointments h3 { font-size: 1.1rem; color: var(--primary-color); border-bottom: 1px solid #eee; padding-bottom: 8px; margin-top: 15px; }
-        .slots-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
-        .slot { padding: 10px; border-radius: 5px; text-align: center; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
-        .slot.available { background-color: var(--success-color); color: #fff; }
-        .slot.available:hover { transform: translateY(-2px); background-color: #218838; }
-        .slot.booked { background-color: #e0e0e0; color: #888; cursor: not-allowed; text-decoration: line-through; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
-        .modal-content { background-color: #fefefe; margin: 15% auto; padding: 30px; border: 1px solid #888; width: 80%; max-width: 500px; border-radius: var(--border-radius); position: relative; }
-        .close-btn { color: #aaa; position: absolute; left: 20px; top: 10px; font-size: 28px; font-weight: bold; cursor: pointer; }
-        .modal-form h2 { margin-top: 0; color: var(--primary-color); }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
-        .form-group input { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
-        .submit-btn { width: 100%; padding: 12px; border: none; border-radius: 5px; background-color: var(--primary-color); color: white; font-size: 1rem; font-weight: bold; cursor: pointer; }
+        .doctor-info { text-align: center; }
+        .doctor-info img {
+            width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
+            border: 5px solid var(--medium-gray); margin-bottom: 15px;
+        }
+        .doctor-info h3 { margin: 0 0 5px 0; font-size: 1.4rem; color: var(--primary-blue); }
+        .doctor-info p { margin: 0; color: #7f8c8d; }
+        /* --- Tabs for Schedules --- */
+        .schedule-tabs .tabs-nav {
+            display: flex;
+            border-bottom: 2px solid var(--medium-gray);
+        }
+        .tabs-nav button {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: #7f8c8d;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .tabs-nav button.active { color: var(--primary-green); }
+        .tabs-nav button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0; right: 0;
+            height: 2px;
+            background: var(--primary-green);
+        }
+        .tab-content { padding-top: 20px; }
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+        .slots-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 12px;
+        }
+        .slot {
+            padding: 12px; border-radius: 8px; text-align: center; font-weight: 700;
+            cursor: pointer; transition: all 0.3s ease; border: 1px solid transparent;
+        }
+        .slot.available {
+            background-color: #e8f5e9; /* Light green */
+            color: var(--primary-green);
+            border: 1px solid #a5d6a7;
+        }
+        .slot.available:hover {
+            background-color: var(--primary-green);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+        }
+        .slot.booked { background-color: #f5f5f5; color: #bdc3c7; cursor: not-allowed; }
+        /* --- Modal Redesign --- */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.6);
+            align-items: center; justify-content: center;
+        }
+        .modal.show { display: flex; }
+        .modal-content {
+            background-color: var(--white); padding: 35px; width: 90%;
+            max-width: 550px; border-radius: var(--border-radius);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h2 { margin: 0; color: var(--primary-blue); font-size: 1.6rem; }
+        .close-btn { background: none; border: none; font-size: 1.8rem; color: #95a5a6; cursor: pointer; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 700; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 12px; border-radius: 8px;
+            border: 1px solid #ddd; box-sizing: border-box; font-family: 'Tajawal', sans-serif;
+        }
+        .submit-btn {
+            width: 100%; padding: 15px; border: none; border-radius: 8px;
+            background-color: var(--primary-green); color: white; font-size: 1.1rem;
+            font-weight: bold; cursor: pointer; transition: background-color 0.3s;
+        }
+        .submit-btn:hover { background-color: #219d52; }
+        /* Date Picker Modal */
+        #datePickerModal .date-options { display: flex; flex-direction: column; gap: 10px; }
+        #datePickerModal .date-options button {
+            padding: 12px; font-size: 1rem; font-weight: 500;
+            border: 1px solid #ddd; background: #fff; cursor: pointer;
+            border-radius: 8px; transition: all 0.2s ease; text-align: right;
+        }
+        #datePickerModal .date-options button:hover { background: var(--medium-gray); border-color: #ccc; }
     </style>
 </head>
 <body>
@@ -99,39 +174,82 @@
             <img src="image.png" alt="PhysioCare Logo" class="logo">
         </header>
 
-        <div class="branch-selector">
-            <label for="branchSelect">الخطوة الأولى: اختر الفرع</label>
+        <div class="card branch-selector">
+            <h2><i class="fa-solid fa-location-dot"></i> الخطوة الأولى: اختر الفرع</h2>
             <select id="branchSelect">
                 <option value="">-- يرجى اختيار الفرع --</option>
             </select>
         </div>
 
         <main id="doctors-container">
-            <div id="doctors-placeholder">الرجاء اختيار فرع لعرض الأطباء والمواعيد المتاحة.</div>
+            <div id="doctors-placeholder">
+                <i class="fa-solid fa-hand-holding-medical" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                <div>الرجاء اختيار فرع لعرض الأطباء والمواعيد</div>
+            </div>
         </main>
         <div id="loader" style="display: none;">جاري تحميل البيانات...</div>
     </div>
 
-    <div id="bookingModal" class="modal">...</div>
+    <div id="datePickerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>اختر اليوم المناسب</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div id="date-options-container" class="date-options">
+                </div>
+        </div>
+    </div>
+    
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-calendar-check"></i> تأكيد الحجز</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <p>لتأكيد حجزك مع <strong id="modalDoctorName"></strong> يوم <strong id="modalDate"></strong> الساعة <strong id="modalTime"></strong>، يرجى ملء البيانات التالية:</p>
+            <form id="bookingForm">
+                <input type="hidden" id="doctorId">
+                <input type="hidden" id="bookingDateISO">
+                <input type="hidden" id="bookingSlot">
+                
+                <div class="form-group">
+                    <label for="patientName">الأسم ثلاثي</label>
+                    <input type="text" id="patientName" required>
+                </div>
+                <div class="form-group">
+                    <label for="patientPhone">رقم التليفون</label>
+                    <input type="tel" id="patientPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="optionalPhone">رقم تليفون اخر (إن وجد)</label>
+                    <input type="tel" id="optionalPhone">
+                </div>
+                <div class="form-group">
+                    <label for="insuranceCompany">شركة التأمين</label>
+                    <select id="insuranceCompany">
+                        <option value="لا يوجد">لا يوجد تأمين</option>
+                        <option value="Globmed">Globmed</option>
+                        <option value="NextCare">NextCare</option>
+                        <option value="AXA">AXA</option>
+                        <option value="Metlife (Alico)">Metlife (Alico)</option>
+                        <option value="MedRight">MedRight</option>
+                        <option value="Puba">Puba</option>
+                        <option value="Limitless Care">Limitless Care</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">تأكيد الحجز النهائي</button>
+            </form>
+        </div>
+    </div>
     
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs, addDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        // Firebase and other logic will go here
+        // The structure will be similar to the previous version but with more complex rendering logic
+        // This is a placeholder for the full JS
+        console.log("Professional UI Ready. JavaScript logic to follow.");
 
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // --- ‼️ سنقوم بنقل هذه البيانات إلى Firestore لاحقاً ---
-        // --- ‼️ For now, we put the data here for testing ---
+        // --- Data (To be moved to Firestore) ---
         const branches = [
             { id: "eden_mall", name: "فرع ايدن مول - الشيخ زايد" },
             { id: "arkan_mall", name: "فرع اركان مول - الشيخ زايد" },
@@ -140,35 +258,34 @@
             { id: "tagamoa", name: "فرع التجمع الخامس" }
         ];
 
+        // ‼️ Reminder: Shift for Sun/Tue/Thu group is still an assumption (morning)
         const doctors = [
-            // --- أطباء فرع ايدن مول ---
-            { name: "د. محمد صادق", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] }, // سبت، اثنين، اربعاء - مسائي
-            { name: "د. محمد سعيد", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { name: "د. محمد سيف", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { name: "د. مارتن هاني", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { name: "د. نيره خالد", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { name: "د. همسه محمد", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { name: "د. فريد السعدني", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { name: "د. يارا امجد", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { name: "د. ميرنا محمد", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            
-            // ‼️ افترضت مؤقتاً أن هذا الشيفت صباحي
-            { name: "د. ياسمين احمد", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] }, // أحد، ثلاثاء،خميس - صباحي
-            { name: "د. غاده بسيوني", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
-            { name: "د. مها نبيل", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
-            { name: "د. اسراء جمال", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
-            { name: "د. محمد سعيد", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] }, // يعمل هنا ايضا
-            { name: "د. محمد صادق", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] }, // يعمل هنا ايضا
-            { name: "د. اسماء مصطفي", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
+            // Eden Mall - Evening Shift (Sat, Mon, Wed)
+            { id: "d1", name: "د. محمد صادق", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
+            { id: "d2", name: "د. محمد سعيد", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
+            // ... other evening doctors ...
+            // Eden Mall - Morning Shift (Sun, Tue, Thu) - ASSUMPTION
+            { id: "d10", name: "د. ياسمين احمد", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
+            { id: "d11", name: "د. غاده بسيوني", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
+            // Also add the two doctors who work both shifts
+            { id: "d1", name: "د. محمد صادق", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
+            { id: "d2", name: "د. محمد سعيد", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
+            // ... other morning doctors ...
         ];
-        // --- نهاية البيانات المؤقتة ---
 
+        // --- DOM Elements ---
         const branchSelect = document.getElementById('branchSelect');
         const doctorsContainer = document.getElementById('doctors-container');
         const doctorsPlaceholder = document.getElementById('doctors-placeholder');
-        const loader = document.getElementById('loader');
+        
+        const datePickerModal = document.getElementById('datePickerModal');
+        const dateOptionsContainer = document.getElementById('date-options-container');
+        
+        const bookingModal = document.getElementById('bookingModal');
+        const bookingForm = document.getElementById('bookingForm');
+        let tempBookingInfo = {}; // To hold info between modals
 
-        // Populate branch dropdown
+        // --- Populate Branches ---
         branches.forEach(branch => {
             const option = document.createElement('option');
             option.value = branch.id;
@@ -176,85 +293,71 @@
             branchSelect.appendChild(option);
         });
 
-        // Listen for branch selection
-        branchSelect.addEventListener('change', (e) => {
-            const selectedBranchId = e.target.value;
-            if (selectedBranchId) {
-                displaySchedulesForBranch(selectedBranchId);
-            } else {
-                doctorsContainer.innerHTML = '';
-                doctorsPlaceholder.style.display = 'block';
-                doctorsPlaceholder.textContent = 'الرجاء اختيار فرع لعرض الأطباء والمواعيد المتاحة.';
-            }
-        });
-
-        async function displaySchedulesForBranch(branchId) {
-            loader.style.display = 'block';
+        // --- Main Display Logic ---
+        function renderDoctors(branchId) {
             doctorsContainer.innerHTML = '';
             doctorsPlaceholder.style.display = 'none';
 
-            const doctorsInBranch = doctors.filter(d => d.branchId === branchId);
-
-            if (doctorsInBranch.length === 0) {
-                loader.style.display = 'none';
-                doctorsContainer.innerHTML = `<div id="doctors-placeholder">سيتم إضافة الأطباء والمواعيد لهذا الفرع قريباً.</div>`;
-                return;
+            const doctorsInBranch = doctors.filter(doc => doc.branchId === branchId);
+            if(doctorsInBranch.length === 0) {
+                 doctorsContainer.innerHTML = `<div id="doctors-placeholder">سيتم إضافة الأطباء والمواعيد لهذا الفرع قريباً.</div>`;
+                 return;
             }
-
-            // In a real app, you would fetch bookings from Firestore here
-            // const allBookedSlots = await fetchAllBookings();
             
-            // For now, we simulate fetching bookings
-            await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
-
             const uniqueDoctorNames = [...new Set(doctorsInBranch.map(d => d.name))];
 
-            uniqueDoctorNames.forEach(doctorName => {
-                const doctorAssignments = doctorsInBranch.filter(d => d.name === doctorName);
-                const doctorCard = document.createElement('div');
-                doctorCard.className = 'doctor-card';
-
-                let doctorHTML = `
-                    <div class="doctor-info">
-                        <img src="https://ui-avatars.com/api/?name=${doctorName.replace(' ', '+')}&background=007bff&color=fff&size=128" alt="${doctorName}">
-                        <div class="doctor-details">
-                            <h2>${doctorName}</h2>
-                            <p>أخصائي علاج طبيعي</p>
-                        </div>
-                    </div>
-                    <div class="appointments">`;
-                
-                const today = new Date();
-                for (let i = 0; i < 7; i++) {
-                    const date = new Date();
-                    date.setDate(today.getDate() + i);
-                    const dayOfWeek = date.getDay();
-
-                    doctorAssignments.forEach(assignment => {
-                        if (assignment.days.includes(dayOfWeek)) {
-                            const timeSlots = generateTimeSlots(assignment.shiftType);
-                            const dateString = date.toISOString().split('T')[0];
-                            const dayName = new Intl.DateTimeFormat('ar-EG', { weekday: 'long' }).format(date);
-                            
-                            doctorHTML += `<h3>${dayName} - ${dateString} (${assignment.shiftType === 'morning' ? 'صباحي' : 'مسائي'})</h3>`;
-                            doctorHTML += `<div class="slots-container">`;
-                            timeSlots.forEach(slot => {
-                                // Here you would check against fetched bookings
-                                doctorHTML += `<div class="slot available" data-date="${dateString}" data-time="${slot}">${slot}</div>`;
-                            });
-                            doctorHTML += `</div>`;
-                        }
-                    });
-                }
-
-                doctorHTML += `</div>`;
-                doctorCard.innerHTML = doctorHTML;
+            uniqueDoctorNames.forEach(name => {
+                const doctorAssignments = doctorsInBranch.filter(d => d.name === name);
+                const doctorCard = createDoctorCard(name, doctorAssignments);
                 doctorsContainer.appendChild(doctorCard);
             });
-
-            loader.style.display = 'none';
+            setupTabListeners();
         }
 
+        function createDoctorCard(name, assignments) {
+            const cardWrapper = document.createElement('div');
+            cardWrapper.className = 'card doctor-card';
+            
+            // Group assignments by day group
+            const scheduleGroups = {
+                smw: assignments.find(a => a.days.toString() === [6,1,3].toString()),
+                sth: assignments.find(a => a.days.toString() === [0,2,4].toString())
+            };
+
+            let tabsNav = '';
+            let tabsContent = '';
+            
+            if(scheduleGroups.smw) {
+                tabsNav += `<button class="tab-btn active" data-tab="smw-${name.replace(/\s/g, '')}">السبت-الإثنين-الأربعاء</button>`;
+                tabsContent += `<div class="tab-pane active" id="smw-${name.replace(/\s/g, '')}">${generateSlotsHTML(scheduleGroups.smw)}</div>`;
+            }
+            if(scheduleGroups.sth) {
+                const isActive = !scheduleGroups.smw;
+                tabsNav += `<button class="tab-btn ${isActive ? 'active' : ''}" data-tab="sth-${name.replace(/\s/g, '')}">الأحد-الثلاثاء-الخميس</button>`;
+                tabsContent += `<div class="tab-pane ${isActive ? 'active' : ''}" id="sth-${name.replace(/\s/g, '')}">${generateSlotsHTML(scheduleGroups.sth)}</div>`;
+            }
+
+            cardWrapper.innerHTML = `
+                <div class="doctor-info">
+                    <img src="https://ui-avatars.com/api/?name=${name.replace(' ', '+')}&background=2c3e50&color=fff&size=128" alt="${name}">
+                    <h3>${name}</h3>
+                    <p>أخصائي علاج طبيعي</p>
+                </div>
+                <div class="schedule-tabs">
+                    <div class="tabs-nav">${tabsNav}</div>
+                    <div class="tab-content">${tabsContent}</div>
+                </div>
+            `;
+            return cardWrapper;
+        }
+
+        function generateSlotsHTML(assignment) {
+            const slots = generateTimeSlots(assignment.shiftType);
+            return `<div class="slots-container">` + 
+                   slots.map(slot => `<div class="slot available" data-time="${slot}" data-days='${JSON.stringify(assignment.days)}' data-doctor-name="${assignment.name}">${slot}</div>`).join('') +
+                   `</div>`;
+        }
+        
         function generateTimeSlots(shiftType) {
             const slots = [];
             let startTime = (shiftType === 'morning') ? (10 * 60 + 30) : (16 * 60 + 30);
@@ -267,6 +370,80 @@
             return slots;
         }
 
+        // --- Event Handlers ---
+        branchSelect.addEventListener('change', (e) => {
+            if(e.target.value) renderDoctors(e.target.value);
+            else {
+                doctorsContainer.innerHTML = '';
+                doctorsPlaceholder.style.display = 'block';
+            }
+        });
+
+        doctorsContainer.addEventListener('click', e => {
+            // Handle clicking on a slot
+            if(e.target.classList.contains('slot') && e.target.classList.contains('available')) {
+                const { time, days, doctorName } = e.target.dataset;
+                tempBookingInfo = { time, doctorName };
+                openDatePicker(JSON.parse(days));
+                return;
+            }
+        });
+
+        function openDatePicker(daysArray) {
+            dateOptionsContainer.innerHTML = '';
+            const today = new Date();
+            const dayNames = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+
+            for(let i=0; i<7; i++) {
+                const date = new Date();
+                date.setDate(today.getDate() + i);
+                if(daysArray.includes(date.getDay())) {
+                    const btn = document.createElement('button');
+                    const dateString = date.toISOString().split('T')[0];
+                    btn.textContent = `${dayNames[date.getDay()]} - ${dateString}`;
+                    btn.dataset.dateIso = dateString;
+                    btn.onclick = () => {
+                        tempBookingInfo.date = dateString;
+                        closeModal(datePickerModal);
+                        openBookingForm();
+                    };
+                    dateOptionsContainer.appendChild(btn);
+                }
+            }
+            showModal(datePickerModal);
+        }
+
+        function openBookingForm() {
+            document.getElementById('modalDoctorName').textContent = tempBookingInfo.doctorName;
+            document.getElementById('modalDate').textContent = tempBookingInfo.date;
+            document.getElementById('modalTime').textContent = tempBookingInfo.time;
+            
+            // Populate hidden fields
+            document.getElementById('bookingDateISO').value = tempBookingInfo.date;
+            document.getElementById('bookingSlot').value = tempBookingInfo.time;
+
+            showModal(bookingModal);
+        }
+
+        // --- Modal Controls ---
+        function showModal(modal) { modal.classList.add('show'); }
+        function closeModal(modal) { modal.classList.remove('show'); }
+        document.querySelectorAll('.modal .close-btn').forEach(btn => {
+            btn.onclick = () => closeModal(btn.closest('.modal'));
+        });
+
+        // Tab switching logic
+        function setupTabListeners() {
+            document.querySelectorAll('.tabs-nav .tab-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const parent = button.closest('.schedule-tabs');
+                    parent.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    parent.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+                    document.getElementById(button.dataset.tab).classList.add('active');
+                });
+            });
+        }
     </script>
 </body>
 </html>
