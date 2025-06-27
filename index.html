@@ -1,361 +1,169 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhysioCare - حجز جلسات العلاج الطبيعي</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhysioCare | مركز العلاج الطبيعي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #0a3d62;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 24px;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .hero {
+      background: linear-gradient(to right, #0a3d62, #3c6382);
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .hero h2 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    .hero a {
+      display: inline-block;
+      background-color: #f39c12;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-size: 18px;
+      transition: background 0.3s ease;
+    }
+
+    .hero a:hover {
+      background-color: #e67e22;
+    }
+
+    .shifts {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .shifts h3 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .shift-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .shift {
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .shift:hover {
+      transform: translateY(-5px);
+    }
+
+    .shift h4 {
+      color: #0a3d62;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background-color: #0a3d62;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .hero h2 {
+        font-size: 28px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- شريط التنقل -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="#" class="logo">Physio<span>Care</span></a>
-            <div class="nav-links">
-                <a href="#home">الرئيسية</a>
-                <a href="#services">الخدمات</a>
-                <a href="#doctors">الأطباء</a>
-                <a href="#booking">الحجز</a>
-                <a href="#contact">اتصل بنا</a>
-                <button id="loginBtn" class="btn">تسجيل الدخول</button>
-            </div>
-            <button class="hamburger">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
+
+  <header>
+    <h1>PhysioCare</h1>
+    <nav>
+      <a href="#">الرئيسية</a>
+      <a href="#">من نحن</a>
+      <a href="#">احجز الآن</a>
+      <a href="#">تواصل معنا</a>
     </nav>
+  </header>
 
-    <!-- قسم الهيرو -->
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>رعاية علاج طبيعي متكاملة</h1>
-                <p>احصل على أفضل جلسات العلاج الطبيعي مع أخصائيين ذوي خبرة واسعة</p>
-                <a href="#booking" class="btn btn-primary">احجز جلسة الآن</a>
-            </div>
-            <div class="hero-image">
-                <img src="assets/physiotherapy.svg" alt="العلاج الطبيعي">
-            </div>
-        </div>
-    </section>
+  <section class="hero">
+    <h2>أفضل رعاية علاج طبيعي في مكان واحد</h2>
+    <p>نحن هنا لمساعدتك على الشفاء والعودة لحياتك بأفضل صحة وعافية</p>
+    <a href="#">احجز موعدك الآن</a>
+  </section>
 
-    <!-- قسم الخدمات -->
-    <section id="services" class="services">
-        <div class="container">
-            <h2 class="section-title">خدماتنا</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <i class="fas fa-bone"></i>
-                    <h3>إعادة تأهيل العظام</h3>
-                    <p>علاج إصابات العظام والمفاصل بعد العمليات الجراحية أو الإصابات</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-brain"></i>
-                    <h3>إعادة تأهيل الأعصاب</h3>
-                    <p>علاج حالات الشلل والسكتات الدماغية وإصابات الجهاز العصبي</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-heartbeat"></i>
-                    <h3>إعادة تأهيل القلب</h3>
-                    <p>برامج تأهيلية لمرضى القلب بعد العمليات الجراحية</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-child"></i>
-                    <h3>علاج الأطفال</h3>
-                    <p>علاج حالات الشلل الدماغي والتأخر الحركي عند الأطفال</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- قسم الأطباء -->
-    <section id="doctors" class="doctors">
-        <div class="container">
-            <h2 class="section-title">فريق الأطباء</h2>
-            <div class="doctors-grid">
-                <!-- سيتم ملؤها ديناميكيًا من Firebase -->
-            </div>
-        </div>
-    </section>
-
-    <!-- قسم الحجز -->
-    <section id="booking" class="booking">
-        <div class="container">
-            <h2 class="section-title">حجز جلسة</h2>
-            <div class="booking-steps">
-                <div class="step active" data-step="1">
-                    <span>1</span>
-                    <p>اختر الطبيب</p>
-                </div>
-                <div class="step" data-step="2">
-                    <span>2</span>
-                    <p>اختر التاريخ</p>
-                </div>
-                <div class="step" data-step="3">
-                    <span>3</span>
-                    <p>اختر الوقت</p>
-                </div>
-                <div class="step" data-step="4">
-                    <span>4</span>
-                    <p>تأكيد الحجز</p>
-                </div>
-            </div>
-
-            <div class="booking-content">
-                <!-- الخطوة 1: اختيار الطبيب -->
-                <div class="booking-step step-1 active">
-                    <h3>اختر الطبيب المتخصص</h3>
-                    <div class="doctors-list">
-                        <!-- سيتم ملؤها ديناميكيًا -->
-                    </div>
-                    <button class="btn btn-primary next-step" data-next="2">التالي</button>
-                </div>
-
-                <!-- الخطوة 2: اختيار التاريخ -->
-                <div class="booking-step step-2">
-                    <h3>اختر اليوم المناسب</h3>
-                    <div class="calendar">
-                        <div class="calendar-header">
-                            <button class="prev-month"><i class="fas fa-chevron-right"></i></button>
-                            <h4 class="month-year">شهر سنة</h4>
-                            <button class="next-month"><i class="fas fa-chevron-left"></i></button>
-                        </div>
-                        <div class="weekdays">
-                            <div>سبت</div>
-                            <div>أحد</div>
-                            <div>اثنين</div>
-                            <div>ثلاثاء</div>
-                            <div>أربعاء</div>
-                            <div>خميس</div>
-                            <div>جمعة</div>
-                        </div>
-                        <div class="days">
-                            <!-- سيتم ملؤها ديناميكيًا -->
-                        </div>
-                    </div>
-                    <div class="step-buttons">
-                        <button class="btn btn-outline prev-step" data-prev="1">السابق</button>
-                        <button class="btn btn-primary next-step" data-next="3">التالي</button>
-                    </div>
-                </div>
-
-                <!-- الخطوة 3: اختيار الوقت -->
-                <div class="booking-step step-3">
-                    <h3>اختر الوقت المناسب</h3>
-                    <div class="shift-selector">
-                        <button class="shift-btn active" data-shift="morning">الصباحي (10:30 ص - 4:30 م)</button>
-                        <button class="shift-btn" data-shift="evening">المسائي (4:30 م - 10:30 م)</button>
-                    </div>
-                    <div class="time-slots">
-                        <!-- سيتم ملؤها ديناميكيًا -->
-                    </div>
-                    <div class="step-buttons">
-                        <button class="btn btn-outline prev-step" data-prev="2">السابق</button>
-                        <button class="btn btn-primary next-step" data-next="4">التالي</button>
-                    </div>
-                </div>
-
-                <!-- الخطوة 4: تأكيد الحجز -->
-                <div class="booking-step step-4">
-                    <h3>تأكيد معلومات الحجز</h3>
-                    <div class="booking-summary">
-                        <div class="summary-item">
-                            <span>الطبيب:</span>
-                            <span id="summary-doctor">د. أحمد محمد</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>التاريخ:</span>
-                            <span id="summary-date">15 يونيو 2023</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>الوقت:</span>
-                            <span id="summary-time">11:30 صباحًا</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>المدة:</span>
-                            <span>40 دقيقة</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>السعر:</span>
-                            <span>300 جنيه</span>
-                        </div>
-                    </div>
-                    <form id="patient-form">
-                        <div class="form-group">
-                            <label for="patient-name">الاسم بالكامل</label>
-                            <input type="text" id="patient-name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="patient-phone">رقم الهاتف</label>
-                            <input type="tel" id="patient-phone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="patient-notes">ملاحظات (اختياري)</label>
-                            <textarea id="patient-notes" rows="3"></textarea>
-                        </div>
-                    </form>
-                    <div class="step-buttons">
-                        <button class="btn btn-outline prev-step" data-prev="3">السابق</button>
-                        <button class="btn btn-primary" id="confirm-booking">تأكيد الحجز</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- قسم الاتصال -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">اتصل بنا</h2>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <div class="info-item">
-                        <i class="fas fa-phone"></i>
-                        <h3>الهاتف</h3>
-                        <p>+20 123 456 7890</p>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-envelope"></i>
-                        <h3>البريد الإلكتروني</h3>
-                        <p>info@physiocare.com</p>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <h3>العنوان</h3>
-                        <p>123 شارع العلاج الطبيعي، القاهرة، مصر</p>
-                    </div>
-                </div>
-                <div class="contact-form">
-                    <form>
-                        <div class="form-group">
-                            <input type="text" placeholder="اسمك">
-                        </div>
-                        <div class="form-group">
-                            <input type="email" placeholder="بريدك الإلكتروني">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="الموضوع">
-                        </div>
-                        <div class="form-group">
-                            <textarea placeholder="رسالتك"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">إرسال</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- الفوتر -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <h3>PhysioCare</h3>
-                    <p>مركز متكامل للعلاج الطبيعي والتأهيل يقدم أفضل الخدمات العلاجية بواسطة فريق من الأخصائيين ذوي الخبرة.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="footer-links">
-                    <h3>روابط سريعة</h3>
-                    <ul>
-                        <li><a href="#home">الرئيسية</a></li>
-                        <li><a href="#services">الخدمات</a></li>
-                        <li><a href="#doctors">الأطباء</a></li>
-                        <li><a href="#booking">حجز جلسة</a></li>
-                        <li><a href="#contact">اتصل بنا</a></li>
-                    </ul>
-                </div>
-                <div class="footer-hours">
-                    <h3>ساعات العمل</h3>
-                    <ul>
-                        <li>السبت - الخميس: 10:30 ص - 10:30 م</li>
-                        <li>الجمعة: إجازة</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 PhysioCare. جميع الحقوق محفوظة.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- نموذج تسجيل الدخول -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>تسجيل الدخول</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="email">البريد الإلكتروني</label>
-                    <input type="email" id="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">كلمة المرور</label>
-                    <input type="password" id="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">تسجيل الدخول</button>
-            </form>
-            <p>ليس لديك حساب؟ <a href="#" id="showRegister">سجل الآن</a></p>
-        </div>
+  <section class="shifts">
+    <h3>اختر الشيفت المناسب لك</h3>
+    <div class="shift-grid">
+      <div class="shift">
+        <h4>الشيفت الصباحي</h4>
+        <p>من 10:30 صباحًا إلى 4:30 مساءً</p>
+        <p>يضم نخبة من الأطباء المختصين بالعلاج الطبيعي</p>
+      </div>
+      <div class="shift">
+        <h4>الشيفت المسائي</h4>
+        <p>من 4:30 مساءً إلى 10:30 مساءً</p>
+        <p>راحة، جودة، وخدمة ممتازة في المساء</p>
+      </div>
     </div>
+  </section>
 
-    <!-- نموذج التسجيل -->
-    <div class="modal" id="registerModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>إنشاء حساب جديد</h2>
-            <form id="registerForm">
-                <div class="form-group">
-                    <label for="reg-name">الاسم بالكامل</label>
-                    <input type="text" id="reg-name" required>
-                </div>
-                <div class="form-group">
-                    <label for="reg-email">البريد الإلكتروني</label>
-                    <input type="email" id="reg-email" required>
-                </div>
-                <div class="form-group">
-                    <label for="reg-phone">رقم الهاتف</label>
-                    <input type="tel" id="reg-phone" required>
-                </div>
-                <div class="form-group">
-                    <label for="reg-password">كلمة المرور</label>
-                    <input type="password" id="reg-password" required>
-                </div>
-                <div class="form-group">
-                    <label for="reg-confirm-password">تأكيد كلمة المرور</label>
-                    <input type="password" id="reg-confirm-password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">إنشاء حساب</button>
-            </form>
-            <p>لديك حساب بالفعل؟ <a href="#" id="showLogin">تسجيل الدخول</a></p>
-        </div>
-    </div>
+  <footer>
+    <p>&copy; 2025 PhysioCare. جميع الحقوق محفوظة.</p>
+  </footer>
 
-    <!-- تأكيد الحجز -->
-    <div class="modal" id="bookingSuccessModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="success-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <h2>تم الحجز بنجاح!</h2>
-            <p id="success-message">تم تأكيد حجز جلسة العلاج الطبيعي بنجاح. سيتم إرسال تفاصيل الحجز إلى بريدك الإلكتروني.</p>
-            <button class="btn btn-primary" id="closeSuccessModal">حسناً</button>
-        </div>
-    </div>
-
-    <script src="firebase-config.js"></script>
-    <script src="script.js"></script>
 </body>
 </html>
