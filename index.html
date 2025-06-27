@@ -6,10 +6,10 @@
     <title>PhysioCare - مركز العلاج الطبيعي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        /* All previous CSS is the same */
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+        /* All previous CSS is the same, with additions for new sections */
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
         :root{--logo-green:#8DC63F;--logo-blue:#005A9C;--logo-gray:#6D6E71;--text-dark:#333333;--background-light:#f7f9f8;--white:#ffffff; --gold-color: #FFD700;}
-        body{font-family:'Cairo', sans-serif;margin:0;background-color:var(--white);color:var(--text-dark);}
+        body{font-family:'Cairo', sans-serif;margin:0;background-color:var(--white);color:var(--text-dark); scroll-behavior: smooth;}
         .container{width:90%;max-width:1200px;margin:0 auto;}
         .navbar{display:flex;justify-content:space-between;align-items:center;background-color:var(--white);padding:10px 0;border-bottom:1px solid #e0e0e0;position:sticky;top:0;z-index:1000;transition:box-shadow 0.3s ease;}
         .navbar.scrolled{box-shadow:0 4px 12px rgba(0, 0, 0, 0.08);}
@@ -19,101 +19,61 @@
         .cta-button{background-color:var(--logo-blue);color:var(--white);padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;transition:all 0.3s ease;box-shadow:0 4px 10px rgba(0, 90, 156, 0.2);}
         .cta-button:hover{background-color:#00487d;transform:translateY(-2px);box-shadow:0 6px 15px rgba(0, 90, 156, 0.3);}
         .hero{background-color:var(--background-light);text-align:center;padding:80px 20px;}
-        .hero h1{font-size:50px;font-weight:700;color:var(--text-dark);margin-bottom:15px;}
+        .hero h1{font-size:50px;font-weight:800;color:var(--text-dark);margin-bottom:15px;}
         .hero h1 span{color:var(--logo-green);}
         .hero p{font-size:20px;color:var(--logo-gray);max-width:750px;margin:0 auto 40px;line-height:1.7;}
         .section{padding:80px 0;}
-        .section-title{text-align:center;font-size:38px;margin-bottom:15px;font-weight:700;color:var(--text-dark);}
+        .section-title{text-align:center;font-size:40px;margin-bottom:15px;font-weight:800;color:var(--text-dark);}
         .title-underline{width:90px;height:4px;background:linear-gradient(to right, var(--logo-green), var(--logo-blue));margin:0 auto 60px auto;border-radius:2px;}
         .branches-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:25px;}
         .branch-card{background-color:var(--white);border:1px solid #e0e0e0;padding:20px 30px;border-radius:10px;font-weight:600;font-size:17px;display:flex;align-items:center;gap:12px;transition:all 0.3s ease; cursor: pointer; position: relative;}
         .branch-card i{color:var(--logo-green);font-size:20px;}
         .branch-card:hover{transform:translateY(-5px);box-shadow:0 8px 25px rgba(0, 0, 0, 0.08);border-color:var(--logo-green);}
-        
-        /* --- Style for the Featured Branch --- */
-        .branch-card.featured {
-            border: 2px solid var(--logo-green);
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(141, 198, 63, 0.2);
-        }
-        .branch-card.featured::before {
-            content: 'الفرع الرئيسي';
-            position: absolute;
-            top: -15px;
-            right: -15px;
-            background-color: var(--logo-blue);
-            color: white;
-            padding: 5px 10px;
-            font-size: 12px;
-            font-weight: bold;
-            border-radius: 5px;
-            transform: rotate(10deg);
-        }
-
-        .footer{background-color:#2b2b2b;color:#ccc;padding:60px 0 20px 0;}
+        .branch-card.featured{border:2px solid var(--logo-green);transform:scale(1.05);box-shadow:0 10px 30px rgba(141, 198, 63, 0.2);}
+        .branch-card.featured::before{content:'الفرع الرئيسي';position:absolute;top:-15px;right:-15px;background-color:var(--logo-blue);color:white;padding:5px 10px;font-size:12px;font-weight:bold;border-radius:5px;transform:rotate(10deg);}
+        .footer{background-color:#2b2b2b;color:#ccc;padding:60px 0 20px 0; margin-top: 60px;}
         .footer .container{text-align:center;}
         .footer-logo{width:200px;margin-bottom:25px;}
         .footer .footer-links a{color:#ccc;text-decoration:none;margin:0 15px;transition:color 0.3s; cursor: pointer;}
         .footer .footer-links a:hover{color:var(--logo-green);}
         .footer-copyright{margin-top:40px;padding-top:20px;border-top:1px solid #444;color:#888;}
-        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0, 0, 0, 0.6);display:flex;justify-content:center;align-items:center;z-index:2000;opacity:0;visibility:hidden;transition:opacity 0.3s, visibility 0.3s;}
+        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;z-index:2000;opacity:0;visibility:hidden;transition:opacity .3s, visibility .3s;}
         .modal-overlay.active{opacity:1;visibility:visible;}
-        .modal-content{background-color:var(--white);padding:40px;border-radius:10px;width:90%;max-width:700px;position:relative;transform:scale(0.9);transition:transform 0.3s;}
+        .modal-content{background-color:var(--white);padding:40px;border-radius:10px;width:90%;max-width:700px;position:relative;transform:scale(.9);transition:transform .3s;}
         .modal-overlay.active .modal-content{transform:scale(1);}
         .modal-close{position:absolute;top:15px;left:20px;background:none;border:none;font-size:28px;cursor:pointer;color:#aaa;}
         .modal-content h3{font-size:28px;color:var(--logo-blue);margin-top:0;margin-bottom:20px;text-align:center;}
         .modal-content .address{font-size:18px;line-height:1.8;text-align:center;margin-bottom:25px;}
         .map-container{width:100%;height:350px;border-radius:8px;overflow:hidden;border:1px solid #ddd;}
         .map-container iframe{width:100%;height:100%;border:0;}
-        .edit-suggestion { text-align: center; margin-top: 20px; font-size: 14px; color: #888; }
-        .edit-suggestion a { color: var(--logo-blue); text-decoration: underline; }
+        .edit-suggestion{text-align:center;margin-top:20px;font-size:14px;color:#888;}
+        .edit-suggestion a{color:var(--logo-blue);text-decoration:underline;}
 
-        /* --- New Contact Modal Styles --- */
-        #contact-modal .phone-entry {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        #contact-modal .phone-number {
-            font-size: 24px;
-            font-weight: 600;
-            direction: ltr;
-            color: var(--text-dark);
-        }
-        #contact-modal .contact-buttons a {
-            text-decoration: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            margin-right: 10px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.2s;
-        }
-         #contact-modal .contact-buttons a:hover {
-            transform: scale(1.05);
-         }
+        /* --- Updated Contact Modal Styles --- */
+        #contact-modal .contact-entry { text-align: center; margin-bottom: 25px; }
+        #contact-modal .entry-title { font-size: 16px; font-weight: 600; color: var(--logo-gray); margin-bottom: 8px; }
+        #contact-modal .phone-number { font-size: 28px; font-weight: 700; direction: ltr; color: var(--text-dark); margin-bottom: 15px; }
+        #contact-modal .contact-buttons a { text-decoration: none; color: white; padding: 12px 22px; border-radius: 8px; margin: 0 5px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.2s; }
+        #contact-modal .contact-buttons a:hover { transform: scale(1.05); }
         .call-btn { background-color: var(--logo-blue); }
         .whatsapp-btn { background-color: #25D366; }
 
+        /* --- New Services Section Styles --- */
+        #services { background-color: var(--background-light); }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .service-card { background-color: var(--white); border-radius: 10px; text-align: center; padding: 40px 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: all 0.3s ease; border: 1px solid #eee;}
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); border-color: var(--logo-green);}
+        .service-card .icon { font-size: 45px; color: var(--logo-green); margin-bottom: 20px; }
+        .service-card h4 { font-size: 22px; font-weight: 700; margin-bottom: 15px; color: var(--logo-blue); }
+        .service-card p { font-size: 16px; line-height: 1.7; color: var(--logo-gray); }
     </style>
 </head>
 <body>
-    
     <nav class="navbar" id="navbar">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="#home"><img src="image.png" alt="PhysioCare Logo" class="logo-img"></a>
+            <a href="#home"><img src="logo.png" alt="PhysioCare Logo" class="logo-img"></a>
             <div class="nav-links">
-                <a href="#home" class="active">الرئيسية</a>
-                <a href="#services">خدماتنا</a>
-                <a href="#branches">فروعنا</a>
-                <a id="contact-us-link">تواصل معنا</a>
+                <a href="#home" class="active">الرئيسية</a><a href="#services">خدماتنا</a><a href="#branches">فروعنا</a><a id="contact-us-link">تواصل معنا</a>
             </div>
             <a href="#booking" class="cta-button">احجز موعدك</a>
         </div>
@@ -121,51 +81,71 @@
     <header class="hero" id="home"></header>
     
     <main>
-        <section class="section" id="branches">
+        <section class="section" id="services">
             <div class="container">
-                <h2 class="section-title">فروعنا بالقرب منك</h2>
+                <h2 class="section-title">خدمات علاجية متكاملة</h2>
                 <div class="title-underline"></div>
-                <div class="branches-grid">
-                    <div class="branch-card" data-branch="arkan"><i class="fa-solid fa-map-marker-alt"></i> أركان مول، الشيخ زايد</div>
-                    <div class="branch-card featured" data-branch="eden"><i class="fa-solid fa-map-marker-alt"></i> إيدن مول، الشيخ زايد</div>
-                    <div class="branch-card" data-branch="maadi"><i class="fa-solid fa-map-marker-alt"></i> المعادي</div>
-                    <div class="branch-card" data-branch="mohandessin"><i class="fa-solid fa-map-marker-alt"></i> المهندسين</div>
-                    <div class="branch-card" data-branch="tagamoa"><i class="fa-solid fa-map-marker-alt"></i> التجمع الخامس</div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="icon"><i class="fa-solid fa-person-running"></i></div>
+                        <h4>إعادة التأهيل الرياضي</h4>
+                        <p>برامج متخصصة للرياضيين للتعافي من الإصابات والعودة للملاعب بأداء أفضل وقوة أكبر.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="icon"><i class="fa-solid fa-hands-holding-circle"></i></div>
+                        <h4>العلاج اليدوي</h4>
+                        <p>تقنيات يدوية دقيقة لتحسين حركة المفاصل وتخفيف الشد العضلي والألم بشكل فوري.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="icon"><i class="fa-solid fa-circle-dot"></i></div>
+                        <h4>Dry Needling (الإبر الجافة)</h4>
+                        <p>تقنية حديثة وفعالة لعلاج نقاط الألم العضلية وتحفيز عملية الشفاء الطبيعية للجسم.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="icon"><i class="fa-solid fa-wind"></i></div>
+                        <h4>Dry Cupping (الحجامة الجافة)</h4>
+                        <p>لتحسين الدورة الدموية، تقليل الالتهابات، وإرخاء الأنسجة العضلية العميقة لتسكين الألم.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                        <h4>Recovery (الاستشفاء)</h4>
+                        <p>جلسات استشفاء متكاملة باستخدام أحدث الأجهزة لمساعدتك على استعادة نشاطك وحيويتك.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="icon"><i class="fa-solid fa-user-doctor"></i></div>
+                        <h4>استشارات وقائية</h4>
+                        <p>نقدم خططًا وتمارين مخصصة لتجنب الإصابات المستقبلية وتحسين صحتك العامة.</p>
+                    </div>
                 </div>
             </div>
         </section>
+
+        <section class="section" id="branches"></section>
     </main>
     
     <footer class="footer"></footer>
     
     <div id="modal-container">
-        <div class="modal-overlay" id="modal-arkan"></div>
-        <div class="modal-overlay" id="modal-eden">
-             <div class="modal-content">
-                <button class="modal-close">×</button><h3>فرع إيدن مول، الشيخ زايد (الرئيسي)</h3>
-                <p class="address">العنوان: الحي الرابع، الشيخ زايد، محافظة الجيزة.</p>
-                <div class="map-container"><p style="padding-top:100px; text-align:center;">(أضف كود خريطة جوجل هنا لفرع إيدن)</p></div>
-                <p class="edit-suggestion">هل العنوان غير دقيق؟ <a href="#">اقترح تعديلاً</a></p>
-            </div>
-        </div>
         <div class="modal-overlay" id="contact-modal">
             <div class="modal-content">
                 <button class="modal-close">×</button>
-                <h3>تواصل معنا مباشرة</h3>
-                
-                <div class="phone-entry">
-                    <div class="phone-number">0102 444 3117</div>
-                    <div class="contact-buttons">
-                        <a href="tel:+201024443117" class="call-btn"><i class="fa-solid fa-phone"></i> اتصال هاتفي</a>
-                        <a href="https://wa.me/201024443117" target="_blank" class="whatsapp-btn"><i class="fa-brands fa-whatsapp"></i> مراسلة واتساب</a>
+                <h3>يسعدنا خدمتك</h3>
+                <div style="display: flex; justify-content: space-around; padding-top: 20px;">
+                    <div class="contact-entry">
+                        <div class="entry-title">Call Center 1</div>
+                        <div class="phone-number">0102 444 3117</div>
+                        <div class="contact-buttons">
+                            <a href="tel:+201024443117" class="call-btn"><i class="fa-solid fa-phone"></i> اتصال</a>
+                            <a href="https://wa.me/201024443117" target="_blank" class="whatsapp-btn"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
+                        </div>
                     </div>
-                </div>
-
-                <div class="phone-entry">
-                    <div class="phone-number">0102 444 3118</div>
-                    <div class="contact-buttons">
-                        <a href="tel:+201024443118" class="call-btn"><i class="fa-solid fa-phone"></i> اتصال هاتفي</a>
-                        <a href="https://wa.me/201024443118" target="_blank" class="whatsapp-btn"><i class="fa-brands fa-whatsapp"></i> مراسلة واتساب</a>
+                    <div class="contact-entry">
+                        <div class="entry-title">Call Center 2</div>
+                        <div class="phone-number">0102 444 3118</div>
+                        <div class="contact-buttons">
+                            <a href="tel:+201024443118" class="call-btn"><i class="fa-solid fa-phone"></i> اتصال</a>
+                            <a href="https://wa.me/201024443118" target="_blank" class="whatsapp-btn"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -173,55 +153,8 @@
     </div>
 
     <script>
-        // --- Navbar scroll effect ---
-        const navbar = document.getElementById('navbar');
-        window.onscroll = function () {
-            if (window.scrollY > 50) navbar.classList.add('scrolled');
-            else navbar.classList.remove('scrolled');
-        };
-
-        // --- Logic for ALL Modals ---
-        const contactLink = document.getElementById('contact-us-link');
-        const contactModal = document.getElementById('contact-modal');
-        
-        // Function to open a modal
-        function openModal(modal) {
-            if(modal) modal.classList.add('active');
-        }
-
-        // Function to close any active modal
-        function closeModal() {
-            const activeModal = document.querySelector('.modal-overlay.active');
-            if(activeModal) activeModal.classList.remove('active');
-        }
-
-        // Open Contact Modal
-        contactLink.addEventListener('click', () => {
-            openModal(contactModal);
-        });
-
-        // Open Branch Modals
-        const branchCards = document.querySelectorAll('.branch-card');
-        branchCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const branchId = card.getAttribute('data-branch');
-                const targetModal = document.getElementById('modal-' + branchId);
-                openModal(targetModal);
-            });
-        });
-
-        // Add close functionality to all modals
-        const allModals = document.querySelectorAll('.modal-overlay');
-        allModals.forEach(modal => {
-            const closeButton = modal.querySelector('.modal-close');
-            if(closeButton) {
-                closeButton.addEventListener('click', closeModal);
-            }
-            modal.addEventListener('click', (event) => {
-                if(event.target === modal) closeModal();
-            });
-        });
-
+        // Same JS code as before, no changes needed
+        const navbar=document.getElementById("navbar");window.onscroll=function(){window.scrollY>50?navbar.classList.add("scrolled"):navbar.classList.remove("scrolled")};const contactLink=document.getElementById("contact-us-link"),contactModal=document.getElementById("contact-modal");function openModal(e){e&&e.classList.add("active")}function closeModal(){const e=document.querySelector(".modal-overlay.active");e&&e.classList.remove("active")}contactLink.addEventListener("click",()=>{openModal(contactModal)});const branchCards=document.querySelectorAll(".branch-card");branchCards.forEach(e=>{e.addEventListener("click",()=>{const t=e.getAttribute("data-branch"),o=document.getElementById("modal-"+t);openModal(o)})});const allModals=document.querySelectorAll(".modal-overlay");allModals.forEach(e=>{const t=e.querySelector(".modal-close");t&&t.addEventListener("click",closeModal),e.addEventListener("click",t=>{t.target===e&&closeModal()})});
     </script>
 </body>
 </html>
