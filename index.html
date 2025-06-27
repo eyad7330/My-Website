@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>PhysioCare Booking</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>حجز جلسة علاج طبيعي - PhysioCare</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
@@ -12,98 +12,98 @@
     body {
       font-family: 'Cairo', sans-serif;
       background: #f0f4f8;
-      margin: 0;
-      padding: 0;
+      padding: 30px;
     }
-    header {
-      background: linear-gradient(90deg, #0096c7, #023e8a);
-      color: white;
+    h2 {
       text-align: center;
-      padding: 40px 20px;
+      color: #023e8a;
     }
-    h1 { margin-bottom: 10px; }
     form {
       max-width: 700px;
-      margin: 40px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin: 0 auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     label {
       display: block;
-      margin-top: 20px;
+      margin-top: 15px;
       font-weight: bold;
-      color: #023e8a;
+      color: #0077b6;
     }
     input, select {
       width: 100%;
       padding: 10px;
-      margin-top: 8px;
-      border: 1px solid #ccc;
+      margin-top: 5px;
       border-radius: 6px;
+      border: 1px solid #ccc;
     }
-    .file-boxes {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    .toggle-btn {
+      background-color: #0077b6;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 20px;
+    }
+    .toggle-btn:hover {
+      background-color: #0096c7;
+    }
+    .file-grid {
+      display: none;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
       gap: 15px;
       margin-top: 20px;
     }
     .file-box {
-      background: #f8f9fa;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px dashed #bbb;
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
       text-align: center;
-    }
-    .file-box input {
-      width: 100%;
-      margin-top: 10px;
-    }
-    button {
-      margin-top: 30px;
-      padding: 12px 20px;
-      background-color: #0077b6;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       cursor: pointer;
     }
-    .contacts {
-      max-width: 600px;
-      margin: 40px auto;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+    .file-box:hover {
+      transform: scale(1.03);
     }
-    .contact-card {
-      background: white;
-      border: 1px solid #ddd;
-      padding: 15px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
-    .contact-card img {
-      width: 26px;
-      height: 26px;
-    }
-    .contact-card a {
-      color: #0077b6;
-      text-decoration: none;
+    .file-box label {
+      display: block;
       font-weight: bold;
+      margin-bottom: 8px;
+      color: #0077b6;
+    }
+    .file-box input {
+      display: none;
+    }
+    .file-box span {
+      font-size: 22px;
+    }
+    button[type="submit"] {
+      background-color: #00b4d8;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      margin-top: 30px;
+      cursor: pointer;
+    }
+    .success-message {
+      display: none;
+      text-align: center;
+      margin-top: 40px;
+      font-size: 20px;
+      color: green;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>مركز PhysioCare للعلاج الطبيعي</h1>
-  <p>احجز جلستك الآن بسهولة</p>
-</header>
+<h2>نموذج حجز جلسة علاج طبيعي</h2>
 
 <form id="bookingForm">
   <label>الاسم الثلاثي</label>
@@ -112,71 +112,49 @@
   <label>رقم الهاتف</label>
   <input type="tel" name="phone" required>
 
-  <label>رقم هاتف آخر (اختياري)</label>
+  <label>رقم هاتف إضافي (اختياري)</label>
   <input type="tel" name="phone2">
 
   <label>شركة التأمين</label>
   <input type="text" name="insurance" required>
 
-  <div class="file-boxes">
-    <div class="file-box">
-      <label>📎 كارنيه</label>
-      <input type="file" name="card">
-    </div>
-    <div class="file-box">
-      <label>📎 بطاقة</label>
-      <input type="file" name="id">
-    </div>
-    <div class="file-box">
-      <label>📎 روشتة</label>
-      <input type="file" name="prescription">
-    </div>
-    <div class="file-box">
-      <label>📎 تقرير أشعة</label>
-      <input type="file" name="xray1">
-    </div>
-    <div class="file-box">
-      <label>📎 تقرير أشعة أخرى (اختياري)</label>
-      <input type="file" name="xray2">
-    </div>
-    <div class="file-box">
-      <label>📎 تقرير طبي (اختياري)</label>
-      <input type="file" name="report">
-    </div>
-    <div class="file-box">
-      <label>📎 الموافقة</label>
-      <input type="file" name="approval">
-    </div>
-    <div class="file-box">
-      <label>📎 أخرى</label>
-      <input type="file" name="other">
+  <label>اختر الشيفت</label>
+  <select name="shift" required>
+    <option value="">-- اختر --</option>
+    <option value="صباحي">صباحي</option>
+    <option value="مسائي">مسائي</option>
+  </select>
+
+  <label>اختر الدكتور</label>
+  <select name="doctor" required>
+    <option value="">-- اختر --</option>
+    <option value="د. أحمد خالد">د. أحمد خالد</option>
+    <option value="د. سارة منصور">د. سارة منصور</option>
+    <option value="د. محمد جمال">د. محمد جمال</option>
+    <option value="د. ياسمين عبد الله">د. ياسمين عبد الله</option>
+  </select>
+
+  <div class="upload-section">
+    <button type="button" class="toggle-btn" onclick="toggleGrid()">📎 إرفاق المستندات</button>
+    <div class="file-grid" id="fileGrid">
+      <div class="file-box"><label for="card">كارنيه</label><span>📎</span><input type="file" id="card" name="card"></div>
+      <div class="file-box"><label for="id">بطاقة</label><span>📎</span><input type="file" id="id" name="id"></div>
+      <div class="file-box"><label for="prescription">روشتة</label><span>📎</span><input type="file" id="prescription" name="prescription"></div>
+      <div class="file-box"><label for="xray1">تقرير أشعة</label><span>📎</span><input type="file" id="xray1" name="xray1"></div>
+      <div class="file-box"><label for="xray2">أشعة أخرى</label><span>📎</span><input type="file" id="xray2" name="xray2"></div>
+      <div class="file-box"><label for="report">تقرير طبي</label><span>📎</span><input type="file" id="report" name="report"></div>
+      <div class="file-box"><label for="approval">الموافقة</label><span>📎</span><input type="file" id="approval" name="approval"></div>
+      <div class="file-box"><label for="other">أخرى</label><span>📎</span><input type="file" id="other" name="other"></div>
     </div>
   </div>
 
   <button type="submit">إرسال</button>
 </form>
 
-<div class="contacts">
-  <div class="contact-card">
-    <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" />
-    <span>Call Center: <a href="tel:01024443117">01024443117</a></span>
-  </div>
-  <div class="contact-card">
-    <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" />
-    <span>Call Center: <a href="tel:01024443118">01024443118</a></span>
-  </div>
-  <div class="contact-card">
-    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" />
-    <span>WhatsApp: <a href="https://wa.me/201024443117" target="_blank">01024443117</a></span>
-  </div>
-  <div class="contact-card">
-    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" />
-    <span>WhatsApp: <a href="https://wa.me/201024443118" target="_blank">01024443118</a></span>
-  </div>
-</div>
+<div class="success-message" id="successMessage">تم إرسال الحجز بنجاح! ✅</div>
 
 <script>
-  // Firebase Config
+  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyA6_OACwpwaFSiX8jfsjS0_bt_EfIc4rhY",
     authDomain: "physiocare-booking.firebaseapp.com",
@@ -186,39 +164,56 @@
     appId: "1:815959251074:web:cfd13396b4072b90ccbc9b",
     measurementId: "G-HBYJGQRVBB"
   };
-
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
   const storage = firebase.storage();
 
+  function toggleGrid() {
+    const grid = document.getElementById("fileGrid");
+    grid.style.display = grid.style.display === "grid" ? "none" : "grid";
+  }
+
   document.getElementById("bookingForm").addEventListener("submit", async function(e) {
     e.preventDefault();
-
     const form = e.target;
     const data = {
       fullName: form.fullName.value,
       phone: form.phone.value,
       phone2: form.phone2.value || '',
       insurance: form.insurance.value,
+      shift: form.shift.value,
+      doctor: form.doctor.value,
       files: {}
     };
 
     const fileFields = ['card','id','prescription','xray1','xray2','report','approval','other'];
-
     for (const field of fileFields) {
       const fileInput = form[field];
       const file = fileInput.files[0];
       if (file) {
-        const storageRef = storage.ref().child(`bookings/${Date.now()}_${file.name}`);
+        const storageRef = storage.ref().child(`uploads/${Date.now()}_${file.name}`);
         await storageRef.put(file);
-        const downloadURL = await storageRef.getDownloadURL();
-        data.files[field] = downloadURL;
+        const url = await storageRef.getDownloadURL();
+        data.files[field] = url;
       }
     }
 
     await db.collection("bookings").add(data);
-    alert("تم إرسال الحجز بنجاح!");
-    form.reset();
+
+    // إرسال واتساب
+    const message = `PhysioCare Booking ✅
+الاسم: ${data.fullName}
+الهاتف: ${data.phone}
+هاتف آخر: ${data.phone2}
+شركة التأمين: ${data.insurance}
+الشيفت: ${data.shift}
+الدكتور: ${data.doctor}`;
+    const encodedMsg = encodeURIComponent(message);
+    window.open(`https://wa.me/201024443117?text=${encodedMsg}`, '_blank');
+
+    // عرض رسالة نجاح
+    form.style.display = "none";
+    document.getElementById("successMessage").style.display = "block";
   });
 </script>
 
