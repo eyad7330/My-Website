@@ -1,49 +1,172 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>حجز مواعيد فيزيوكير</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* الخطوط */
+    @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 0 20px;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      margin-top: 40px;
+      color: #2c3e50;
+    }
+
+    table {
+      width: 100%;
+      max-width: 800px;
+      border-collapse: collapse;
+      margin-top: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    thead {
+      background-color: #2980b9;
+      color: #fff;
+    }
+
+    th, td {
+      padding: 15px 20px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    tbody tr:hover {
+      background-color: #f0f8ff;
+    }
+
+    td.available {
+      background-color: #27ae60;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      border-radius: 5px;
+    }
+
+    td.available:hover {
+      background-color: #2ecc71;
+    }
+
+    #booking-form {
+      background: #fff;
+      max-width: 400px;
+      width: 100%;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+      display: none;
+    }
+
+    #booking-form h2 {
+      margin-bottom: 20px;
+      color: #34495e;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    input[type="text"], input[type="tel"] {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1.5px solid #bdc3c7;
+      border-radius: 6px;
+      font-size: 1em;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus, input[type="tel"]:focus {
+      border-color: #2980b9;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #2980b9;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #3498db;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      table, #booking-form {
+        width: 100%;
+      }
+      th, td {
+        padding: 10px 5px;
+      }
+    }
+  </style>
 </head>
 <body>
   <h1>حجز مواعيد فيزيوكير</h1>
 
-  <div id="schedule-container">
-    <p>اختر الموعد المناسب من الجدول:</p>
-    <table id="schedule-table" border="1">
-      <thead>
-        <tr>
-          <th>اليوم</th>
-          <th>الشيفت الصبح (10:30 - 4:30)</th>
-          <th>الشيفت المغرب (4:30 - 10:30)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- الجدول هنا هيتعمل تلقائياً بالجافاسكريبت -->
-      </tbody>
-    </table>
-  </div>
+  <table id="schedule-table" aria-label="جدول مواعيد فيزيوكير">
+    <thead>
+      <tr>
+        <th>اليوم</th>
+        <th>الشيفت الصبح (10:30 - 4:30)</th>
+        <th>الشيفت المغرب (4:30 - 10:30)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- الجدول هيتعمل تلقائي بالجافاسكريبت -->
+    </tbody>
+  </table>
 
-  <div id="booking-form" style="display:none; margin-top:20px;">
-    <h2>تأكيد الحجز</h2>
+  <div id="booking-form" role="region" aria-labelledby="form-title">
+    <h2 id="form-title">تأكيد الحجز</h2>
     <form id="form">
-      <label>اسمك: <input type="text" id="name" required /></label><br/><br/>
-      <label>رقم الهاتف: <input type="tel" id="phone" required /></label><br/><br/>
-      <input type="hidden" id="selected-day" />
-      <input type="hidden" id="selected-shift" />
+      <label for="name">اسمك الكامل:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="phone">رقم الهاتف:</label>
+      <input type="tel" id="phone" name="phone" required />
+
+      <input type="hidden" id="selected-day" name="day" />
+      <input type="hidden" id="selected-shift" name="shift" />
+
       <button type="submit">احجز الآن</button>
     </form>
   </div>
 
   <script>
-    // بيانات الأيام والشيفتات (الجمعة إجازة)
     const days = ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
     const shifts = ['الصبح', 'المغرب'];
 
-    // دكاترة مختلفين كل شيفت (مثال بسيط، نقدر نطور بعدين)
-    // هنا بنعرض خلايا قابلة للنقر للحجز
-
     const tbody = document.querySelector('#schedule-table tbody');
+    const bookingForm = document.getElementById('booking-form');
 
     days.forEach(day => {
       const tr = document.createElement('tr');
@@ -53,14 +176,14 @@
 
       shifts.forEach(shift => {
         const tdShift = document.createElement('td');
-        tdShift.textContent = `متاح للحجز`;
-        tdShift.style.cursor = 'pointer';
-        tdShift.style.backgroundColor = '#c8e6c9'; // أخضر فاتح
+        tdShift.textContent = 'متاح للحجز';
+        tdShift.classList.add('available');
 
         tdShift.addEventListener('click', () => {
           document.getElementById('selected-day').value = day;
           document.getElementById('selected-shift').value = shift;
-          document.getElementById('booking-form').style.display = 'block';
+          bookingForm.style.display = 'block';
+          bookingForm.scrollIntoView({ behavior: 'smooth' });
           alert(`اخترت ${day} - الشيفت ${shift}`);
         });
 
@@ -70,8 +193,7 @@
       tbody.appendChild(tr);
     });
 
-    // معالجة الحجز (هنا مجرد مثال بتخزين بيانات في الlocalStorage)
-    document.getElementById('form').addEventListener('submit', (e) => {
+    document.getElementById('form').addEventListener('submit', e => {
       e.preventDefault();
 
       const name = document.getElementById('name').value.trim();
@@ -84,14 +206,13 @@
         return;
       }
 
-      // تخزين الحجز (ممكن نغيرها لربط بقاعدة بيانات أو API بعدين)
       const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
       bookings.push({ name, phone, day, shift, time: new Date().toISOString() });
       localStorage.setItem('bookings', JSON.stringify(bookings));
 
       alert('تم الحجز بنجاح');
-      document.getElementById('booking-form').reset();
-      document.getElementById('booking-form').style.display = 'none';
+      document.getElementById('form').reset();
+      bookingForm.style.display = 'none';
     });
   </script>
 </body>
