@@ -4,165 +4,260 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhysioCare - مركز العلاج الطبيعي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
+        :root {
+            /* Colors from your logo */
+            --logo-green: #8DC63F;
+            --logo-blue: #005A9C;
+            --logo-gray: #6D6E71;
+            --text-dark: #333333;
+            --background-light: #f7f9f8;
+            --white: #ffffff;
+        }
 
         body {
             font-family: 'Cairo', sans-serif;
             margin: 0;
-            background-color: #f8f9fa;
-            color: #333;
+            background-color: var(--white);
+            color: var(--text-dark);
         }
 
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- Navigation Bar --- */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #ffffff;
-            padding: 15px 40px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background-color: var(--white);
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
             position: sticky;
             top: 0;
             z-index: 1000;
+            transition: box-shadow 0.3s ease;
         }
 
-        .navbar .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: #007bff;
+        .navbar.scrolled {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .logo-img {
+            width: 180px; /* Adjust size as needed */
+            height: auto;
         }
 
         .navbar .nav-links a {
-            color: #555;
+            color: var(--logo-gray);
             text-decoration: none;
-            margin: 0 15px;
-            font-weight: 400;
+            margin: 0 20px;
+            font-weight: 600;
+            font-size: 17px;
             transition: color 0.3s;
         }
 
-        .navbar .nav-links a:hover, .cta-button:hover {
-            color: #0056b3;
+        .navbar .nav-links a:hover, .navbar .nav-links a.active {
+            color: var(--logo-green);
         }
 
         .cta-button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
+            background-color: var(--logo-blue);
+            color: var(--white);
+            padding: 12px 28px;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: 700;
-            transition: background-color 0.3s;
-        }
-         .cta-button:hover {
-            background-color: #0056b3;
-            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 90, 156, 0.2);
         }
 
+        .cta-button:hover {
+            background-color: #00487d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 90, 156, 0.3);
+        }
 
+        /* --- Hero Section --- */
         .hero {
-            background-image: linear-gradient(rgba(0, 123, 255, 0.6), rgba(0, 123, 255, 0.6)), url('https://plus.unsplash.com/premium_photo-1661749004201-14a27527c975?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            color: white;
+            background-color: var(--background-light);
             text-align: center;
-            padding: 120px 20px;
+            padding: 80px 20px;
         }
-
+        
         .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
+            font-size: 50px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+        
+        .hero h1 span {
+            color: var(--logo-green);
         }
 
         .hero p {
             font-size: 20px;
-            max-width: 600px;
-            margin: 0 auto 30px;
-        }
-
-        .services {
-            padding: 80px 40px;
-            text-align: center;
-        }
-
-        .services h2 {
-            font-size: 36px;
-            margin-bottom: 50px;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .service-card {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
+            color: var(--logo-gray);
+            max-width: 750px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
         }
         
-        .service-card:hover {
-             transform: translateY(-10px);
-             box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        /* --- General Section Styling --- */
+        .section {
+            padding: 80px 0;
         }
-
-        .service-card h3 {
-            color: #007bff;
-            font-size: 22px;
-            margin-top: 0;
-        }
-
-        .footer {
-            background-color: #343a40;
-            color: white;
+        .section-title {
             text-align: center;
-            padding: 40px 20px;
-            margin-top: 60px;
+            font-size: 38px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
         }
+        .title-underline {
+            width: 90px;
+            height: 4px;
+            background: linear-gradient(to right, var(--logo-green), var(--logo-blue));
+            margin: 0 auto 60px auto;
+            border-radius: 2px;
+        }
+
+        /* --- Branches Section --- */
+        .branches-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .branch-card {
+            background-color: var(--white);
+            border: 1px solid #e0e0e0;
+            padding: 20px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .branch-card i {
+            color: var(--logo-green);
+            font-size: 20px;
+        }
+        
+        .branch-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border-color: var(--logo-green);
+        }
+
+        /* --- Footer --- */
+        .footer {
+            background-color: #2b2b2b;
+            color: #ccc;
+            padding: 60px 0 20px 0;
+        }
+        .footer .container {
+            text-align: center;
+        }
+        .footer-logo {
+            width: 200px;
+            margin-bottom: 25px;
+        }
+        .footer .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+        .footer .footer-links a:hover {
+            color: var(--logo-green);
+        }
+        .footer-copyright {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #888;
+        }
+
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo">PhysioCare</div>
-        <div class="nav-links">
-            <a href="#home">الرئيسية</a>
-            <a href="#services">خدماتنا</a>
-            <a href="#about">من نحن</a>
-            <a href="#contact">تواصل معنا</a>
+    <nav class="navbar" id="navbar">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="#home">
+                <img src="image.png" alt="PhysioCare Logo" class="logo-img">
+            </a>
+            <div class="nav-links">
+                <a href="#home" class="active">الرئيسية</a>
+                <a href="#services">خدماتنا</a>
+                <a href="#branches">فروعنا</a>
+                <a href="#contact">تواصل معنا</a>
+            </div>
+            <a href="#booking" class="cta-button">احجز موعدك</a>
         </div>
-        <a href="#booking" class="cta-button">احجز موعدك الآن</a>
     </nav>
 
     <header class="hero" id="home">
-        <h1>استعد حركتك، استعد حياتك</h1>
-        <p>نقدم في مركزنا رعاية علاج طبيعي متكاملة لمساعدتك على التعافي والعودة إلى أفضل حالاتك الصحية.</p>
-        <a href="#booking" class="cta-button">اكتشف كيف يمكننا مساعدتك</a>
+        <div class="container">
+            <h1>عافيتك تبدأ هنا في <span>PhysioCare</span></h1>
+            <p>نحن نجمع بين الخبرة العميقة وأحدث التقنيات لنقدم لك رعاية علاج طبيعي استثنائية تعيد لك حركتك وحيويتك.</p>
+            <a href="#booking" class="cta-button">ابدأ رحلة التعافي</a>
+        </div>
     </header>
 
-    <section class="services" id="services">
-        <h2>خدماتنا المتخصصة</h2>
-        <div class="services-grid">
-            <div class="service-card">
-                <h3>إعادة التأهيل بعد الإصابات الرياضية</h3>
-                <p>برامج متخصصة للرياضيين للعودة إلى الملاعب بأسرع وقت وبأمان تام.</p>
+    <main>
+        <section class="section" id="branches">
+            <div class="container">
+                <h2 class="section-title">فروعنا بالقرب منك</h2>
+                <div class="title-underline"></div>
+                <div class="branches-grid">
+                    <div class="branch-card"><i class="fa-solid fa-map-marker-alt"></i> أركان مول، الشيخ زايد</div>
+                    <div class="branch-card"><i class="fa-solid fa-map-marker-alt"></i> إيدن مول، الشيخ زايد</div>
+                    <div class="branch-card"><i class="fa-solid fa-map-marker-alt"></i> المعادي</div>
+                    <div class="branch-card"><i class="fa-solid fa-map-marker-alt"></i> المهندسين</div>
+                    <div class="branch-card"><i class="fa-solid fa-map-marker-alt"></i> التجمع الخامس</div>
+                </div>
             </div>
-            <div class="service-card">
-                <h3>علاج آلام الظهر والرقبة</h3>
-                <p>تقنيات يدوية وتمارين علاجية للتخلص من الآلام المزمنة وتحسين جودة الحياة.</p>
-            </div>
-            <div class="service-card">
-                <h3>التأهيل بعد العمليات الجراحية</h3>
-                <p>متابعة دقيقة وخطط علاجية مخصصة لضمان أفضل نتائج بعد الجراحة.</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <img src="image.png" alt="PhysioCare Logo" class="footer-logo">
+            <p class="footer-links">
+                 <a href="#home">الرئيسية</a> |
+                 <a href="#services">خدماتنا</a> |
+                 <a href="#branches">فروعنا</a> |
+                 <a href="#contact">تواصل معنا</a>
+            </p>
+            <div class="footer-copyright">
+                <p>&copy; 2025 PhysioCare. كل الحقوق محفوظة.</p>
             </div>
         </div>
-    </section>
-
-    <footer class="footer" id="contact">
-        <p>&copy; 2025 مركز PhysioCare. جميع الحقوق محفوظة.</p>
     </footer>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+        window.onscroll = function () {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        };
+    </script>
 
 </body>
 </html>
