@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>حجز جلسة علاج طبيعي - PhysioCare</title>
+  <title>PhysioCare - حجز جلسة</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
@@ -39,7 +39,7 @@
       border-radius: 6px;
       border: 1px solid #ccc;
     }
-    .toggle-btn {
+    .toggle-btn, .back-btn {
       background-color: #0077b6;
       color: white;
       border: none;
@@ -50,7 +50,7 @@
       transition: 0.3s;
       margin-top: 20px;
     }
-    .toggle-btn:hover {
+    .toggle-btn:hover, .back-btn:hover {
       background-color: #0096c7;
     }
     .file-grid {
@@ -118,6 +118,27 @@
   <label>شركة التأمين</label>
   <input type="text" name="insurance" required>
 
+  <label>تاريخ الجلسة</label>
+  <input type="date" name="sessionDate" required>
+
+  <label>الفترة الزمنية</label>
+  <select name="sessionTime" required>
+    <option value="">-- اختر الفترة --</option>
+    <option value="10:00 ص - 10:40 ص">10:00 ص - 10:40 ص</option>
+    <option value="10:40 ص - 11:20 ص">10:40 ص - 11:20 ص</option>
+    <option value="11:20 ص - 12:00 م">11:20 ص - 12:00 م</option>
+    <option value="12:00 م - 12:40 م">12:00 م - 12:40 م</option>
+    <option value="1:00 م - 1:40 م">1:00 م - 1:40 م</option>
+    <option value="2:00 م - 2:40 م">2:00 م - 2:40 م</option>
+    <option value="3:00 م - 3:40 م">3:00 م - 3:40 م</option>
+    <option value="4:00 م - 4:40 م">4:00 م - 4:40 م</option>
+    <option value="5:00 م - 5:40 م">5:00 م - 5:40 م</option>
+    <option value="6:00 م - 6:40 م">6:00 م - 6:40 م</option>
+    <option value="7:00 م - 7:40 م">7:00 م - 7:40 م</option>
+    <option value="8:00 م - 8:40 م">8:00 م - 8:40 م</option>
+    <option value="9:00 م - 9:40 م">9:00 م - 9:40 م</option>
+  </select>
+
   <label>اختر الشيفت</label>
   <select name="shift" required>
     <option value="">-- اختر --</option>
@@ -151,10 +172,13 @@
   <button type="submit">إرسال</button>
 </form>
 
-<div class="success-message" id="successMessage">تم إرسال الحجز بنجاح! ✅</div>
+<div class="success-message" id="successMessage">
+  ✅ تم إرسال الحجز بنجاح<br>
+  رقم الحجز الخاص بك: <span id="bookingId"></span><br><br>
+  <button class="back-btn" onclick="location.reload()">🔄 رجوع إلى الصفحة الرئيسية</button>
+</div>
 
 <script>
-  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyA6_OACwpwaFSiX8jfsjS0_bt_EfIc4rhY",
     authDomain: "physiocare-booking.firebaseapp.com",
@@ -181,6 +205,8 @@
       phone: form.phone.value,
       phone2: form.phone2.value || '',
       insurance: form.insurance.value,
+      sessionDate: form.sessionDate.value,
+      sessionTime: form.sessionTime.value,
       shift: form.shift.value,
       doctor: form.doctor.value,
       files: {}
@@ -198,21 +224,24 @@
       }
     }
 
-    await db.collection("bookings").add(data);
+    const docRef = await db.collection("bookings").add(data);
+    const bookingId = docRef.id;
 
-    // إرسال واتساب
     const message = `PhysioCare Booking ✅
+رقم الحجز: ${bookingId}
 الاسم: ${data.fullName}
 الهاتف: ${data.phone}
-هاتف آخر: ${data.phone2}
 شركة التأمين: ${data.insurance}
 الشيفت: ${data.shift}
-الدكتور: ${data.doctor}`;
-    const encodedMsg = encodeURIComponent(message);
-    window.open(`https://wa.me/201024443117?text=${encodedMsg}`, '_blank');
+الدكتور: ${data.doctor}
+الجلسة: ${data.sessionDate} - ${data.sessionTime}`;
 
-    // عرض رسالة نجاح
+    const encodedMsg = encodeURIComponent(message);
+    window.open(`https://wa.me/201024443117?text=${encodedMsg}`, '_blank'); // للعيادة
+    window.open(`https://wa.me/2${data.phone}?text=${encodedMsg}`, '_blank'); // للعميل
+
     form.style.display = "none";
+    document.getElementById("bookingId").innerText = bookingId;
     document.getElementById("successMessage").style.display = "block";
   });
 </script>
