@@ -1,40 +1,134 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>فيزيوكير | Physiocare</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>PhysioCare | حجز جلسة علاج طبيعي</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f9f9f9; padding: 20px; direction: rtl; }
+    .table thead { background-color: #1e90ff; color: #fff; }
+    .available { background-color: #d4edda; cursor: pointer; }
+    .unavailable { background-color: #f8d7da; }
+    .form-section { margin-top: 30px; background: #fff; padding: 20px; border-radius: 10px; }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>مركز فيزيوكير للعلاج الطبيعي</h1>
-    <p>العلاج الطبيعي المتخصص بأحدث التقنيات وبأيدي خبراء 🌿</p>
-    <nav>
-      <a href="appointments.html">المواعيد</a>
-      <a href="book.html">احجز موعد</a>
-    </nav>
-  </header>
 
-  <section class="about">
-    <h2>عن المركز</h2>
-    <p>
-      مركز فيزيوكير متخصص في إعادة التأهيل، وعلاج الإصابات الرياضية، وتخفيف الآلام المزمنة. فريقنا من الأخصائيين المعتمدين بيقدّم لك رعاية فردية لتحقيق أفضل النتائج.
-    </p>
-  </section>
+  <div class="container">
+    <h2 class="text-center mb-4">نظام حجز جلسات العلاج الطبيعي - PhysioCare</h2>
 
-  <section class="services">
-    <h2>خدماتنا</h2>
-    <ul>
-      <li>علاج آلام الرقبة والظهر</li>
-      <li>تأهيل ما بعد العمليات</li>
-      <li>علاج الإصابات الرياضية</li>
-      <li>جلسات استرخاء وعلاج يدوي</li>
-    </ul>
-  </section>
+    <table class="table table-bordered text-center">
+      <thead>
+        <tr>
+          <th>الوقت</th>
+          <th>سبت / اثنين / أربعاء</th>
+          <th>أحد / ثلاثاء / خميس</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>10:30 ص - 4:30 م</td>
+          <td class="available" onclick="fillShift('صباحي', 'سبت/اتنين/أربع')">متاح</td>
+          <td class="available" onclick="fillShift('صباحي', 'أحد/ثلاث/خميس')">متاح</td>
+        </tr>
+        <tr>
+          <td>4:30 م - 10:30 م</td>
+          <td class="available" onclick="fillShift('مسائي', 'سبت/اتنين/أربع')">متاح</td>
+          <td class="available" onclick="fillShift('مسائي', 'أحد/ثلاث/خميس')">متاح</td>
+        </tr>
+      </tbody>
+    </table>
 
-  <footer>
-    <p>© 2025 مركز فيزيوكير للعلاج الطبيعي - جميع الحقوق محفوظة.</p>
-  </footer>
+    <div class="form-section">
+      <form id="booking-form">
+        <div class="mb-3">
+          <label class="form-label">الاسم</label>
+          <input type="text" class="form-control" id="name" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">رقم الهاتف</label>
+          <input type="tel" class="form-control" id="phone" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">الشيفت</label>
+          <input type="text" class="form-control" id="shift" readonly required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">الأيام</label>
+          <input type="text" class="form-control" id="days" readonly required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">شركة التأمين (اختياري)</label>
+          <input type="text" class="form-control" id="insurance">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">تحميل ملفات (بحد أقصى 6)</label>
+          <input type="file" id="attachments" class="form-control" multiple accept=".jpg,.png,.pdf,.jpeg">
+        </div>
+        <button type="submit" class="btn btn-primary w-100">احجز الآن</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // ✅ عدل بيانات المشروع هنا
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
+    function fillShift(shift, days) {
+      document.getElementById('shift').value = shift;
+      document.getElementById('days').value = days;
+    }
+
+    document.getElementById('booking-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const shift = document.getElementById('shift').value;
+      const days = document.getElementById('days').value;
+      const insurance = document.getElementById('insurance').value;
+      const files = document.getElementById('attachments').files;
+
+      const uploadedFileURLs = [];
+
+      for (const file of files) {
+        const storageRef = storage.ref(`uploads/${Date.now()}_${file.name}`);
+        const snapshot = await storageRef.put(file);
+        const downloadURL = await snapshot.ref.getDownloadURL();
+        uploadedFileURLs.push(downloadURL);
+      }
+
+      await db.collection('appointments').add({
+        name,
+        phone,
+        shift,
+        days,
+        insurance,
+        files: uploadedFileURLs,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      alert("تم الحجز بنجاح!");
+      document.getElementById('booking-form').reset();
+    });
+  </script>
+
 </body>
 </html>
