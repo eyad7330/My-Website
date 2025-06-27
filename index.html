@@ -1,137 +1,465 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PhysioCre - حجز جلسة علاج طبيعي</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <style>
-    body{font-family:'Cairo',sans-serif;background:#f0f4f8;padding:30px;}
-    h2{text-align:center;color:#023e8a;margin-bottom:20px;}
-    form{max-width:700px;margin:0 auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);}
-    label{display:block;margin-top:15px;font-weight:bold;color:#0077b6;}
-    input,select{width:100%;padding:10px;margin-top:5px;border-radius:6px;border:1px solid #ccc;}
-    .toggle-btn,.back-btn{background:#0077b6;color:#fff;border:none;padding:12px 24px;font-size:16px;border-radius:30px;cursor:pointer;transition:.3s;margin-top:20px;}
-    .toggle-btn:hover,.back-btn:hover{background:#0096c7;}
-    .file-grid{display:none;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;margin-top:20px;}
-    .file-box{background:#fff;border-radius:10px;padding:15px;text-align:center;box-shadow:0 4px 8px rgba(0,0,0,0.1);cursor:pointer;transition:.3s;}
-    .file-box:hover{transform:scale(1.03);}
-    .file-box label{font-weight:bold;margin-bottom:8px;color:#0077b6;}
-    .file-box input{display:none;}
-    .file-box span{font-size:22px;}
-    button[type="submit"]{background:#00b4d8;color:#fff;padding:12px 20px;border:none;border-radius:6px;font-size:16px;margin-top:30px;cursor:pointer;}
-    .success-message{text-align:center;margin-top:40px;font-size:20px;color:green;display:none;}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حجز مواعيد علاج طبيعي</title>
+    <style>
+        /* --- Google Fonts --- */
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
+        /* --- Global Styles --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --light-gray: #f8f9fa;
+            --dark-gray: #343a40;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 15px;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+        
+        #loader {
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 40px;
+            font-weight: 600;
+        }
+
+        /* --- Doctor Card --- */
+        .doctor-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            padding: 20px;
+            transition: box-shadow 0.3s ease;
+        }
+        .doctor-card:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .doctor-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .doctor-info img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+        }
+
+        .doctor-details h2 {
+            margin: 0;
+            color: var(--dark-gray);
+            font-size: 1.5rem;
+        }
+
+        .doctor-details p {
+            margin: 0;
+            color: var(--secondary-color);
+        }
+
+        /* --- Appointments --- */
+        .appointments h3 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+            margin-top: 15px;
+        }
+        
+        .slots-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .slot {
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .slot.available {
+            background-color: var(--success-color);
+            color: #fff;
+        }
+        .slot.available:hover {
+            transform: translateY(-2px);
+            background-color: #218838;
+        }
+
+        .slot.booked {
+            background-color: #e0e0e0;
+            color: #888;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+        
+        /* --- Booking Modal --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: var(--border-radius);
+            position: relative;
+        }
+        .close-btn {
+            color: #aaa;
+            position: absolute;
+            left: 20px;
+            top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-form h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box; /* Important */
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
 </head>
 <body>
 
-<h2>نموذج حجز جلسة علاج طبيعي - PhysioCre</h2>
+    <div class="container">
+        <header>
+            <h1>نظام حجز المواعيد</h1>
+            <p>اختر الطبيب والموعد المناسب لك</p>
+        </header>
 
-<form id="bookingForm">
-  <label>الاسم الثلاثي</label><input type="text" name="fullName" required>
-  <label>رقم الهاتف</label><input type="tel" name="phone" required>
-  <label>رقم إضافي (اختياري)</label><input type="tel" name="phone2">
-  <label>شركة التأمين</label><input type="text" name="insurance" required>
-  <label>تاريخ الجلسة</label><input type="date" name="sessionDate" required>
-  <label>الفترة الزمنية</label>
-  <select name="sessionTime" required>
-    <option value="">-- اختر الوقت --</option>
-    <option value="10:00–10:40">10:00 ص – 10:40 ص</option>
-    <option value="10:40–11:20">10:40 ص – 11:20 ص</option>
-    <option value="11:20–12:00">11:20 ص – 12:00 م</option>
-    <option value="12:00–12:40">12:00 م – 12:40 م</option>
-    <option value="13:00–13:40">1:00 م – 1:40 م</option>
-    <option value="14:00–14:40">2:00 م – 2:40 م</option>
-    <option value="15:00–15:40">3:00 م – 3:40 م</option>
-    <option value="16:00–16:40">4:00 م – 4:40 م</option>
-    <option value="17:00–17:40">5:00 م – 5:40 م</option>
-    <option value="18:00–18:40">6:00 م – 6:40 م</option>
-    <option value="19:00–19:40">7:00 م – 7:40 م</option>
-    <option value="20:00–20:40">8:00 م – 8:40 م</option>
-    <option value="21:00–21:40">9:00 م – 9:40 م</option>
-  </select>
-  <label>الشيفت</label><select name="shift" required><option value="">-- اختر --</option><option value="صباحي">صباحي</option><option value="مسائي">مسائي</option></select>
-  <label>الدكتور</label><select name="doctor" required><option value="">-- اختر --</option><option value="د. أحمد خالد">د. أحمد خالد</option><option value="د. سارة منصور">د. سارة منصور</option><option value="د. محمد جمال">د. محمد جمال</option><option value="د. ياسمين عبد الله">د. ياسمين عبد الله</option></select>
-
-  <div class="upload-section">
-    <button type="button" class="toggle-btn" onclick="toggleGrid()">📎 إرفاق المستندات</button>
-    <div class="file-grid" id="fileGrid">
-      <div class="file-box"><label for="card">كارنيه</label><span>📎</span><input type="file" id="card" name="card"></div>
-      <div class="file-box"><label for="id">بطاقة</label><span>📎</span><input type="file" id="id" name="id"></div>
-      <div class="file-box"><label for="prescription">روشتة</label><span>📎</span><input type="file" id="prescription" name="prescription"></div>
-      <div class="file-box"><label for="xray1">تقرير أشعة</label><span>📎</span><input type="file" id="xray1" name="xray1"></div>
-      <div class="file-box"><label for="xray2">تقرير أشعة أخرى</label><span>📎</span><input type="file" id="xray2" name="xray2"></div>
-      <div class="file-box"><label for="report">تقرير طبي</label><span>📎</span><input type="file" id="report" name="report"></div>
-      <div class="file-box"><label for="approval">الموافقة</label><span>📎</span><input type="file" id="approval" name="approval"></div>
-      <div class="file-box"><label for="other">أخرى</label><span>📎</span><input type="file" id="other" name="other"></div>
+        <main id="doctors-container">
+            <div id="loader">جاري تحميل بيانات الأطباء والمواعيد...</div>
+        </main>
     </div>
-  </div>
 
-  <button type="submit">إرسال الحجز</button>
-</form>
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <form id="bookingForm" class="modal-form">
+                <h2>تأكيد الحجز</h2>
+                <p>أنت على وشك حجز موعد في <strong id="modal-slot-info"></strong></p>
+                <input type="hidden" id="doctorId">
+                <input type="hidden" id="bookingDate">
+                <input type="hidden" id="bookingTime">
+                <div class="form-group">
+                    <label for="patientName">الاسم بالكامل</label>
+                    <input type="text" id="patientName" required>
+                </div>
+                <div class="form-group">
+                    <label for="patientPhone">رقم الهاتف</label>
+                    <input type="tel" id="patientPhone" required>
+                </div>
+                <button type="submit" class="submit-btn">تأكيد الحجز</button>
+            </form>
+        </div>
+    </div>
+    
 
-<div class="success-message" id="successMessage">
-  ✅ تم إرسال الحجز بنجاح!<br>
-  رقم الحجز: <span id="bookingId"></span><br><br>
-  <button class="back-btn" onclick="location.reload()">رجوع للرئيسية</button>
-</div>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs, addDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyA6_OACwpwaFSiX8jfsjS0_bt_EfIc4rhY",
-    authDomain: "physiocare-booking.firebaseapp.com",
-    projectId: "physiocare-booking",
-    storageBucket: "physiocare-booking.firebasestorage.app",
-    messagingSenderId: "815959251074",
-    appId: "1:815959251074:web:cfd13396b4072b90ccbc9b",
-    measurementId: "G-HBYJGQRVBB"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  const storage = firebase.storage();
+        // ‼️ ٢. أدخل إعدادات Firebase الخاصة بك هنا
+        // هذه البيانات تجدها في إعدادات مشروعك في Firebase
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-  function toggleGrid() {
-    const grid = document.getElementById("fileGrid");
-    grid.style.display = grid.style.display === "grid" ? "none" : "grid";
-  }
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-  document.getElementById("bookingForm").addEventListener("submit", async e => {
-    e.preventDefault();
-    const f = e.target;
-    const data = {
-      fullName: f.fullName.value,
-      phone: f.phone.value,
-      phone2: f.phone2.value || '',
-      insurance: f.insurance.value,
-      sessionDate: f.sessionDate.value,
-      sessionTime: f.sessionTime.value,
-      shift: f.shift.value,
-      doctor: f.doctor.value,
-      files: {}
-    };
-    const fields = ['card','id','prescription','xray1','xray2','report','approval','other'];
-    for (let name of fields) {
-      const file = f[name].files[0];
-      if (file) {
-        const ref = storage.ref(`uploads/${Date.now()}_${file.name}`);
-        await ref.put(file);
-        data.files[name] = await ref.getDownloadURL();
-      }
-    }
-    const docRef = await db.collection("bookings").add(data);
-    const bookingId = docRef.id;
-    const msg = `PhysioCre Booking ✅\nرقم: ${bookingId}\nالاسم: ${data.fullName}\nالهاتف: ${data.phone}\nتاريخ: ${data.sessionDate}\nالوقت: ${data.sessionTime}\nالدكتور: ${data.doctor}`;
-    const enc = encodeURIComponent(msg);
-    window.open(`https://wa.me/201024443117?text=${enc}`, '_blank');
-    window.open(`https://wa.me/2${data.phone}?text=${enc}`, '_blank');
-    f.style.display = 'none';
-    document.getElementById("bookingId").innerText = bookingId;
-    document.getElementById("successMessage").style.display = 'block';
-  });
-</script>
+        // --- DOM Elements ---
+        const doctorsContainer = document.getElementById('doctors-container');
+        const loader = document.getElementById('loader');
+        const modal = document.getElementById('bookingModal');
+        const modalSlotInfo = document.getElementById('modal-slot-info');
+        const closeModalBtn = document.querySelector('.close-btn');
+        const bookingForm = document.getElementById('bookingForm');
 
+        // --- Logic Constants ---
+        const MORNING_SHIFT_DAYS = [6, 1, 3]; // السبت، الإثنين، الأربعاء
+        const EVENING_SHIFT_DAYS = [0, 2, 4]; // الأحد، الثلاثاء، الخميس
+        
+        /**
+         * دالة لتوليد أوقات الجلسات بناءً على نوع الشيفت
+         * @param {string} shiftType - 'morning' or 'evening'
+         * @returns {string[]} - Array of time slots
+         */
+        function generateTimeSlots(shiftType) {
+            const slots = [];
+            let startTime; // Start time in minutes from midnight
+
+            if (shiftType === 'morning') {
+                startTime = 10 * 60 + 30; // 10:30 AM
+            } else {
+                startTime = 16 * 60 + 30; // 4:30 PM
+            }
+            
+            for (let i = 0; i < 9; i++) {
+                const totalMinutes = startTime + (i * 40); // 40 دقيقة للجلسة
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = totalMinutes % 60;
+                slots.push(`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`);
+            }
+            return slots;
+        }
+
+        /**
+         * دالة لجلب كل الحجوزات في يوم وتاريخ معين
+         * @param {string} date - Date in 'YYYY-MM-DD' format
+         * @returns {Promise<string[]>} - Array of booked slots for that day e.g., ["10:30", "11:10"]
+         */
+        async function getBookedSlotsForDate(date) {
+            const bookings = [];
+            const q = query(collection(db, "bookings"), where("bookingDate", "==", date));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                bookings.push(doc.data().slot);
+            });
+            return bookings;
+        }
+
+        /**
+         * الدالة الرئيسية لعرض الأطباء والمواعيد
+         */
+        async function displayDoctorsAndSchedules() {
+            try {
+                // جلب بيانات الأطباء من Firestore
+                const doctorsSnapshot = await getDocs(collection(db, "doctors"));
+                const doctors = [];
+                doctorsSnapshot.forEach(doc => {
+                    doctors.push({ id: doc.id, ...doc.data() });
+                });
+
+                // إخفاء رسالة التحميل
+                loader.style.display = 'none';
+                doctorsContainer.innerHTML = ''; // تفريغ الحاوية
+
+                if (doctors.length === 0) {
+                    doctorsContainer.innerHTML = '<p>لا يوجد أطباء متاحون حالياً.</p>';
+                    return;
+                }
+
+                const today = new Date();
+                const bookedSlotsByDate = {}; // Cache to store fetched bookings
+
+                // عرض كل طبيب
+                for (const doctor of doctors) {
+                    const doctorCard = document.createElement('div');
+                    doctorCard.className = 'doctor-card';
+                    
+                    let doctorHTML = `
+                        <div class="doctor-info">
+                            <img src="https://ui-avatars.com/api/?name=${doctor.name.replace(' ', '+')}&background=007bff&color=fff&size=128" alt="${doctor.name}">
+                            <div class="doctor-details">
+                                <h2>${doctor.name}</h2>
+                                <p>${doctor.specialty}</p>
+                            </div>
+                        </div>
+                        <div class="appointments">`;
+                    
+                    const workingDays = doctor.shiftType === 'morning' ? MORNING_SHIFT_DAYS : EVENING_SHIFT_DAYS;
+                    const timeSlots = generateTimeSlots(doctor.shiftType);
+
+                    // عرض المواعيد للأسبوع القادم
+                    for (let i = 0; i < 7; i++) {
+                        const date = new Date(today);
+                        date.setDate(today.getDate() + i);
+                        const dayOfWeek = date.getDay();
+
+                        if (workingDays.includes(dayOfWeek)) {
+                            const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD
+                            const dayName = new Intl.DateTimeFormat('ar-EG', { weekday: 'long' }).format(date);
+                            
+                            // Fetch bookings only if not already fetched for this date
+                            if (!bookedSlotsByDate[dateString]) {
+                                bookedSlotsByDate[dateString] = await getBookedSlotsForDate(dateString);
+                            }
+                            const bookedSlots = bookedSlotsByDate[dateString];
+
+                            doctorHTML += `<h3>${dayName} - ${dateString}</h3>`;
+                            doctorHTML += `<div class="slots-container">`;
+
+                            timeSlots.forEach(slot => {
+                                const isBooked = bookedSlots.includes(slot);
+                                doctorHTML += `
+                                    <div 
+                                        class="slot ${isBooked ? 'booked' : 'available'}"
+                                        ${!isBooked ? `data-doctor-id="${doctor.id}" data-doctor-name="${doctor.name}" data-date="${dateString}" data-time="${slot}"` : ''}
+                                    >
+                                        ${slot}
+                                    </div>
+                                `;
+                            });
+                            doctorHTML += `</div>`;
+                        }
+                    }
+
+                    doctorHTML += `</div>`;
+                    doctorCard.innerHTML = doctorHTML;
+                    doctorsContainer.appendChild(doctorCard);
+                }
+
+            } catch (error) {
+                console.error("Error fetching data: ", error);
+                loader.innerText = "حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى.";
+                loader.style.color = 'var(--danger-color)';
+            }
+        }
+
+        // --- Event Listeners ---
+        
+        // فتح نافذة الحجز عند الضغط على موعد متاح
+        doctorsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('available')) {
+                const { doctorId, doctorName, date, time } = e.target.dataset;
+                document.getElementById('doctorId').value = doctorId;
+                document.getElementById('bookingDate').value = date;
+                document.getElementById('bookingTime').value = time;
+                modalSlotInfo.textContent = `مع د. ${doctorName} يوم ${date} الساعة ${time}`;
+                modal.style.display = "block";
+            }
+        });
+
+        // إغلاق نافذة الحجز
+        closeModalBtn.onclick = () => modal.style.display = "none";
+        window.onclick = (e) => {
+            if (e.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // تنفيذ الحجز عند إرسال النموذج
+        bookingForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري الحجز...';
+
+            const bookingData = {
+                doctorId: document.getElementById('doctorId').value,
+                bookingDate: document.getElementById('bookingDate').value,
+                slot: document.getElementById('bookingTime').value,
+                patientName: document.getElementById('patientName').value,
+                patientPhone: document.getElementById('patientPhone').value,
+                createdAt: new Date()
+            };
+
+            try {
+                // إضافة الحجز إلى Firestore
+                await addDoc(collection(db, "bookings"), bookingData);
+                alert('تم حجز الموعد بنجاح!');
+                modal.style.display = "none";
+                bookingForm.reset();
+                
+                // إعادة تحميل المواعيد لتحديث الواجهة
+                await displayDoctorsAndSchedules();
+
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert('فشل حجز الموعد. يرجى المحاولة مرة أخرى.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'تأكيد الحجز';
+            }
+        });
+
+        // بدء تشغيل التطبيق
+        displayDoctorsAndSchedules();
+
+    </script>
 </body>
 </html>
