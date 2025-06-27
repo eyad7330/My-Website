@@ -1,160 +1,58 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PhysioCare - حجز جلسة</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhysioCre - حجز جلسة</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: #f0f4f8;
-      padding: 30px;
-    }
-    h2 {
-      text-align: center;
-      color: #023e8a;
-    }
-    form {
-      max-width: 700px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-      color: #0077b6;
-    }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    .toggle-btn, .back-btn {
-      background-color: #0077b6;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      font-size: 16px;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: 0.3s;
-      margin-top: 20px;
-    }
-    .toggle-btn:hover, .back-btn:hover {
-      background-color: #0096c7;
-    }
-    .file-grid {
-      display: none;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
-    }
-    .file-box {
-      background: #fff;
-      border-radius: 10px;
-      padding: 15px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      cursor: pointer;
-    }
-    .file-box:hover {
-      transform: scale(1.03);
-    }
-    .file-box label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 8px;
-      color: #0077b6;
-    }
-    .file-box input {
-      display: none;
-    }
-    .file-box span {
-      font-size: 22px;
-    }
-    button[type="submit"] {
-      background-color: #00b4d8;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      margin-top: 30px;
-      cursor: pointer;
-    }
-    .success-message {
-      display: none;
-      text-align: center;
-      margin-top: 40px;
-      font-size: 20px;
-      color: green;
-    }
+    body{font-family:'Cairo',sans-serif;background:#f0f4f8;padding:30px;}
+    h2{text-align:center;color:#023e8a;}
+    form{max-width:700px;margin:0 auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);}
+    label{display:block;margin-top:15px;font-weight:bold;color:#0077b6;}
+    input,select{width:100%;padding:10px;margin-top:5px;border-radius:6px;border:1px solid #ccc;}
+    .toggle-btn,.back-btn{background-color:#0077b6;color:white;border:none;padding:12px 24px;font-size:16px;border-radius:30px;cursor:pointer;transition:0.3s;margin-top:20px;}
+    .toggle-btn:hover,.back-btn:hover{background-color:#0096c7;}
+    .file-grid{display:none;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;margin-top:20px;}
+    .file-box{background:#fff;border-radius:10px;padding:15px;text-align:center;box-shadow:0 4px 8px rgba(0,0,0,0.1);cursor:pointer;transition:0.3s;}
+    .file-box:hover{transform:scale(1.03);}
+    .file-box label{font-weight:bold;margin-bottom:8px;color:#0077b6;}
+    .file-box input{display:none;}
+    .file-box span{font-size:22px;}
+    button[type="submit"]{background-color:#00b4d8;color:white;padding:12px 20px;border:none;border-radius:6px;font-size:16px;margin-top:30px;cursor:pointer;}
+    .success-message{text-align:center;margin-top:40px;font-size:20px;color:green;display:none;}
   </style>
 </head>
 <body>
 
-<h2>نموذج حجز جلسة علاج طبيعي</h2>
-
+<h2>نموذج حجز جلسة علاج طبيعي - PhysioCre</h2>
 <form id="bookingForm">
-  <label>الاسم الثلاثي</label>
-  <input type="text" name="fullName" required>
-
-  <label>رقم الهاتف</label>
-  <input type="tel" name="phone" required>
-
-  <label>رقم هاتف إضافي (اختياري)</label>
-  <input type="tel" name="phone2">
-
-  <label>شركة التأمين</label>
-  <input type="text" name="insurance" required>
-
-  <label>تاريخ الجلسة</label>
-  <input type="date" name="sessionDate" required>
-
+  <label>الاسم الثلاثي</label><input type="text" name="fullName" required>
+  <label>رقم الهاتف</label><input type="tel" name="phone" required>
+  <label>رقم إضافي (اختياري)</label><input type="tel" name="phone2">
+  <label>شركة التأمين</label><input type="text" name="insurance" required>
+  <label>تاريخ الجلسة</label><input type="date" name="sessionDate" required>
   <label>الفترة الزمنية</label>
-  <select name="sessionTime" required>
-    <option value="">-- اختر الفترة --</option>
-    <option value="10:00 ص - 10:40 ص">10:00 ص - 10:40 ص</option>
-    <option value="10:40 ص - 11:20 ص">10:40 ص - 11:20 ص</option>
-    <option value="11:20 ص - 12:00 م">11:20 ص - 12:00 م</option>
-    <option value="12:00 م - 12:40 م">12:00 م - 12:40 م</option>
-    <option value="1:00 م - 1:40 م">1:00 م - 1:40 م</option>
-    <option value="2:00 م - 2:40 م">2:00 م - 2:40 م</option>
-    <option value="3:00 م - 3:40 م">3:00 م - 3:40 م</option>
-    <option value="4:00 م - 4:40 م">4:00 م - 4:40 م</option>
-    <option value="5:00 م - 5:40 م">5:00 م - 5:40 م</option>
-    <option value="6:00 م - 6:40 م">6:00 م - 6:40 م</option>
-    <option value="7:00 م - 7:40 م">7:00 م - 7:40 م</option>
-    <option value="8:00 م - 8:40 م">8:00 م - 8:40 م</option>
-    <option value="9:00 م - 9:40 م">9:00 م - 9:40 م</option>
+  <select name="sessionTime" required><option value="">-- اختر الفترة --</option>
+    <option value="10:00–10:40">10:00 ص – 10:40 ص</option>
+    <option value="10:40–11:20">10:40 ص – 11:20 ص</option>
+    <option value="11:20–12:00">11:20 ص – 12:00 م</option>
+    <option value="12:00–12:40">12:00 م – 12:40 م</option>
+    <option value="13:00–13:40">1:00 م – 1:40 م</option>
+    <option value="14:00–14:40">2:00 م – 2:40 م</option>
+    <option value="15:00–15:40">3:00 م – 3:40 م</option>
+    <option value="16:00–16:40">4:00 م – 4:40 م</option>
+    <option value="17:00–17:40">5:00 م – 5:40 م</option>
+    <option value="18:00–18:40">6:00 م – 6:40 م</option>
+    <option value="19:00–19:40">7:00 م – 7:40 م</option>
+    <option value="20:00–20:40">8:00 م – 8:40 م</option>
+    <option value="21:00–21:40">9:00 م – 9:40 م</option>
   </select>
-
-  <label>اختر الشيفت</label>
-  <select name="shift" required>
-    <option value="">-- اختر --</option>
-    <option value="صباحي">صباحي</option>
-    <option value="مسائي">مسائي</option>
-  </select>
-
-  <label>اختر الدكتور</label>
-  <select name="doctor" required>
-    <option value="">-- اختر --</option>
-    <option value="د. أحمد خالد">د. أحمد خالد</option>
-    <option value="د. سارة منصور">د. سارة منصور</option>
-    <option value="د. محمد جمال">د. محمد جمال</option>
-    <option value="د. ياسمين عبد الله">د. ياسمين عبد الله</option>
-  </select>
-
+  <label>الشيفت</label><select name="shift" required><option value="">-- اختر --</option><option value="صباحي">صباحي</option><option value="مسائي">مسائي</option></select>
+  <label>الدكتور</label><select name="doctor" required><option value="">-- اختر --</option><option value="د. أحمد خالد">د. أحمد خالد</option><option value="د. سارة منصور">د. سارة منصور</option><option value="د. محمد جمال">د. محمد جمال</option><option value="د. ياسمين عبد الله">د. ياسمين عبد الله</option></select>
   <div class="upload-section">
     <button type="button" class="toggle-btn" onclick="toggleGrid()">📎 إرفاق المستندات</button>
     <div class="file-grid" id="fileGrid">
@@ -168,14 +66,13 @@
       <div class="file-box"><label for="other">أخرى</label><span>📎</span><input type="file" id="other" name="other"></div>
     </div>
   </div>
-
-  <button type="submit">إرسال</button>
+  <button type="submit">إرسال الحجز</button>
 </form>
 
 <div class="success-message" id="successMessage">
-  ✅ تم إرسال الحجز بنجاح<br>
-  رقم الحجز الخاص بك: <span id="bookingId"></span><br><br>
-  <button class="back-btn" onclick="location.reload()">🔄 رجوع إلى الصفحة الرئيسية</button>
+  ✅ تم إرسال الحجز بنجاح!<br>
+  رقم الحجز: <span id="bookingId"></span><br><br>
+  <button class="back-btn" onclick="location.reload()">رجوع للرئيسية</button>
 </div>
 
 <script>
@@ -197,52 +94,38 @@
     grid.style.display = grid.style.display === "grid" ? "none" : "grid";
   }
 
-  document.getElementById("bookingForm").addEventListener("submit", async function(e) {
+  document.getElementById("bookingForm").addEventListener("submit", async e => {
     e.preventDefault();
-    const form = e.target;
+    const f = e.target;
     const data = {
-      fullName: form.fullName.value,
-      phone: form.phone.value,
-      phone2: form.phone2.value || '',
-      insurance: form.insurance.value,
-      sessionDate: form.sessionDate.value,
-      sessionTime: form.sessionTime.value,
-      shift: form.shift.value,
-      doctor: form.doctor.value,
+      fullName: f.fullName.value,
+      phone: f.phone.value,
+      phone2: f.phone2.value || '',
+      insurance: f.insurance.value,
+      sessionDate: f.sessionDate.value,
+      sessionTime: f.sessionTime.value,
+      shift: f.shift.value,
+      doctor: f.doctor.value,
       files: {}
     };
-
-    const fileFields = ['card','id','prescription','xray1','xray2','report','approval','other'];
-    for (const field of fileFields) {
-      const fileInput = form[field];
-      const file = fileInput.files[0];
+    const fields = ['card','id','prescription','xray1','xray2','report','approval','other'];
+    for (let name of fields) {
+      const file = f[name].files[0];
       if (file) {
-        const storageRef = storage.ref().child(`uploads/${Date.now()}_${file.name}`);
-        await storageRef.put(file);
-        const url = await storageRef.getDownloadURL();
-        data.files[field] = url;
+        const ref = storage.ref(`uploads/${Date.now()}_${file.name}`);
+        await ref.put(file);
+        data.files[name] = await ref.getDownloadURL();
       }
     }
-
     const docRef = await db.collection("bookings").add(data);
     const bookingId = docRef.id;
-
-    const message = `PhysioCare Booking ✅
-رقم الحجز: ${bookingId}
-الاسم: ${data.fullName}
-الهاتف: ${data.phone}
-شركة التأمين: ${data.insurance}
-الشيفت: ${data.shift}
-الدكتور: ${data.doctor}
-الجلسة: ${data.sessionDate} - ${data.sessionTime}`;
-
-    const encodedMsg = encodeURIComponent(message);
-    window.open(`https://wa.me/201024443117?text=${encodedMsg}`, '_blank'); // للعيادة
-    window.open(`https://wa.me/2${data.phone}?text=${encodedMsg}`, '_blank'); // للعميل
-
-    form.style.display = "none";
+    const msg = `PhysioCre Booking ✅\nرقم: ${bookingId}\nالاسم: ${data.fullName}\nالهاتف: ${data.phone}\nتاريخ: ${data.sessionDate}\nالوقت: ${data.sessionTime}\nالدكتور: ${data.doctor}`;
+    const enc = encodeURIComponent(msg);
+    window.open(`https://wa.me/201024443117?text=${enc}`, '_blank');
+    window.open(`https://wa.me/2${data.phone}?text=${enc}`, '_blank');
+    f.style.display = 'none';
     document.getElementById("bookingId").innerText = bookingId;
-    document.getElementById("successMessage").style.display = "block";
+    document.getElementById("successMessage").style.display = 'block';
   });
 </script>
 
