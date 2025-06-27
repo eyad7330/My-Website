@@ -2,155 +2,179 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PhysioCare | العلاج الطبيعي</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhysioCare | مركز العلاج الطبيعي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --main: #0a3d62;
-      --accent: #f39c12;
-      --bg: #f8f9fa;
-      --light: #ffffff;
-      --text: #333;
-    }
-
     * {
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: 'Tajawal', sans-serif;
-    }
-
-    html {
-      scroll-behavior: smooth;
     }
 
     body {
-      background-color: var(--bg);
-      color: var(--text);
+      background: linear-gradient(135deg, #f4f9ff, #e2f0ff);
+      color: #222;
+      line-height: 1.6;
     }
 
     header {
-      background-color: var(--light);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      background-color: #0077b6;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     header h1 {
-      font-size: 28px;
-      color: var(--main);
-    }
-
-    nav a {
-      margin: 0 12px;
-      color: var(--text);
-      font-weight: bold;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-
-    nav a:hover {
-      color: var(--accent);
+      font-size: 32px;
     }
 
     .hero {
-      background: linear-gradient(to left, rgba(10, 61, 98, 0.8), rgba(0, 0, 0, 0.4)),
-        url('https://images.unsplash.com/photo-1588776814546-ec7e0baf78f0?auto=format&fit=crop&w=1600&q=80') center/cover;
-      padding: 150px 20px;
+      padding: 50px 20px;
       text-align: center;
-      color: white;
     }
 
     .hero h2 {
-      font-size: 42px;
-      font-weight: 900;
-      margin-bottom: 15px;
-    }
-
-    .hero p {
-      font-size: 20px;
-      margin-bottom: 30px;
-    }
-
-    .hero a {
-      text-decoration: none;
-      background-color: var(--accent);
-      color: white;
-      padding: 14px 28px;
-      border-radius: 40px;
-      font-size: 18px;
-      transition: background 0.3s ease;
-    }
-
-    .hero a:hover {
-      background-color: #e67e22;
-    }
-
-    .section {
-      padding: 60px 20px;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    .section h3 {
-      font-size: 32px;
-      color: var(--main);
-      text-align: center;
+      font-size: 28px;
+      color: #0077b6;
       margin-bottom: 20px;
     }
 
-    .section p {
+    .hero p {
       font-size: 18px;
+      color: #444;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .buttons button {
+      padding: 12px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .buttons .book {
+      background-color: #00b4d8;
+      color: white;
+    }
+
+    .buttons .contact {
+      background-color: #90e0ef;
+      color: #003049;
+    }
+
+    .buttons button:hover {
+      transform: scale(1.05);
+    }
+
+    .contact-info {
+      display: none;
+      margin-top: 30px;
       text-align: center;
-      max-width: 800px;
-      margin: auto;
+      animation: fadeIn 0.5s ease forwards;
     }
 
-    /* Fade in animation */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 1s forwards;
+    .contact-info div {
+      margin: 10px 0;
+      font-size: 20px;
     }
 
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
+    .contact-info span {
+      display: block;
+      font-weight: bold;
+      color: #0077b6;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 20px;
+      text-align: center;
+      background: #0077b6;
+      color: white;
+    }
+
+    @media (max-width: 600px) {
+      .hero h2 {
+        font-size: 22px;
+      }
+
+      .buttons button {
+        width: 100%;
       }
     }
   </style>
 </head>
-
 <body>
 
   <header>
-    <h1>PhysioCare</h1>
-    <nav>
-      <a href="#info">عن العلاج الطبيعي</a>
-      <a href="#branches">فروعنا</a>
-      <a href="#booking">احجز معنا</a>
-      <a href="#contact">تواصل معنا</a>
-    </nav>
+    <h1>مركز PhysioCare للعلاج الطبيعي</h1>
   </header>
 
   <section class="hero">
-    <h2 class="fade-in">علاج طبيعي بخبرة عالمية</h2>
-    <p class="fade-in" style="animation-delay: 0.3s;">أخصائيون محترفون – أحدث التقنيات – راحة وثقة</p>
-    <a href="#booking" class="fade-in" style="animation-delay: 0.6s;">احجز معنا الآن</a>
+    <h2>استرجع صحتك بأحدث طرق العلاج الطبيعي</h2>
+    <p>نقدّم لك رعاية متكاملة من قبل نخبة من أفضل الأطباء المتخصصين في العلاج الطبيعي والتأهيلي.</p>
+
+    <div class="buttons">
+      <button class="book" onclick="window.location.href='#booking'">احجز معنا</button>
+      <button class="contact" onclick="toggleContact()">تواصل معنا</button>
+    </div>
+
+    <div class="contact-info" id="contactBox">
+      <div>
+        <span>Call Center</span>
+        01024443117
+      </div>
+      <div>
+        <span>Call Center</span>
+        01024443118
+      </div>
+    </div>
   </section>
 
-  <section id="info" class="section fade-in">
-    <h3>ما هو العلاج الطبيعي؟</h3>
-    <p>
-      العلاج الطبيعي هو فرع من الطب يُعنى بعلاج المشكلات العضلية والعصبية من خلال التمارين اليدوية، الأجهزة، والتقنيات الحديثة.
-      يساهم في تحسين الحركة، تقليل الألم، وزيادة القدرة على أداء الأنشطة اليومية.
-    </p>
+  <section id="booking" style="padding: 50px 20px; text-align: center;">
+    <h2>نموذج الحجز</h2>
+    <p>املأ بياناتك وسيتم التواصل معك لتأكيد الحجز.</p>
+    <form style="margin-top: 20px; max-width: 400px; margin-inline: auto;">
+      <input type="text" placeholder="الاسم" required style="width: 100%; padding: 10px; margin-bottom: 10px;" />
+      <input type="tel" placeholder="رقم الهاتف" required style="width: 100%; padding: 10px; margin-bottom: 10px;" />
+      <select style="width: 100%; padding: 10px; margin-bottom: 10px;">
+        <option>اختر الفرع</option>
+        <option>إيدن مول - الشيخ زايد</option>
+        <option>أركان - الشيخ زايد</option>
+        <option>المعادي</option>
+        <option>المهندسين</option>
+        <option>التجمع</option>
+      </select>
+      <button type="submit" style="padding: 12px 20px; background-color: #00b4d8; color: white; border: none; border-radius: 6px; cursor: pointer;">إرسال الطلب</button>
+    </form>
   </section>
+
+  <footer>
+    &copy; 2025 PhysioCare. جميع الحقوق محفوظة.
+  </footer>
+
+  <script>
+    function toggleContact() {
+      const box = document.getElementById('contactBox');
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+
+</body>
+</html>
