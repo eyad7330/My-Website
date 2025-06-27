@@ -10,247 +10,268 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     <style>
-        /* --- Refined Design System v4.0 --- */
+        /* All styles from v4.0 remain the same */
         :root {
-            --primary-blue: #34495e;
-            --primary-green: #27ae60;
-            --light-bg: #f7f9fc;
-            --white: #ffffff;
-            --medium-gray: #e1e8ed;
-            --text-color: #5d6d7e;
-            --border-radius: 12px;
-            --shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            --primary-blue: #34495e; --primary-green: #27ae60; --light-bg: #f7f9fc;
+            --white: #ffffff; --medium-gray: #e1e8ed; --text-color: #5d6d7e;
+            --border-radius: 12px; --shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        body { /* ... same as before ... */ }
+        /* ... all other styles from v4.0 ... */
+
+        /* --- ‼️ NEW: File Uploader Styles --- */
+        .file-uploader {
+            margin-top: 25px;
+            border-top: 1px solid var(--medium-gray);
+            padding-top: 20px;
         }
-        body {
-            font-family: 'Tajawal', sans-serif;
+        .uploader-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
             background-color: var(--light-bg);
-            color: var(--text-color);
-            margin: 0;
-            padding: 25px;
-            line-height: 1.7;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
-        .container { max-width: 950px; margin: 0 auto; }
-        header { text-align: center; margin-bottom: 40px; }
-        .logo { max-width: 220px; margin-bottom: 20px; }
-        .card {
-            background: var(--white);
-            padding: 30px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-        .branch-selector h2 {
-            font-size: 1.5rem; color: var(--primary-blue); margin-bottom: 15px;
-            display: flex; align-items: center; gap: 10px;
-        }
-        #branchSelect {
-            width: 100%; padding: 15px; border-radius: 10px;
-            border: 1px solid var(--medium-gray); font-size: 1.1rem;
-            font-family: 'Tajawal', sans-serif; background-color: var(--white);
-        }
-        #doctors-placeholder {
-            text-align: center; padding: 50px; font-size: 1.3rem; color: #95a5a6;
-        }
-        /* --- Doctor Card Redesign --- */
-        .doctor-card { display: grid; grid-template-columns: 250px 1fr; gap: 30px; align-items: flex-start; }
-        .doctor-info { text-align: center; padding-top: 10px; }
-        .doctor-info img {
-            width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
-            border: 5px solid var(--light-bg); margin-bottom: 15px;
-        }
-        .doctor-info h3 { margin: 0 0 5px 0; font-size: 1.5rem; color: var(--primary-blue); }
-        .doctor-info p { margin: 0; color: #7f8c8d; font-size: 0.95rem; }
-        /* --- Tabs for Schedules --- */
-        .schedule-tabs .tabs-nav { display: flex; border-bottom: 2px solid var(--medium-gray); }
-        .tabs-nav button {
-            padding: 12px 20px; border: none; background: none; font-family: 'Tajawal', sans-serif;
-            font-size: 1rem; font-weight: 700; cursor: pointer; color: #7f8c8d; position: relative;
-            transition: color 0.3s ease;
-        }
-        .tabs-nav button.active { color: var(--primary-green); }
-        .tabs-nav button.active::after {
-            content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
-            height: 2px; background: var(--primary-green);
-        }
-        .tab-content { padding-top: 25px; }
-        .tab-pane { display: none; }
-        .tab-pane.active { display: block; }
-        /* --- Slot Redesign --- */
-        .slots-container {
+        .uploader-header:hover { background-color: var(--medium-gray); }
+        .uploader-header h3 { margin: 0; font-size: 1.1rem; color: var(--primary-blue); }
+        .uploader-header i { font-size: 1.2rem; transition: transform 0.4s ease; }
+        .uploader-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 12px;
+            gap: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding-top 0.5s ease-in-out;
+            padding-top: 0;
         }
-        .slot {
-            padding: 10px 5px; border-radius: 8px; text-align: center; font-weight: 700;
-            cursor: pointer; transition: all 0.3s ease; border: 1px solid var(--medium-gray);
-            font-size: 0.9rem;
+        .file-uploader.is-expanded .uploader-grid {
+            max-height: 500px; /* Adjust as needed */
+            padding-top: 20px;
         }
-        .slot.available { background-color: var(--white); color: var(--primary-blue); }
-        .slot.available:hover {
-            background-color: var(--primary-green); color: var(--white);
-            border-color: var(--primary-green); transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
-        }
-        .slot.booked { background-color: #f5f5f5; color: #bdc3c7; cursor: not-allowed; text-decoration: line-through;}
-        /* --- Modal Redesign --- */
-        .modal {
-            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(30, 40, 50, 0.6); backdrop-filter: blur(5px);
-            align-items: center; justify-content: center;
-        }
-        .modal.show { display: flex; animation: fadeIn 0.3s ease; }
-        .modal-content {
-            background-color: var(--white); padding: 35px; width: 90%; max-width: 550px;
-            border-radius: var(--border-radius); box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        .file-uploader.is-expanded .uploader-header i { transform: rotate(180deg); }
+
+        .file-slot {
             position: relative;
+            border: 2px dashed var(--medium-gray);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            transition: border-color 0.3s, background-color 0.3s;
         }
-        /* ... Other modal styles remain the same as v3.0 ... */
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-header h2 { margin: 0; color: var(--primary-blue); font-size: 1.6rem; }
-        .close-btn { background: none; border: none; font-size: 1.8rem; color: #95a5a6; cursor: pointer; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 700; }
-        .form-group input, .form-group select {
-            width: 100%; padding: 12px; border-radius: 8px;
-            border: 1px solid #ddd; box-sizing: border-box; font-family: 'Tajawal', sans-serif;
+        .file-slot:hover { border-color: var(--primary-green); }
+        .file-slot.has-file { border-style: solid; border-color: var(--primary-green); background-color: #e8f5e9;}
+        .file-slot label {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
         }
-        .submit-btn {
-            width: 100%; padding: 15px; border: none; border-radius: 8px;
-            background-color: var(--primary-green); color: white; font-size: 1.1rem;
-            font-weight: bold; cursor: pointer; transition: background-color 0.3s;
+        .file-slot i { font-size: 1.8rem; color: #bdc3c7; margin-bottom: 8px; transition: color 0.3s; }
+        .file-slot:hover i { color: var(--primary-green); }
+        .file-slot span { font-size: 0.85rem; font-weight: 500; }
+        .file-slot input[type="file"] { display: none; }
+        .file-name {
+            font-size: 0.75rem; color: #333;
+            margin-top: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100px;
         }
-        #datePickerModal .date-options button {
-            padding: 12px; font-size: 1rem; font-weight: 500;
-            border: 1px solid #ddd; background: #fff; cursor: pointer;
-            border-radius: 8px; transition: all 0.2s ease; text-align: right;
-        }
-        #datePickerModal .date-options button:hover { background: var(--medium-gray); border-color: #ccc; }
     </style>
 </head>
 <body>
+    <div class="container">...</div>
 
-    <div class="container">
-        <header>
-            <img src="image.png" alt="PhysioCare Logo" class="logo">
-        </header>
-
-        <div class="card branch-selector">
-            <h2><i class="fa-solid fa-location-dot"></i> الخطوة الأولى: اختر الفرع</h2>
-            <select id="branchSelect">
-                <option value="">-- يرجى اختيار الفرع --</option>
-            </select>
-        </div>
-
-        <main id="doctors-container">
-            <div id="doctors-placeholder">
-                <i class="fa-solid fa-hand-holding-medical" style="font-size: 3rem; margin-bottom: 15px; color: var(--medium-gray);"></i>
-                <div>الرجاء اختيار فرع لعرض الأطباء والمواعيد</div>
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-calendar-check"></i> تأكيد الحجز</h2>
+                <button class="close-btn">&times;</button>
             </div>
-        </main>
-    </div>
+            <p>لتأكيد حجزك مع <strong id="modalDoctorName"></strong> يوم <strong id="modalDate"></strong> الساعة <strong id="modalTime"></strong>، يرجى ملء البيانات التالية:</p>
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="patientName">الأسم ثلاثي</label>
+                    <input type="text" id="patientName" required>
+                </div>
+                <div class="form-group">
+                    <label for="patientPhone">رقم التليفون</label>
+                    <input type="tel" id="patientPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="optionalPhone">رقم تليفون اخر (إن وجد)</label>
+                    <input type="tel" id="optionalPhone">
+                </div>
+                <div class="form-group">
+                    <label for="insuranceCompany">شركة التأمين</label>
+                    <select id="insuranceCompany">
+                        <option value="لا يوجد">لا يوجد تأمين</option>
+                        <option value="Globmed">Globmed</option>
+                        <option value="NextCare">NextCare</option>
+                        <option value="AXA">AXA</option>
+                        <option value="Metlife (Alico)">Metlife (Alico)</option>
+                        <option value="MedRight">MedRight</option>
+                        <option value="Puba">Puba</option>
+                        <option value="Limitless Care">Limitless Care</option>
+                    </select>
+                </div>
 
-    <div id="datePickerModal" class="modal">...</div>
-    <div id="bookingModal" class="modal">...</div>
+                <div class="file-uploader" id="fileUploader">
+                    <div class="uploader-header">
+                        <h3><i class="fa-solid fa-paperclip"></i> رفع الأوراق والمستندات (اختياري)</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="uploader-grid">
+                        <div class="file-slot">
+                            <label for="file_insurance_card"> <i class="fa-solid fa-id-card"></i> <span>الكارنيه</span> </label>
+                            <input type="file" id="file_insurance_card" data-type="insuranceCard" accept="image/*,application/pdf">
+                            <div class="file-name"></div>
+                        </div>
+                        <div class="file-slot">
+                            <label for="file_id_card"> <i class="fa-solid fa-address-card"></i> <span>البطاقه</span> </label>
+                            <input type="file" id="file_id_card" data-type="nationalId" accept="image/*,application/pdf">
+                            <div class="file-name"></div>
+                        </div>
+                        <div class="file-slot">
+                            <label for="file_prescription"> <i class="fa-solid fa-file-prescription"></i> <span>الروشته</span> </label>
+                            <input type="file" id="file_prescription" data-type="prescription" accept="image/*,application/pdf">
+                            <div class="file-name"></div>
+                        </div>
+                        <div class="file-slot">
+                            <label for="file_approval"> <i class="fa-solid fa-file-circle-check"></i> <span>الموافقه</span> </label>
+                            <input type="file" id="file_approval" data-type="approval" accept="image/*,application/pdf">
+                            <div class="file-name"></div>
+                        </div>
+                        <div class="file-slot">
+                            <label for="file_radiology1"> <i class="fa-solid fa-x-ray"></i> <span>تقرير الاشعه</span> </label>
+                            <input type="file" id="file_radiology1" data-type="radiologyReport1" accept="image/*,application/pdf">
+                            <div class="file-name"></div>
+                        </div>
+                        <div class="file-slot">
+                            <label for="file_radiology2"> <i class="fa-solid fa-x-ray"></i> <span>تقرير اشعه اخر</span> </label>
+                            <input type="file" id="file_radiology2" data-type="radiologyReport2" accept="image/*,application/pdf">
+                            <div class="file-name"></div>
+                        </div>
+                         <div class="file-slot">
+                            <label for="file_medical"> <i class="fa-solid fa-file-medical"></i> <span>تقرير طبي</span> </label>
+                            <input type="file" id="file_medical" data-type="medicalReport" accept="image/*,application/pdf">
+                            <div class="file-name"></div>
+                        </div>
+                        <div class="file-slot">
+                            <label for="file_other"> <i class="fa-solid fa-file-circle-plus"></i> <span>اخري</span> </label>
+                            <input type="file" id="file_other" data-type="other" accept="image/*,application/pdf">
+                            <div class="file-name"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" style="margin-top: 25px;">تأكيد الحجز النهائي</button>
+            </form>
+        </div>
+    </div>
     
     <script type="module">
-        // --- Data Structure v4.0 (To be moved to Firestore) ---
-        // This structure is more robust. We define doctors and their assignments separately.
-        const allDoctors = [
-            { id: "d1", name: "د. محمد صادق" }, { id: "d2", name: "د. محمد سعيد" },
-            { id: "d3", name: "د. محمد سيف" }, { id: "d4", name: "د. مارتن هاني" },
-            { id: "d5", name: "د. نيره خالد" }, { id: "d6", name: "د. همسه محمد" },
-            { id: "d7", name: "د. فريد السعدني" }, { id: "d8", name: "د. يارا امجد" },
-            { id: "d9", name: "د. ميرنا محمد" }, { id: "d10", name: "د. ياسمين احمد" },
-            { id: "d11", name: "د. غاده بسيوني" }, { id: "d12", name: "د. مها نبيل" },
-            { id: "d13", name: "د. اسراء جمال" }, { id: "d14", name: "د. اسماء مصطفي" }
-        ];
+        // ‼️ NEW: Import Firebase Storage functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-        const allAssignments = [
-            // Eden Mall - Evening Shift (Sat, Mon, Wed)
-            { doctorId: "d1", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { doctorId: "d2", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { doctorId: "d3", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { doctorId: "d4", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { doctorId: "d5", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { doctorId: "d6", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { doctorId: "d7", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { doctorId: "d8", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            { doctorId: "d9", branchId: "eden_mall", shiftType: "evening", days: [6, 1, 3] },
-            
-            // Eden Mall - Morning Shift (Sun, Tue, Thu) - ASSUMPTION
-            { doctorId: "d10", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
-            { doctorId: "d11", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
-            { doctorId: "d12", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
-            { doctorId: "d13", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
-            { doctorId: "d14", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
-            // The two doctors who work both shifts
-            { doctorId: "d1", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
-            { doctorId: "d2", branchId: "eden_mall", shiftType: "morning", days: [0, 2, 4] },
-        ];
+        // --- Firebase Config (as before) ---
+        const firebaseConfig = { /* ... YOUR CONFIG ... */ };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app); // ‼️ Initialize Storage
+
+        // --- All other code from v4.0 is needed here ---
         
-        // --- ‼️ NEW: Function to generate 12-hour format time ---
-        function generateTimeSlots(shiftType) {
-            const slots = [];
-            const startTime = (shiftType === 'morning') ? (10 * 60 + 30) : (16 * 60 + 30);
-            for (let i = 0; i < 9; i++) {
-                const totalMinutes = startTime + (i * 40);
-                let hours = Math.floor(totalMinutes / 60);
-                const minutes = totalMinutes % 60;
-                
-                const ampm = hours >= 12 ? 'مساءً' : 'صباحًا';
-                hours = hours % 12;
-                hours = hours ? hours : 12; // the hour '0' should be '12'
-                
-                const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${ampm}`;
-                slots.push(formattedTime);
-            }
-            return slots;
-        }
+        // --- ‼️ NEW: Logic for the File Uploader ---
+        const uploaderHeader = document.querySelector('.uploader-header');
+        uploaderHeader.addEventListener('click', () => {
+            document.getElementById('fileUploader').classList.toggle('is-expanded');
+        });
 
-        // --- The rest of the JS logic remains largely the same as v3.0 ---
-        // It's just adapted to use the new data structure (allDoctors, allAssignments)
-        
-        // ... (The full JS from the previous version, adapted for the new data structure, would go here)
-        // For brevity, I will show the key change in the render function
-        function renderDoctors(branchId) {
-            doctorsContainer.innerHTML = '';
-            doctorsPlaceholder.style.display = 'none';
-
-            const assignmentsInBranch = allAssignments.filter(a => a.branchId === branchId);
-            const doctorIdsInBranch = [...new Set(assignmentsInBranch.map(a => a.doctorId))];
-
-            if(doctorIdsInBranch.length === 0) {
-                 doctorsContainer.innerHTML = `<div id="doctors-placeholder" class="card">سيتم إضافة الأطباء والمواعيد لهذا الفرع قريباً.</div>`;
-                 return;
-            }
-            
-            doctorIdsInBranch.forEach(doctorId => {
-                const doctorInfo = allDoctors.find(d => d.id === doctorId);
-                const doctorAssignments = assignmentsInBranch.filter(a => a.doctorId === doctorId);
-                const doctorCard = createDoctorCard(doctorInfo, doctorAssignments);
-                doctorsContainer.appendChild(doctorCard);
+        document.querySelectorAll('.file-slot input[type="file"]').forEach(input => {
+            input.addEventListener('change', () => {
+                const fileNameDiv = input.nextElementSibling;
+                const slotDiv = input.parentElement;
+                if (input.files.length > 0) {
+                    fileNameDiv.textContent = input.files[0].name;
+                    slotDiv.classList.add('has-file');
+                } else {
+                    fileNameDiv.textContent = '';
+                    slotDiv.classList.remove('has-file');
+                }
             });
-            // ... the rest of the function ...
-        }
+        });
 
-        function createDoctorCard(doctorInfo, assignments) {
-            // This function now receives the full doctorInfo object
-            // ... The rest of the function is similar to v3.0 but uses doctorInfo.name
-            const name = doctorInfo.name;
-            // ... (rest of the card generation logic) ...
-        }
+        // --- ‼️ OVERHAUL: Booking Form Submission Logic ---
+        const bookingForm = document.getElementById('bookingForm');
+        bookingForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الحجز...`;
 
-        // The full JavaScript logic from the previous step is needed here to make it functional.
-        // This is a placeholder to keep the response from being excessively long.
-        // Assume all the previous event listeners and functions are here and correctly adapted.
-        console.log("UI v4.0 is ready. The full JS logic needs to be integrated.");
+            try {
+                // 1. Create a new booking document reference to get a unique ID
+                const newBookingRef = doc(collection(db, "bookings"));
+                const bookingId = newBookingRef.id;
 
+                // 2. Upload files to Firebase Storage
+                const fileInputs = document.querySelectorAll('.file-slot input[type="file"]');
+                const uploadPromises = [];
+                const uploadedDocuments = {};
+
+                fileInputs.forEach(input => {
+                    if (input.files.length > 0) {
+                        const file = input.files[0];
+                        const docType = input.dataset.type;
+                        const storageRef = ref(storage, `bookings/${bookingId}/${docType}_${file.name}`);
+                        
+                        const uploadPromise = uploadBytes(storageRef, file).then(snapshot => {
+                            return getDownloadURL(snapshot.ref);
+                        }).then(downloadURL => {
+                            uploadedDocuments[docType] = downloadURL;
+                        });
+                        uploadPromises.push(uploadPromise);
+                    }
+                });
+
+                await Promise.all(uploadPromises); // Wait for all uploads to finish
+
+                // 3. Gather all booking data
+                const bookingData = {
+                    id: bookingId,
+                    // ... (data from hidden fields like doctor, date, time) ...
+                    patientName: document.getElementById('patientName').value,
+                    patientPhone: document.getElementById('patientPhone').value,
+                    optionalPhone: document.getElementById('optionalPhone').value,
+                    insuranceCompany: document.getElementById('insuranceCompany').value,
+                    uploadedDocuments: uploadedDocuments, // The object with file URLs
+                    status: 'confirmed',
+                    createdAt: new Date()
+                };
+
+                // 4. Save the complete booking data to Firestore
+                await setDoc(newBookingRef, bookingData);
+
+                alert('تم حجز موعدك ورفع مستنداتك بنجاح!');
+                // Reset form, close modal, and refresh schedule
+                
+            } catch (error) {
+                console.error("Booking failed: ", error);
+                alert('حدث خطأ فني أثناء الحجز. يرجى المحاولة مرة أخرى.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'تأكيد الحجز النهائي';
+            }
+        });
     </script>
 </body>
 </html>
