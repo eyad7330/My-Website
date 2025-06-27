@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>مواعيد فيزيوكير</title>
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    async function loadAppointments() {
+      const response = await fetch('appointments.json');
+      const data = await response.json();
+      const table = document.getElementById('appointments-body');
+      data.forEach((item) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.day}</td>
+          <td>${item.shift}</td>
+          <td>${item.time}</td>
+          <td>${item.doctor}</td>
+          <td>${item.status}</td>
+          <td>${item.status === "متاح" ? `<a class="book-btn" href="book.html?day=${item.day}&time=${item.time}">احجز</a>` : "—"}</td>
+        `;
+        table.appendChild(row);
+      });
+    }
+    window.onload = loadAppointments;
+  </script>
+</head>
+<body>
+  <header>
+    <h1>جدول المواعيد</h1>
+    <nav>
+      <a href="index.html">الرئيسية</a>
+      <a href="book.html">احجز الآن</a>
+    </nav>
+  </header>
+
+  <section class="appointments">
+    <h2>المواعيد الحالية</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th>الشيفت</th>
+          <th>الساعة</th>
+          <th>الدكتور</th>
+          <th>الحالة</th>
+          <th>حجز</th>
+        </tr>
+      </thead>
+      <tbody id="appointments-body">
+        <!-- يتم ملء المواعيد تلقائيًا -->
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <p>© 2025 مركز فيزيوكير للعلاج الطبيعي</p>
+  </footer>
+</body>
+</html>
