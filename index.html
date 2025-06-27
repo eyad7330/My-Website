@@ -2,98 +2,107 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>PhysioCare - حجز موعد</title>
+  <title>PhysioCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: 'Cairo', sans-serif; background: #f2f2f2; padding: 20px; direction: rtl; }
-    form { background: white; padding: 20px; border-radius: 10px; max-width: 500px; margin: auto; }
-    label { display: block; margin-top: 10px; }
-    input, select { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
-    button { margin-top: 15px; padding: 10px 20px; background: #00aaff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #0088cc; }
+    body { font-family: Arial; background: #f0f4f8; padding: 20px; direction: rtl; }
+    h1 { color: #0077aa; text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    th { background: #0077aa; color: white; }
+    button { padding: 8px 12px; background: #28a745; color: white; border: none; cursor: pointer; }
+    input, select { padding: 8px; width: 100%; margin-top: 10px; }
+    #form-section { display: none; background: #fff; padding: 20px; margin-top: 20px; border: 1px solid #ccc; }
   </style>
 </head>
 <body>
 
-<h2 style="text-align:center;">🩺 حجز موعد في PhysioCare</h2>
+<h1>حجز موعد في PhysioCare</h1>
 
-<form id="bookingForm">
-  <label>الاسم الكامل:</label>
-  <input type="text" id="name" required>
+<table>
+  <thead>
+    <tr><th>اليوم</th><th>الشيفت</th><th>الحالة</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>السبت</td>
+      <td>صباحي</td>
+      <td><button onclick="showForm('السبت', 'صباحي')">متاح</button></td>
+    </tr>
+    <tr>
+      <td>السبت</td>
+      <td>مسائي</td>
+      <td><button onclick="showForm('السبت', 'مسائي')">متاح</button></td>
+    </tr>
+    <!-- كرر الباقي حسب الأيام -->
+  </tbody>
+</table>
 
-  <label>رقم الهاتف:</label>
-  <input type="tel" id="phone" required>
-
-  <label>اختيار الشيفت:</label>
-  <select id="shift">
-    <option value="صباحي">صباحي</option>
-    <option value="مسائي">مسائي</option>
-  </select>
-
-  <label>شركة التأمين:</label>
-  <input type="text" id="insurance">
-
-  <label>رفع الملفات (6 ملفات كحد أقصى):</label>
-  <input type="file" id="files" multiple>
-
-  <button type="submit">احجز الآن</button>
-</form>
+<div id="form-section">
+  <h2>بيانات الحجز</h2>
+  <form id="bookingForm">
+    <input type="text" id="name" placeholder="الاسم" required>
+    <input type="tel" id="phone" placeholder="رقم الهاتف" required>
+    <input type="text" id="insurance" placeholder="شركة التأمين (اختياري)">
+    <input type="file" id="file" required>
+    <input type="hidden" id="day">
+    <input type="hidden" id="shift">
+    <button type="submit">احجز الآن</button>
+  </form>
+</div>
 
 <!-- Firebase -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-  import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+  // Firebase Config هنا تحط بيانات مشروعك
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-  // بيانات مشروعك من Firebase Console
   const firebaseConfig = {
-    apiKey: "AIzaSyDxtvM3HMRRvRY-9P99vlh7J0-B0_nK_Tw",
-    authDomain: "physiocare-8e33b.firebaseapp.com",
-    projectId: "physiocare-8e33b",
-    storageBucket: "physiocare-8e33b.appspot.com",
-    messagingSenderId: "646832324701",
-    appId: "1:646832324701:web:13763f6b8cd34a5a63de34"
+    apiKey: "ضع-API-KEY-هنا",
+    authDomain: "xxxx.firebaseapp.com",
+    projectId: "xxxx",
+    storageBucket: "xxxx.appspot.com",
+    messagingSenderId: "xxxx",
+    appId: "xxxx"
   };
 
-  // تهيئة Firebase
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const storage = getStorage(app);
 
-  const form = document.getElementById('bookingForm');
-  form.addEventListener('submit', async (e) => {
+  // إظهار الفورم عند الضغط على "متاح"
+  window.showForm = function(day, shift) {
+    document.getElementById('form-section').style.display = 'block';
+    document.getElementById('day').value = day;
+    document.getElementById('shift').value = shift;
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
+  // التعامل مع الحجز
+  document.getElementById("bookingForm").addEventListener("submit", async (e) => {
     e.preventDefault();
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+    const insurance = document.getElementById("insurance").value;
+    const fileInput = document.getElementById("file");
+    const day = document.getElementById("day").value;
+    const shift = document.getElementById("shift").value;
 
-    const name = document.getElementById('name').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const shift = document.getElementById('shift').value;
-    const insurance = document.getElementById('insurance').value.trim();
-    const files = document.getElementById('files').files;
+    if (fileInput.files.length === 0) return alert("يجب اختيار ملف");
 
-    try {
-      // حفظ البيانات في Firestore
-      const docRef = await addDoc(collection(db, "bookings"), {
-        name,
-        phone,
-        shift,
-        insurance,
-        createdAt: serverTimestamp()
-      });
+    const file = fileInput.files[0];
+    const storageRef = ref(storage, `uploads/${Date.now()}_${file.name}`);
+    await uploadBytes(storageRef, file);
+    const fileURL = await getDownloadURL(storageRef);
 
-      // رفع الملفات إلى Storage
-      const uploads = [];
-      for (let file of files) {
-        const fileRef = ref(storage, `bookings/${docRef.id}/${file.name}`);
-        uploads.push(uploadBytes(fileRef, file));
-      }
+    await addDoc(collection(db, "appointments"), {
+      name, phone, insurance, day, shift, fileURL, timestamp: new Date()
+    });
 
-      await Promise.all(uploads);
-
-      alert("✅ تم الحجز ورفع الملفات بنجاح!");
-      form.reset();
-    } catch (error) {
-      console.error("❌ خطأ:", error);
-      alert("حصلت مشكلة أثناء الحجز، حاول تاني.");
-    }
+    alert("تم الحجز بنجاح");
+    document.getElementById("bookingForm").reset();
+    document.getElementById('form-section').style.display = 'none';
   });
 </script>
 
