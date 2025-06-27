@@ -1,9 +1,32 @@
+<form id="bookingForm">
+  <label>الاسم:</label>
+  <input type="text" id="name" required><br>
+
+  <label>رقم الهاتف:</label>
+  <input type="tel" id="phone" required><br>
+
+  <label>الشيفت:</label>
+  <select id="shift">
+    <option value="صباحي">صباحي</option>
+    <option value="مسائي">مسائي</option>
+  </select><br>
+
+  <label>شركة التأمين:</label>
+  <input type="text" id="insurance"><br>
+
+  <label>رفع الملفات:</label>
+  <input type="file" id="files" multiple><br><br>
+
+  <button type="submit">احجز الآن</button>
+</form>
+
+<!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-  import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-  // بيانات مشروعك من Firebase - جاهزة ومركبة
+  // بيانات Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyDxtvM3HMRRvRY-9P99vlh7J0-B0_nK_Tw",
     authDomain: "physiocare-8e33b.firebaseapp.com",
@@ -18,6 +41,41 @@
   const db = getFirestore(app);
   const storage = getStorage(app);
 
-  // تجربة بسيطة للتأكيد
-  console.log("✅ Firebase شغّال تمام");
+  // التعامل مع الفورم
+  const form = document.getElementById('bookingForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const shift = document.getElementById('shift').value;
+    const insurance = document.getElementById('insurance').value.trim();
+    const files = document.getElementById('files').files;
+
+    try {
+      // حفظ بيانات الحجز في Firestore
+      const bookingRef = await addDoc(collection(db, "bookings"), {
+        name,
+        phone,
+        shift,
+        insurance,
+        createdAt: serverTimestamp()
+      });
+
+      const uploadPromises = [];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fileRef = ref(storage, `bookings/${bookingRef.id}/${file.name}`);
+        uploadPromises.push(uploadBytes(fileRef, file));
+      }
+
+      await Promise.all(uploadPromises);
+
+      alert("✅ تم الحجز ورفع الملفات بنجاح");
+      form.reset();
+    } catch (error) {
+      console.error("❌ خطأ أثناء الحجز:", error);
+      alert("حصلت مشكلة أثناء الحجز. حاول مرة تانية.");
+    }
+  });
 </script>
