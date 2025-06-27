@@ -3,120 +3,160 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PhysioCare | مركز العلاج الطبيعي</title>
+  <title>PhysioCare | احجز جلسة علاج طبيعي</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * {
-      box-sizing: border-box;
-      font-family: 'Cairo', sans-serif;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
     }
 
     body {
-      background: linear-gradient(135deg, #f4f9ff, #e2f0ff);
-      color: #222;
-      line-height: 1.6;
+      background: #f6f9fc;
+      color: #333;
     }
 
     header {
-      background-color: #0077b6;
-      color: #fff;
-      padding: 20px;
+      background: linear-gradient(90deg, #00b4d8, #0077b6);
+      color: white;
+      padding: 40px 20px;
       text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     header h1 {
-      font-size: 32px;
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 18px;
+      opacity: 0.9;
     }
 
     .hero {
-      padding: 50px 20px;
+      padding: 60px 20px;
       text-align: center;
+      background: url('https://www.transparenttextures.com/patterns/white-wall-3.png');
     }
 
     .hero h2 {
-      font-size: 28px;
+      font-size: 30px;
       color: #0077b6;
       margin-bottom: 20px;
     }
 
     .hero p {
-      font-size: 18px;
-      color: #444;
-      margin-bottom: 30px;
+      font-size: 17px;
+      max-width: 600px;
+      margin: 0 auto 30px;
+      color: #555;
     }
 
-    .buttons {
+    .hero .btn-group {
       display: flex;
       justify-content: center;
       gap: 15px;
       flex-wrap: wrap;
     }
 
-    .buttons button {
+    .hero button {
       padding: 12px 25px;
-      font-size: 18px;
+      border-radius: 30px;
       border: none;
-      border-radius: 8px;
       cursor: pointer;
+      font-size: 16px;
       transition: 0.3s;
     }
 
-    .buttons .book {
-      background-color: #00b4d8;
+    .hero .book-btn {
+      background-color: #0077b6;
       color: white;
     }
 
-    .buttons .contact {
-      background-color: #90e0ef;
-      color: #003049;
-    }
-
-    .buttons button:hover {
-      transform: scale(1.05);
-    }
-
-    .contact-info {
-      display: none;
-      margin-top: 30px;
-      text-align: center;
-      animation: fadeIn 0.5s ease forwards;
-    }
-
-    .contact-info div {
-      margin: 10px 0;
-      font-size: 20px;
-    }
-
-    .contact-info span {
-      display: block;
-      font-weight: bold;
+    .hero .contact-btn {
+      background-color: #caf0f8;
       color: #0077b6;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .hero button:hover {
+      transform: scale(1.05);
+    }
+
+    .contact-cards {
+      display: none;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 10px auto;
+      width: 260px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    }
+
+    .card span {
+      display: block;
+      font-weight: bold;
+      color: #0077b6;
+      margin-bottom: 5px;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 99;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .popup-content {
+      background-color: white;
+      padding: 30px;
+      margin: 100px auto;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .popup-content h3 {
+      margin-bottom: 15px;
+      color: #0077b6;
+    }
+
+    .popup-content input,
+    .popup-content select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .popup-content button {
+      padding: 10px 20px;
+      background-color: #00b4d8;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
     }
 
     footer {
-      margin-top: 60px;
-      padding: 20px;
-      text-align: center;
-      background: #0077b6;
+      background-color: #0077b6;
       color: white;
-    }
-
-    @media (max-width: 600px) {
-      .hero h2 {
-        font-size: 22px;
-      }
-
-      .buttons button {
-        width: 100%;
-      }
+      text-align: center;
+      padding: 20px;
+      margin-top: 60px;
     }
   </style>
 </head>
@@ -124,55 +164,70 @@
 
   <header>
     <h1>مركز PhysioCare للعلاج الطبيعي</h1>
+    <p>الراحة تبدأ من هنا</p>
   </header>
 
   <section class="hero">
-    <h2>استرجع صحتك بأحدث طرق العلاج الطبيعي</h2>
-    <p>نقدّم لك رعاية متكاملة من قبل نخبة من أفضل الأطباء المتخصصين في العلاج الطبيعي والتأهيلي.</p>
+    <h2>جلسات علاج طبيعي متقدمة</h2>
+    <p>نوفر لك فريق طبي متميز، أحدث الأجهزة، وخدمة عملاء متوفرة يوميًا لمساعدتك على الاستشفاء التام.</p>
 
-    <div class="buttons">
-      <button class="book" onclick="window.location.href='#booking'">احجز معنا</button>
-      <button class="contact" onclick="toggleContact()">تواصل معنا</button>
+    <div class="btn-group">
+      <button class="book-btn" onclick="togglePopup()">احجز الآن</button>
+      <button class="contact-btn" onclick="toggleContact()">تواصل معنا</button>
     </div>
 
-    <div class="contact-info" id="contactBox">
-      <div>
+    <div class="contact-cards" id="contactCards">
+      <div class="card">
         <span>Call Center</span>
         01024443117
       </div>
-      <div>
+      <div class="card">
         <span>Call Center</span>
         01024443118
       </div>
     </div>
   </section>
 
-  <section id="booking" style="padding: 50px 20px; text-align: center;">
-    <h2>نموذج الحجز</h2>
-    <p>املأ بياناتك وسيتم التواصل معك لتأكيد الحجز.</p>
-    <form style="margin-top: 20px; max-width: 400px; margin-inline: auto;">
-      <input type="text" placeholder="الاسم" required style="width: 100%; padding: 10px; margin-bottom: 10px;" />
-      <input type="tel" placeholder="رقم الهاتف" required style="width: 100%; padding: 10px; margin-bottom: 10px;" />
-      <select style="width: 100%; padding: 10px; margin-bottom: 10px;">
-        <option>اختر الفرع</option>
-        <option>إيدن مول - الشيخ زايد</option>
-        <option>أركان - الشيخ زايد</option>
-        <option>المعادي</option>
-        <option>المهندسين</option>
-        <option>التجمع</option>
-      </select>
-      <button type="submit" style="padding: 12px 20px; background-color: #00b4d8; color: white; border: none; border-radius: 6px; cursor: pointer;">إرسال الطلب</button>
-    </form>
-  </section>
+  <div class="popup" id="popupForm">
+    <div class="popup-content">
+      <h3>احجز جلسة الآن</h3>
+      <form>
+        <input type="text" placeholder="الاسم الكامل" required />
+        <input type="tel" placeholder="رقم الهاتف" required />
+        <select required>
+          <option value="">اختر الفرع</option>
+          <option>إيدن مول - الشيخ زايد</option>
+          <option>أركان - الشيخ زايد</option>
+          <option>المعادي</option>
+          <option>المهندسين</option>
+          <option>التجمع</option>
+        </select>
+        <button type="submit">إرسال الطلب</button>
+      </form>
+    </div>
+  </div>
 
   <footer>
-    &copy; 2025 PhysioCare. جميع الحقوق محفوظة.
+    &copy; 2025 PhysioCare - جميع الحقوق محفوظة
   </footer>
 
   <script>
     function toggleContact() {
-      const box = document.getElementById('contactBox');
-      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+      const cards = document.getElementById('contactCards');
+      cards.style.display = cards.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function togglePopup() {
+      const popup = document.getElementById('popupForm');
+      popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // اغلق البوب أب لو ضغط خارج المحتوى
+    window.onclick = function(e) {
+      const popup = document.getElementById('popupForm');
+      if (e.target === popup) {
+        popup.style.display = "none";
+      }
     }
   </script>
 
