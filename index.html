@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PhysioCare | احجز جلسة علاج طبيعي</title>
+  <title>PhysioCare | حجز جلسات علاج طبيعي</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -14,24 +14,24 @@
     }
 
     body {
-      background: #f6f9fc;
+      background: #f0f4f8;
       color: #333;
     }
 
     header {
-      background: linear-gradient(90deg, #00b4d8, #0077b6);
+      background: linear-gradient(90deg, #0096c7, #023e8a);
       color: white;
-      padding: 40px 20px;
+      padding: 50px 20px;
       text-align: center;
     }
 
     header h1 {
-      font-size: 36px;
+      font-size: 40px;
       margin-bottom: 10px;
     }
 
     header p {
-      font-size: 18px;
+      font-size: 20px;
       opacity: 0.9;
     }
 
@@ -43,7 +43,7 @@
 
     .hero h2 {
       font-size: 30px;
-      color: #0077b6;
+      color: #023e8a;
       margin-bottom: 20px;
     }
 
@@ -54,14 +54,14 @@
       color: #555;
     }
 
-    .hero .btn-group {
+    .btn-group {
       display: flex;
       justify-content: center;
       gap: 15px;
       flex-wrap: wrap;
     }
 
-    .hero button {
+    .btn-group button {
       padding: 12px 25px;
       border-radius: 30px;
       border: none;
@@ -70,17 +70,17 @@
       transition: 0.3s;
     }
 
-    .hero .book-btn {
+    .book-btn {
       background-color: #0077b6;
       color: white;
     }
 
-    .hero .contact-btn {
+    .contact-btn {
       background-color: #caf0f8;
       color: #0077b6;
     }
 
-    .hero button:hover {
+    .btn-group button:hover {
       transform: scale(1.05);
     }
 
@@ -88,23 +88,36 @@
       display: none;
       margin-top: 40px;
       text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
     }
 
     .card {
       background: white;
       border: 1px solid #ddd;
       border-radius: 12px;
-      padding: 20px;
+      padding: 15px 20px;
       margin: 10px auto;
-      width: 260px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+      width: 300px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+
+    .card img {
+      width: 28px;
+      height: 28px;
     }
 
     .card span {
-      display: block;
       font-weight: bold;
-      color: #0077b6;
-      margin-bottom: 5px;
+      color: #023e8a;
+      display: block;
     }
 
     .popup {
@@ -152,7 +165,7 @@
     }
 
     footer {
-      background-color: #0077b6;
+      background-color: #023e8a;
       color: white;
       text-align: center;
       padding: 20px;
@@ -164,12 +177,12 @@
 
   <header>
     <h1>مركز PhysioCare للعلاج الطبيعي</h1>
-    <p>الراحة تبدأ من هنا</p>
+    <p>نحو شفاء أسرع وعناية متميزة</p>
   </header>
 
   <section class="hero">
-    <h2>جلسات علاج طبيعي متقدمة</h2>
-    <p>نوفر لك فريق طبي متميز، أحدث الأجهزة، وخدمة عملاء متوفرة يوميًا لمساعدتك على الاستشفاء التام.</p>
+    <h2>احجز جلستك مع أفضل الأطباء</h2>
+    <p>نحن نقدم جلسات علاج طبيعي شاملة ومتابعة دقيقة لحالتك الصحية بأحدث التقنيات الطبية.</p>
 
     <div class="btn-group">
       <button class="book-btn" onclick="togglePopup()">احجز الآن</button>
@@ -178,19 +191,32 @@
 
     <div class="contact-cards" id="contactCards">
       <div class="card">
-        <span>Call Center</span>
-        01024443117
+        <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" alt="phone">
+        <div>
+          <span>Call Center</span>
+          01024443117
+        </div>
       </div>
       <div class="card">
-        <span>Call Center</span>
-        01024443118
+        <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" alt="phone">
+        <div>
+          <span>Call Center</span>
+          01024443118
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="whatsapp">
+        <div>
+          <span>WhatsApp</span>
+          <a href="https://wa.me/201024443117" style="text-decoration: none; color: inherit;">01024443117</a>
+        </div>
       </div>
     </div>
   </section>
 
   <div class="popup" id="popupForm">
     <div class="popup-content">
-      <h3>احجز جلسة الآن</h3>
+      <h3>احجز جلستك الآن</h3>
       <form>
         <input type="text" placeholder="الاسم الكامل" required />
         <input type="tel" placeholder="رقم الهاتف" required />
@@ -202,13 +228,13 @@
           <option>المهندسين</option>
           <option>التجمع</option>
         </select>
-        <button type="submit">إرسال الطلب</button>
+        <button type="submit">إرسال</button>
       </form>
     </div>
   </div>
 
   <footer>
-    &copy; 2025 PhysioCare - جميع الحقوق محفوظة
+    &copy; 2025 PhysioCare | جميع الحقوق محفوظة.
   </footer>
 
   <script>
@@ -220,9 +246,10 @@
     function togglePopup() {
       const popup = document.getElementById('popupForm');
       popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
+      popup.style.alignItems = 'center';
+      popup.style.justifyContent = 'center';
     }
 
-    // اغلق البوب أب لو ضغط خارج المحتوى
     window.onclick = function(e) {
       const popup = document.getElementById('popupForm');
       if (e.target === popup) {
