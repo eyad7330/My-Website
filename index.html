@@ -3,32 +3,33 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PhysioCre - حجز جلسة</title>
+  <title>PhysioCre - حجز جلسة علاج طبيعي</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <style>
     body{font-family:'Cairo',sans-serif;background:#f0f4f8;padding:30px;}
-    h2{text-align:center;color:#023e8a;}
+    h2{text-align:center;color:#023e8a;margin-bottom:20px;}
     form{max-width:700px;margin:0 auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);}
     label{display:block;margin-top:15px;font-weight:bold;color:#0077b6;}
     input,select{width:100%;padding:10px;margin-top:5px;border-radius:6px;border:1px solid #ccc;}
-    .toggle-btn,.back-btn{background-color:#0077b6;color:white;border:none;padding:12px 24px;font-size:16px;border-radius:30px;cursor:pointer;transition:0.3s;margin-top:20px;}
-    .toggle-btn:hover,.back-btn:hover{background-color:#0096c7;}
+    .toggle-btn,.back-btn{background:#0077b6;color:#fff;border:none;padding:12px 24px;font-size:16px;border-radius:30px;cursor:pointer;transition:.3s;margin-top:20px;}
+    .toggle-btn:hover,.back-btn:hover{background:#0096c7;}
     .file-grid{display:none;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;margin-top:20px;}
-    .file-box{background:#fff;border-radius:10px;padding:15px;text-align:center;box-shadow:0 4px 8px rgba(0,0,0,0.1);cursor:pointer;transition:0.3s;}
+    .file-box{background:#fff;border-radius:10px;padding:15px;text-align:center;box-shadow:0 4px 8px rgba(0,0,0,0.1);cursor:pointer;transition:.3s;}
     .file-box:hover{transform:scale(1.03);}
     .file-box label{font-weight:bold;margin-bottom:8px;color:#0077b6;}
     .file-box input{display:none;}
     .file-box span{font-size:22px;}
-    button[type="submit"]{background-color:#00b4d8;color:white;padding:12px 20px;border:none;border-radius:6px;font-size:16px;margin-top:30px;cursor:pointer;}
+    button[type="submit"]{background:#00b4d8;color:#fff;padding:12px 20px;border:none;border-radius:6px;font-size:16px;margin-top:30px;cursor:pointer;}
     .success-message{text-align:center;margin-top:40px;font-size:20px;color:green;display:none;}
   </style>
 </head>
 <body>
 
 <h2>نموذج حجز جلسة علاج طبيعي - PhysioCre</h2>
+
 <form id="bookingForm">
   <label>الاسم الثلاثي</label><input type="text" name="fullName" required>
   <label>رقم الهاتف</label><input type="tel" name="phone" required>
@@ -36,7 +37,8 @@
   <label>شركة التأمين</label><input type="text" name="insurance" required>
   <label>تاريخ الجلسة</label><input type="date" name="sessionDate" required>
   <label>الفترة الزمنية</label>
-  <select name="sessionTime" required><option value="">-- اختر الفترة --</option>
+  <select name="sessionTime" required>
+    <option value="">-- اختر الوقت --</option>
     <option value="10:00–10:40">10:00 ص – 10:40 ص</option>
     <option value="10:40–11:20">10:40 ص – 11:20 ص</option>
     <option value="11:20–12:00">11:20 ص – 12:00 م</option>
@@ -53,6 +55,7 @@
   </select>
   <label>الشيفت</label><select name="shift" required><option value="">-- اختر --</option><option value="صباحي">صباحي</option><option value="مسائي">مسائي</option></select>
   <label>الدكتور</label><select name="doctor" required><option value="">-- اختر --</option><option value="د. أحمد خالد">د. أحمد خالد</option><option value="د. سارة منصور">د. سارة منصور</option><option value="د. محمد جمال">د. محمد جمال</option><option value="د. ياسمين عبد الله">د. ياسمين عبد الله</option></select>
+
   <div class="upload-section">
     <button type="button" class="toggle-btn" onclick="toggleGrid()">📎 إرفاق المستندات</button>
     <div class="file-grid" id="fileGrid">
@@ -60,12 +63,13 @@
       <div class="file-box"><label for="id">بطاقة</label><span>📎</span><input type="file" id="id" name="id"></div>
       <div class="file-box"><label for="prescription">روشتة</label><span>📎</span><input type="file" id="prescription" name="prescription"></div>
       <div class="file-box"><label for="xray1">تقرير أشعة</label><span>📎</span><input type="file" id="xray1" name="xray1"></div>
-      <div class="file-box"><label for="xray2">أشعة أخرى</label><span>📎</span><input type="file" id="xray2" name="xray2"></div>
+      <div class="file-box"><label for="xray2">تقرير أشعة أخرى</label><span>📎</span><input type="file" id="xray2" name="xray2"></div>
       <div class="file-box"><label for="report">تقرير طبي</label><span>📎</span><input type="file" id="report" name="report"></div>
       <div class="file-box"><label for="approval">الموافقة</label><span>📎</span><input type="file" id="approval" name="approval"></div>
       <div class="file-box"><label for="other">أخرى</label><span>📎</span><input type="file" id="other" name="other"></div>
     </div>
   </div>
+
   <button type="submit">إرسال الحجز</button>
 </form>
 
