@@ -1,262 +1,226 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PhysioCare | حجز جلسات علاج طبيعي</title>
+  <meta charset="UTF-8">
+  <title>PhysioCare Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <style>
-    * {
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #f0f4f8;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: 'Cairo', sans-serif;
     }
-
-    body {
-      background: #f0f4f8;
-      color: #333;
-    }
-
     header {
       background: linear-gradient(90deg, #0096c7, #023e8a);
       color: white;
-      padding: 50px 20px;
       text-align: center;
+      padding: 40px 20px;
     }
-
-    header h1 {
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
-
-    header p {
-      font-size: 20px;
-      opacity: 0.9;
-    }
-
-    .hero {
-      padding: 60px 20px;
-      text-align: center;
-      background: url('https://www.transparenttextures.com/patterns/white-wall-3.png');
-    }
-
-    .hero h2 {
-      font-size: 30px;
-      color: #023e8a;
-      margin-bottom: 20px;
-    }
-
-    .hero p {
-      font-size: 17px;
-      max-width: 600px;
-      margin: 0 auto 30px;
-      color: #555;
-    }
-
-    .btn-group {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .btn-group button {
-      padding: 12px 25px;
-      border-radius: 30px;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-
-    .book-btn {
-      background-color: #0077b6;
-      color: white;
-    }
-
-    .contact-btn {
-      background-color: #caf0f8;
-      color: #0077b6;
-    }
-
-    .btn-group button:hover {
-      transform: scale(1.05);
-    }
-
-    .contact-cards {
-      display: none;
-      margin-top: 40px;
-      text-align: center;
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(10px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-
-    .card {
+    h1 { margin-bottom: 10px; }
+    form {
+      max-width: 700px;
+      margin: 40px auto;
       background: white;
-      border: 1px solid #ddd;
+      padding: 30px;
       border-radius: 12px;
-      padding: 15px 20px;
-      margin: 10px auto;
-      width: 300px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-
-    .card img {
-      width: 28px;
-      height: 28px;
-    }
-
-    .card span {
+    label {
+      display: block;
+      margin-top: 20px;
       font-weight: bold;
       color: #023e8a;
-      display: block;
     }
-
-    .popup {
-      display: none;
-      position: fixed;
-      z-index: 99;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.5);
-    }
-
-    .popup-content {
-      background-color: white;
-      padding: 30px;
-      margin: 100px auto;
-      width: 90%;
-      max-width: 400px;
-      border-radius: 10px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-
-    .popup-content h3 {
-      margin-bottom: 15px;
-      color: #0077b6;
-    }
-
-    .popup-content input,
-    .popup-content select {
+    input, select {
       width: 100%;
       padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 6px;
+      margin-top: 8px;
       border: 1px solid #ccc;
-    }
-
-    .popup-content button {
-      padding: 10px 20px;
-      background-color: #00b4d8;
-      border: none;
-      color: white;
       border-radius: 6px;
+    }
+    .file-boxes {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .file-box {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px dashed #bbb;
+      text-align: center;
+    }
+    .file-box input {
+      width: 100%;
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 30px;
+      padding: 12px 20px;
+      background-color: #0077b6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
     }
-
-    footer {
-      background-color: #023e8a;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      margin-top: 60px;
+    .contacts {
+      max-width: 600px;
+      margin: 40px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .contact-card {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .contact-card img {
+      width: 26px;
+      height: 26px;
+    }
+    .contact-card a {
+      color: #0077b6;
+      text-decoration: none;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>مركز PhysioCare للعلاج الطبيعي</h1>
-    <p>نحو شفاء أسرع وعناية متميزة</p>
-  </header>
+<header>
+  <h1>مركز PhysioCare للعلاج الطبيعي</h1>
+  <p>احجز جلستك الآن بسهولة</p>
+</header>
 
-  <section class="hero">
-    <h2>احجز جلستك مع أفضل الأطباء</h2>
-    <p>نحن نقدم جلسات علاج طبيعي شاملة ومتابعة دقيقة لحالتك الصحية بأحدث التقنيات الطبية.</p>
+<form id="bookingForm">
+  <label>الاسم الثلاثي</label>
+  <input type="text" name="fullName" required>
 
-    <div class="btn-group">
-      <button class="book-btn" onclick="togglePopup()">احجز الآن</button>
-      <button class="contact-btn" onclick="toggleContact()">تواصل معنا</button>
+  <label>رقم الهاتف</label>
+  <input type="tel" name="phone" required>
+
+  <label>رقم هاتف آخر (اختياري)</label>
+  <input type="tel" name="phone2">
+
+  <label>شركة التأمين</label>
+  <input type="text" name="insurance" required>
+
+  <div class="file-boxes">
+    <div class="file-box">
+      <label>📎 كارنيه</label>
+      <input type="file" name="card">
     </div>
-
-    <div class="contact-cards" id="contactCards">
-      <div class="card">
-        <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" alt="phone">
-        <div>
-          <span>Call Center</span>
-          01024443117
-        </div>
-      </div>
-      <div class="card">
-        <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" alt="phone">
-        <div>
-          <span>Call Center</span>
-          01024443118
-        </div>
-      </div>
-      <div class="card">
-        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="whatsapp">
-        <div>
-          <span>WhatsApp</span>
-          <a href="https://wa.me/201024443117" style="text-decoration: none; color: inherit;">01024443117</a>
-        </div>
-      </div>
+    <div class="file-box">
+      <label>📎 بطاقة</label>
+      <input type="file" name="id">
     </div>
-  </section>
-
-  <div class="popup" id="popupForm">
-    <div class="popup-content">
-      <h3>احجز جلستك الآن</h3>
-      <form>
-        <input type="text" placeholder="الاسم الكامل" required />
-        <input type="tel" placeholder="رقم الهاتف" required />
-        <select required>
-          <option value="">اختر الفرع</option>
-          <option>إيدن مول - الشيخ زايد</option>
-          <option>أركان - الشيخ زايد</option>
-          <option>المعادي</option>
-          <option>المهندسين</option>
-          <option>التجمع</option>
-        </select>
-        <button type="submit">إرسال</button>
-      </form>
+    <div class="file-box">
+      <label>📎 روشتة</label>
+      <input type="file" name="prescription">
+    </div>
+    <div class="file-box">
+      <label>📎 تقرير أشعة</label>
+      <input type="file" name="xray1">
+    </div>
+    <div class="file-box">
+      <label>📎 تقرير أشعة أخرى (اختياري)</label>
+      <input type="file" name="xray2">
+    </div>
+    <div class="file-box">
+      <label>📎 تقرير طبي (اختياري)</label>
+      <input type="file" name="report">
+    </div>
+    <div class="file-box">
+      <label>📎 الموافقة</label>
+      <input type="file" name="approval">
+    </div>
+    <div class="file-box">
+      <label>📎 أخرى</label>
+      <input type="file" name="other">
     </div>
   </div>
 
-  <footer>
-    &copy; 2025 PhysioCare | جميع الحقوق محفوظة.
-  </footer>
+  <button type="submit">إرسال</button>
+</form>
 
-  <script>
-    function toggleContact() {
-      const cards = document.getElementById('contactCards');
-      cards.style.display = cards.style.display === 'block' ? 'none' : 'block';
-    }
+<div class="contacts">
+  <div class="contact-card">
+    <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" />
+    <span>Call Center: <a href="tel:01024443117">01024443117</a></span>
+  </div>
+  <div class="contact-card">
+    <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" />
+    <span>Call Center: <a href="tel:01024443118">01024443118</a></span>
+  </div>
+  <div class="contact-card">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" />
+    <span>WhatsApp: <a href="https://wa.me/201024443117" target="_blank">01024443117</a></span>
+  </div>
+  <div class="contact-card">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" />
+    <span>WhatsApp: <a href="https://wa.me/201024443118" target="_blank">01024443118</a></span>
+  </div>
+</div>
 
-    function togglePopup() {
-      const popup = document.getElementById('popupForm');
-      popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
-      popup.style.alignItems = 'center';
-      popup.style.justifyContent = 'center';
-    }
+<script>
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyA6_OACwpwaFSiX8jfsjS0_bt_EfIc4rhY",
+    authDomain: "physiocare-booking.firebaseapp.com",
+    projectId: "physiocare-booking",
+    storageBucket: "physiocare-booking.firebasestorage.app",
+    messagingSenderId: "815959251074",
+    appId: "1:815959251074:web:cfd13396b4072b90ccbc9b",
+    measurementId: "G-HBYJGQRVBB"
+  };
 
-    window.onclick = function(e) {
-      const popup = document.getElementById('popupForm');
-      if (e.target === popup) {
-        popup.style.display = "none";
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+
+  document.getElementById("bookingForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const data = {
+      fullName: form.fullName.value,
+      phone: form.phone.value,
+      phone2: form.phone2.value || '',
+      insurance: form.insurance.value,
+      files: {}
+    };
+
+    const fileFields = ['card','id','prescription','xray1','xray2','report','approval','other'];
+
+    for (const field of fileFields) {
+      const fileInput = form[field];
+      const file = fileInput.files[0];
+      if (file) {
+        const storageRef = storage.ref().child(`bookings/${Date.now()}_${file.name}`);
+        await storageRef.put(file);
+        const downloadURL = await storageRef.getDownloadURL();
+        data.files[field] = downloadURL;
       }
     }
-  </script>
+
+    await db.collection("bookings").add(data);
+    alert("تم إرسال الحجز بنجاح!");
+    form.reset();
+  });
+</script>
 
 </body>
 </html>
