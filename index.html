@@ -3,105 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhysioCare - حجز جلسات علاج طبيعي</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>PhysioCare - مركز العلاج الطبيعي</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 15px 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #007bff;
+        }
+
+        .navbar .nav-links a {
+            color: #555;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .navbar .nav-links a:hover, .cta-button:hover {
+            color: #0056b3;
+        }
+
+        .cta-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.3s;
+        }
+         .cta-button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+
+        .hero {
+            background-image: linear-gradient(rgba(0, 123, 255, 0.6), rgba(0, 123, 255, 0.6)), url('https://plus.unsplash.com/premium_photo-1661749004201-14a27527c975?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 120px 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .services {
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .services h2 {
+            font-size: 36px;
+            margin-bottom: 50px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .service-card:hover {
+             transform: translateY(-10px);
+             box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .service-card h3 {
+            color: #007bff;
+            font-size: 22px;
+            margin-top: 0;
+        }
+
+        .footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+    </style>
 </head>
 <body>
 
-    <header class="hero-section">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1 class="brand-name">PhysioCare</h1>
-            <p class="tagline">خطوتك الأولى نحو الشفاء والراحة.</p>
+    <nav class="navbar">
+        <div class="logo">PhysioCare</div>
+        <div class="nav-links">
+            <a href="#home">الرئيسية</a>
+            <a href="#services">خدماتنا</a>
+            <a href="#about">من نحن</a>
+            <a href="#contact">تواصل معنا</a>
         </div>
+        <a href="#booking" class="cta-button">احجز موعدك الآن</a>
+    </nav>
+
+    <header class="hero" id="home">
+        <h1>استعد حركتك، استعد حياتك</h1>
+        <p>نقدم في مركزنا رعاية علاج طبيعي متكاملة لمساعدتك على التعافي والعودة إلى أفضل حالاتك الصحية.</p>
+        <a href="#booking" class="cta-button">اكتشف كيف يمكننا مساعدتك</a>
     </header>
 
-    <main class="container">
-        <div id="booking-wizard">
-            
-            <div class="wizard-step active" id="step-1">
-                <div class="step-header">
-                    <div class="step-icon">1</div>
-                    <h2>اختر التاريخ المناسب</h2>
-                </div>
-                <div class="step-content">
-                    <input type="date" id="session-date">
-                    <p id="date-error" class="error-message hidden">الرجاء اختيار تاريخ صالح.</p>
-                </div>
+    <section class="services" id="services">
+        <h2>خدماتنا المتخصصة</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>إعادة التأهيل بعد الإصابات الرياضية</h3>
+                <p>برامج متخصصة للرياضيين للعودة إلى الملاعب بأسرع وقت وبأمان تام.</p>
             </div>
-
-            <div class="wizard-step" id="step-2">
-                <div class="step-header">
-                    <div class="step-icon">2</div>
-                    <h2>حدد موعد الجلسة</h2>
-                </div>
-                <div id="shifts-container" class="step-content">
-                    <div class="shift-card">
-                        <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                            الفترة الصباحية
-                        </h3>
-                        <div class="time-slots" id="morning-shift"></div>
-                    </div>
-                    <div class="shift-card">
-                        <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                            الفترة المسائية
-                        </h3>
-                        <div class="time-slots" id="evening-shift"></div>
-                    </div>
-                </div>
+            <div class="service-card">
+                <h3>علاج آلام الظهر والرقبة</h3>
+                <p>تقنيات يدوية وتمارين علاجية للتخلص من الآلام المزمنة وتحسين جودة الحياة.</p>
             </div>
-            
-            <div class="wizard-step" id="step-3">
-                 <div class="step-header">
-                    <div class="step-icon">3</div>
-                    <h2>املأ بياناتك لإتمام الحجز</h2>
-                </div>
-                <p class="form-intro">موعدك المحدد هو: <strong id="selected-time-display"></strong></p>
-                <form id="booking-form" class="step-content">
-                    <div class="form-group">
-                        <input type="text" id="full-name" placeholder="الاسم الثلاثي" required>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <input type="tel" id="phone-number" placeholder="رقم الهاتف الأساسي" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="tel" id="optional-phone-number" placeholder="رقم هاتف إضافي (اختياري)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="insurance-company" placeholder="شركة التأمين (إن وجدت)">
-                    </div>
-                    <div class="form-group file-upload-wrapper">
-                        <label for="file-upload">
-                            <span id="file-name-display">رفع ملف (روشتة، تقرير)</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
-                        </label>
-                        <input type="file" id="file-upload" accept="image/*,application/pdf">
-                    </div>
-                    <button type="submit" id="submit-booking-btn">
-                        <span class="btn-text">تأكيد الحجز الآن</span>
-                        <div id="loader" class="loader hidden"></div>
-                    </button>
-                </form>
+            <div class="service-card">
+                <h3>التأهيل بعد العمليات الجراحية</h3>
+                <p>متابعة دقيقة وخطط علاجية مخصصة لضمان أفضل نتائج بعد الجراحة.</p>
             </div>
-
         </div>
-    </main>
+    </section>
 
-    <footer class="main-footer">
-        <p>PhysioCare &copy; 2025 - كل الحقوق محفوظة</p>
+    <footer class="footer" id="contact">
+        <p>&copy; 2025 مركز PhysioCare. جميع الحقوق محفوظة.</p>
     </footer>
-
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"></script>
-    <script src="script.js"></script>
 
 </body>
 </html>
