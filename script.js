@@ -1,13 +1,13 @@
-// --- إعداد Firebase ---
-// !! هام: ضع إعدادات Firebase الخاصة بك هنا !!
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
+  apiKey: "AIzaSyA6_OACwpwaFSiX8jfsjS0_bt_EfIc4rhY",
+  authDomain: "physiocare-booking.firebaseapp.com",
+  projectId: "physiocare-booking",
+  storageBucket: "physiocare-booking.firebasestorage.app",
+  messagingSenderId: "815959251074",
+  appId: "1:815959251074:web:cfd13396b4072b90ccbc9b",
+  measurementId: "G-HBYJGQRVBB"
+};};
 
 // تهيئة Firebase
 firebase.initializeApp(firebaseConfig);
