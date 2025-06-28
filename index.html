@@ -138,18 +138,24 @@
       <input type="date" id="date"
         
   <label>اختيار الشيفت</label>
-<div class="choice-group" id="shift-buttons">
-  <button type="button" class="choice-button" data-value="صباحي">صباحي</button>
-  <button type="button" class="choice-button" data-value="مسائي">مسائي</button>
-</div>
-<input type="hidden" id="shift" name="shift" required>
-      <label for="notes">ملاحظات إضافية</label>
-      <textarea id="notes" placeholder="لو في حاجة تحب توضحها" rows="3"></textarea>
+<div id="evening-options" style="display: none; margin-top: 20px;">
+  <label for="doctors">اختر اسم الدكتور (يمكن كتابة أكثر من اسم)</label>
+  <input type="text" id="doctors" placeholder="مثال: محمد صادق، نيره خالد">
 
-      <button type="submit">احجز الآن</button>
-    </form>
+  <label style="margin-top: 15px;">اختر الموعد المناسب</label>
+  <div class="choice-group" id="time-buttons">
+    <button type="button" class="choice-button" data-value="4:30 م">4:30 م</button>
+    <button type="button" class="choice-button" data-value="5:10 م">5:10 م</button>
+    <button type="button" class="choice-button" data-value="5:50 م">5:50 م</button>
+    <button type="button" class="choice-button" data-value="6:30 م">6:30 م</button>
+    <button type="button" class="choice-button" data-value="7:10 م">7:10 م</button>
+    <button type="button" class="choice-button" data-value="7:50 م">7:50 م</button>
+    <button type="button" class="choice-button" data-value="8:30 م">8:30 م</button>
+    <button type="button" class="choice-button" data-value="9:10 م">9:10 م</button>
+    <button type="button" class="choice-button" data-value="9:50 م">9:50 م</button>
   </div>
-
+  <input type="hidden" id="selected-time" name="selected-time">
+</div>
   <footer>
     &copy; 2025 مركز PhysioCare - جميع الحقوق محفوظة
   </footer>
@@ -170,16 +176,41 @@
 
   activateChoice('shift-buttons', 'shift');
   activateChoice('branch-buttons', 'branch');
+  activateChoice('time-buttons', 'selected-time');
+
+  // إظهار أو إخفاء مربع الدكتور والمواعيد حسب الشيفت
+  document.querySelectorAll('#shift-buttons .choice-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const eveningBox = document.getElementById('evening-options');
+      if (btn.dataset.value === 'مسائي') {
+        eveningBox.style.display = 'block';
+      } else {
+        eveningBox.style.display = 'none';
+        document.getElementById('selected-time').value = '';
+        document.getElementById('doctors').value = '';
+        document.querySelectorAll('#time-buttons .choice-button').forEach(b => b.classList.remove('active'));
+      }
+    });
+  });
 
   document.getElementById('booking-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
     const shift = document.getElementById('shift').value;
     const branch = document.getElementById('branch').value;
+    const doctorNames = document.getElementById('doctors').value;
+    const time = document.getElementById('selected-time').value;
 
     if (!shift || !branch) {
       alert('يرجى اختيار الشيفت والفرع');
       return;
+    }
+
+    if (shift === 'مسائي') {
+      if (!doctorNames || !time) {
+        alert('يرجى إدخال اسم الدكتور واختيار الموعد');
+        return;
+      }
     }
 
     alert('✅ تم إرسال الحجز بنجاح - سيتم التواصل معك قريبًا');
