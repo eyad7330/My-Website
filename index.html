@@ -57,13 +57,10 @@
   <form id="booking-form">
     <label>الاسم الكامل</label>
     <input type="text" id="name" required placeholder="اكتب اسمك ثلاثي">
-
     <label>رقم الهاتف</label>
     <input type="tel" id="phone" required placeholder="01XXXXXXXXX">
-
     <label>رقم هاتف احتياطي (اختياري)</label>
     <input type="tel" id="alt-phone" placeholder="01XXXXXXXXX">
-
     <label>شركة التأمين</label>
     <div class="choice-group" id="insurance-buttons">
       <button type="button" class="choice-button" data-value="Globmed">Globmed</button>
@@ -76,7 +73,6 @@
       <button type="button" class="choice-button" data-value="Egymed">Egymed</button>
     </div>
     <input type="hidden" id="insurance">
-
     <label>اختر الفرع</label>
     <div class="choice-group" id="branch-buttons">
       <button type="button" class="choice-button" data-value="إيدن مول - الشيخ زايد">إيدن مول</button>
@@ -86,10 +82,8 @@
       <button type="button" class="choice-button" data-value="التجمع الخامس">التجمع</button>
     </div>
     <input type="hidden" id="branch">
-
     <label>التاريخ</label>
     <input type="date" id="date" required>
-
     <label>اختيار الشيفت</label>
     <div class="choice-group" id="shift-buttons">
       <button type="button" class="choice-button" data-value="صباحي">صباحي</button>
@@ -100,7 +94,6 @@
     <div id="evening-options" style="display:none">
       <label>أسماء الدكاترة</label>
       <input type="text" id="doctors" placeholder="مثال: محمد صادق، نيره خالد">
-
       <label>اختيار المواعيد</label>
       <div class="choice-group" id="time-buttons">
         <button type="button" class="choice-button" data-value="4:30 م">4:30 م</button>
@@ -154,7 +147,7 @@
   const db = firebase.firestore();
   const storage = firebase.storage();
 
-  function activateChoice(groupId, hiddenId) {
+  const activateChoice = (groupId, hiddenId) => {
     const buttons = document.querySelectorAll(`#${groupId} .choice-button`);
     const input = document.getElementById(hiddenId);
     buttons.forEach(btn => {
@@ -164,9 +157,9 @@
         input.value = btn.dataset.value;
       });
     });
-  }
+  };
 
-  function activateMultiChoice(groupId, hiddenId) {
+  const activateMultiChoice = (groupId, hiddenId) => {
     const buttons = document.querySelectorAll(`#${groupId} .choice-button`);
     const input = document.getElementById(hiddenId);
     const selected = new Set();
@@ -174,12 +167,11 @@
       btn.addEventListener("click", () => {
         const val = btn.dataset.value;
         btn.classList.toggle("active");
-        if (selected.has(val)) selected.delete(val);
-        else selected.add(val);
+        selected.has(val) ? selected.delete(val) : selected.add(val);
         input.value = Array.from(selected).join(", ");
       });
     });
-  }
+  };
 
   activateChoice('branch-buttons', 'branch');
   activateChoice('shift-buttons', 'shift');
@@ -209,6 +201,20 @@
     const time = document.getElementById("selected-time").value.trim();
     const notes = document.getElementById("notes").value.trim();
 
+    if (!name || !phone || !insurance || !branch || !date || !shift) {
+      alert("من فضلك اكمل جميع الحقول المطلوبة.");
+      btn.disabled = false;
+      btn.textContent = "احجز الآن";
+      return;
+    }
+
+    if (shift === "مسائي" && (!doctors || !time)) {
+      alert("برجاء اختيار اسم الدكتور والموعد.");
+      btn.disabled = false;
+      btn.textContent = "احجز الآن";
+      return;
+    }
+
     const fileInputs = {
       carnet: document.getElementById("file-carnet"),
       id: document.getElementById("file-id"),
@@ -221,31 +227,38 @@
     };
 
     const uploadedFiles = {};
-
-    const uploadFile = async (label, fileInput) => {
-      if (fileInput && fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        const fileRef = storage.ref().child(`bookings/${Date.now()}_${file.name}`);
-        await fileRef.put(file);
-        const url = await fileRef.getDownloadURL();
-        uploadedFiles[label] = url;
+    const uploadFile = async (label, input) => {
+      if (input && input.files.length > 0) {
+        const file = input.files[0];
+        const uniqueId = Date.now() + "_" + Math.floor(Math.random() * 10000);
+        const ref = storage.ref(`bookings/${uniqueId}_${file.name}`);
+        await ref.put(file);
+        uploadedFiles[label] = await ref.getDownloadURL();
       }
     };
 
-    const uploadTasks = [];
-    for (const [label, input] of Object.entries(fileInputs)) {
-      uploadTasks.push(uploadFile(label, input));
+    try {
+      await Promise.all(Object.entries(fileInputs).map(([k, v]) => uploadFile(k, v)));
+      const bookingRef = await db.collection("bookings").add({
+        name, phone, altPhone, insurance, branch, date, shift,
+        doctors, time, notes, files: uploadedFiles,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      // إرسال تأكيد واتساب
+      const msg = `تم حجز جلستك في PhysioCare ✅\nالفرع: ${branch}\nالتاريخ: ${date}\nالوقت: ${time}\nالاسم: ${name}`;
+      window.open(`https://wa.me/2${phone.replace(/^0/, "")}?text=${encodeURIComponent(msg)}`, '_blank');
+
+      alert("✅ تم إرسال الحجز بنجاح!");
+      this.reset();
+      btn.disabled = false;
+      btn.textContent = "احجز الآن";
+    } catch (err) {
+      console.error(err);
+      alert("حدث خطأ أثناء إرسال الحجز. حاول مرة أخرى.");
+      btn.disabled = false;
+      btn.textContent = "احجز الآن";
     }
-    await Promise.all(uploadTasks);
-
-    await db.collection("bookings").add({
-      name, phone, altPhone, insurance, branch, date, shift,
-      doctors, time, notes, files: uploadedFiles,
-      createdAt: new Date()
-    });
-
-    alert("✅ تم إرسال الحجز بنجاح!");
-    location.reload();
   });
 </script>
 
