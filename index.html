@@ -142,7 +142,7 @@
         <label for="doctors">اختر اسم الدكتور (يمكن كتابة أكثر من اسم)</label>
         <input type="text" id="doctors" placeholder="مثال: محمد صادق، نيره خالد">
 
-        <label style="margin-top: 15px;">اختر الموعد المناسب</label>
+        <label style="margin-top: 15px;">اختر المواعيد المناسبة</label>
         <div class="choice-group" id="time-buttons">
           <button type="button" class="choice-button" data-value="4:30 م">4:30 م</button>
           <button type="button" class="choice-button" data-value="5:10 م">5:10 م</button>
@@ -169,7 +169,7 @@
   </footer>
 
   <script>
-    function activateChoice(groupId, hiddenInputId) {
+    function activateSingleChoice(groupId, hiddenInputId) {
       const buttons = document.querySelectorAll(`#${groupId} .choice-button`);
       const hiddenInput = document.getElementById(hiddenInputId);
       buttons.forEach(btn => {
@@ -181,9 +181,29 @@
       });
     }
 
-    activateChoice('shift-buttons', 'shift');
-    activateChoice('branch-buttons', 'branch');
-    activateChoice('time-buttons', 'selected-time');
+    function activateMultiChoice(groupId, hiddenInputId) {
+      const buttons = document.querySelectorAll(`#${groupId} .choice-button`);
+      const hiddenInput = document.getElementById(hiddenInputId);
+      const selectedValues = new Set();
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const value = btn.dataset.value;
+          if (btn.classList.contains('active')) {
+            btn.classList.remove('active');
+            selectedValues.delete(value);
+          } else {
+            btn.classList.add('active');
+            selectedValues.add(value);
+          }
+          hiddenInput.value = Array.from(selectedValues).join(', ');
+        });
+      });
+    }
+
+    activateSingleChoice('shift-buttons', 'shift');
+    activateSingleChoice('branch-buttons', 'branch');
+    activateMultiChoice('time-buttons', 'selected-time');
 
     document.querySelectorAll('#shift-buttons .choice-button').forEach(btn => {
       btn.addEventListener('click', () => {
