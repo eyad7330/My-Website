@@ -56,13 +56,13 @@
   <h2>نموذج حجز جلسة علاج طبيعي</h2>
   <form id="booking-form">
     <label>الاسم الكامل</label>
-    <input type="text" id="name" required placeholder="اكتب اسمك ثلاثي">
+    <input type="text" id="name" required>
 
     <label>رقم الهاتف</label>
-    <input type="tel" id="phone" required placeholder="01XXXXXXXXX">
+    <input type="tel" id="phone" required>
 
     <label>رقم هاتف احتياطي (اختياري)</label>
-    <input type="tel" id="alt-phone" placeholder="01XXXXXXXXX">
+    <input type="tel" id="alt-phone">
 
     <label>شركة التأمين</label>
     <div class="choice-group" id="insurance-buttons">
@@ -75,9 +75,9 @@
       <button type="button" class="choice-button" data-value="Bupa">Bupa</button>
       <button type="button" class="choice-button" data-value="Egymed">Egymed</button>
     </div>
-    <input type="hidden" id="insurance" name="insurance">
+    <input type="hidden" id="insurance">
 
-    <label>اختر الفرع</label>
+    <label>الفرع</label>
     <div class="choice-group" id="branch-buttons">
       <button type="button" class="choice-button" data-value="إيدن مول - الشيخ زايد">إيدن مول</button>
       <button type="button" class="choice-button" data-value="أركان مول - الشيخ زايد">أركان مول</button>
@@ -85,12 +85,12 @@
       <button type="button" class="choice-button" data-value="المهندسين">المهندسين</button>
       <button type="button" class="choice-button" data-value="التجمع الخامس">التجمع</button>
     </div>
-    <input type="hidden" id="branch" name="branch">
+    <input type="hidden" id="branch">
 
     <label>التاريخ</label>
     <input type="date" id="date" required>
 
-    <label>اختيار الشيفت</label>
+    <label>الشيفت</label>
     <div class="choice-group" id="shift-buttons">
       <button type="button" class="choice-button" data-value="صباحي">صباحي</button>
       <button type="button" class="choice-button" data-value="مسائي">مسائي</button>
@@ -98,9 +98,8 @@
     <input type="hidden" id="shift">
 
     <div id="evening-options" style="display:none">
-      <label>أسماء الدكاترة (اكتب اسم أو أكثر)</label>
+      <label>أسماء الأطباء</label>
       <input type="text" id="doctors" placeholder="مثال: محمد صادق، نيره خالد">
-
       <label>اختيار المواعيد</label>
       <div class="choice-group" id="time-buttons">
         <button type="button" class="choice-button" data-value="4:30 م">4:30 م</button>
@@ -117,7 +116,7 @@
     </div>
 
     <label>ملاحظات إضافية</label>
-    <textarea id="notes" rows="3" placeholder="لو في حاجة تحب توضحها"></textarea>
+    <textarea id="notes" rows="3"></textarea>
 
     <h3>رفع الملفات</h3>
     <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap:10px;">
@@ -143,12 +142,11 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
 <script>
-  // إعداد فايربيز
   const firebaseConfig = {
     apiKey: "AIzaSyA6_OACwpwaFSiX8jfsjS0_bt_EfIc4rhY",
     authDomain: "physiocare-booking.firebaseapp.com",
     projectId: "physiocare-booking",
-    storageBucket: "physiocare-booking.firebasestorage.app",
+    storageBucket: "physiocare-booking.appspot.com",
     messagingSenderId: "815959251074",
     appId: "1:815959251074:web:cfd13396b4072b90ccbc9b",
     measurementId: "G-HBYJGQRVBB"
@@ -179,8 +177,7 @@
       btn.addEventListener("click", () => {
         const val = btn.dataset.value;
         btn.classList.toggle("active");
-        if (selected.has(val)) selected.delete(val);
-        else selected.add(val);
+        selected.has(val) ? selected.delete(val) : selected.add(val);
         input.value = Array.from(selected).join(", ");
       });
     });
@@ -198,9 +195,51 @@
     });
   });
 
-  document.getElementById("booking-form").addEventListener("submit", function(e) {
+  document.getElementById("booking-form").addEventListener("submit", async function(e) {
     e.preventDefault();
-    alert("✅ الحجز تم! (الربط مع Firebase في الخطوة القادمة 🔥)");
+
+    const data = {
+      name: document.getElementById('name').value,
+      phone: document.getElementById('phone').value,
+      altPhone: document.getElementById('alt-phone').value,
+      insurance: document.getElementById('insurance').value,
+      branch: document.getElementById('branch').value,
+      shift: document.getElementById('shift').value,
+      doctors: document.getElementById('doctors').value,
+      date: document.getElementById('date').value,
+      time: document.getElementById('selected-time').value,
+      notes: document.getElementById('notes').value,
+      createdAt: new Date()
+    };
+
+    const files = {
+      carnet: document.getElementById('file-carnet').files[0],
+      id: document.getElementById('file-id').files[0],
+      prescription: document.getElementById('file-prescription').files[0],
+      approval: document.getElementById('file-approval').files[0],
+      xray1: document.getElementById('file-xray1').files[0],
+      xray2: document.getElementById('file-xray2').files[0],
+      medical: document.getElementById('file-medical').files[0],
+      other: document.getElementById('file-other').files[0]
+    };
+
+    const docRef = await db.collection("bookings").add(data);
+    const uploadPromises = [];
+
+    for (const [key, file] of Object.entries(files)) {
+      if (file) {
+        const storageRef = storage.ref(`bookings/${docRef.id}/${key}`);
+        uploadPromises.push(
+          storageRef.put(file).then(() => storageRef.getDownloadURL())
+            .then(url => db.collection("bookings").doc(docRef.id).update({ [`file_${key}`]: url }))
+        );
+      }
+    }
+
+    await Promise.all(uploadPromises);
+
+    alert("✅ تم الحجز ورفع الملفات بنجاح!");
+    window.location.href = "thank-you.html";
   });
 </script>
 
