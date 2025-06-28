@@ -70,7 +70,33 @@
       color: #777;
       margin: 40px 0 10px;
     }
-  </style>
+    <!-- أضف داخل <head> -->
+<style>
+  .choice-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 10px 0 20px;
+  }
+
+  .choice-button {
+    flex: 1;
+    padding: 12px;
+    background-color: #eee;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 15px;
+  }
+
+  .choice-button.active {
+    background-color: #009688;
+    color: white;
+    border-color: #00796b;
+  }
+</style>
+  
 </head>
 <body>
 
@@ -101,13 +127,13 @@
       <label for="date">التاريخ</label>
       <input type="date" id="date" required>
 
-      <label for="shift">الشيفت</label>
-      <select id="shift" required>
-        <option value="">-- اختر الشيفت --</option>
-        <option>صباحي (10:30 ص - 4:30 م)</option>
-        <option>مسائي (4:30 م - 10:30 م)</option>
-      </select>
-
+      <!-- داخل <form> عدل الشيفت كالتالي -->
+<label>اختيار الشيفت</label>
+<div class="choice-group" id="shift-buttons">
+  <button type="button" class="choice-button" data-value="صباحي">صباحي (10:30 ص - 4:30 م)</button>
+  <button type="button" class="choice-button" data-value="مسائي">مسائي (4:30 م - 10:30 م)</button>
+</div>
+<input type="hidden" id="shift" name="shift" required>
       <label for="notes">ملاحظات إضافية</label>
       <textarea id="notes" placeholder="لو في حاجة تحب توضحها" rows="3"></textarea>
 
@@ -119,7 +145,31 @@
     &copy; 2025 مركز PhysioCare - جميع الحقوق محفوظة
   </footer>
 
-  <script>
+  <!-- داخل <script> في آخر الصفحة -->
+<script>
+  const shiftButtons = document.querySelectorAll('#shift-buttons .choice-button');
+  const shiftInput = document.getElementById('shift');
+
+  shiftButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // إزالة active من الكل
+      shiftButtons.forEach(b => b.classList.remove('active'));
+      // إضافة active للي اتضغط عليه
+      btn.classList.add('active');
+      // تخزين القيمة الفعلية
+      shiftInput.value = btn.dataset.value;
+    });
+  });
+
+  document.getElementById('booking-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!shiftInput.value) {
+      alert('يرجى اختيار الشيفت');
+      return;
+    }
+    alert('تم إرسال الحجز بنجاح ✅ سيتم التواصل معك قريبًا');
+  });
+</script>
     document.getElementById('booking-form').addEventListener('submit', function(e) {
       e.preventDefault();
       alert('تم إرسال الحجز بنجاح ✅ سيتم التواصل معك قريبًا');
