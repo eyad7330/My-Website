@@ -70,30 +70,39 @@
       color: #777;
       margin: 40px 0 10px;
     }
-    <!-- أضف داخل <head> -->
 <style>
   .choice-group {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 15px;
     margin: 10px 0 20px;
   }
 
   .choice-button {
-    flex: 1;
-    padding: 12px;
-    background-color: #eee;
-    border: 2px solid #ccc;
-    border-radius: 8px;
+    padding: 12px 20px;
+    border: 2px solid transparent;
+    background: #f0f0f0;
+    color: #333;
+    font-size: 16px;
+    border-radius: 50px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 15px;
+    transition: 0.3s ease-in-out;
+    min-width: 130px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+
+  .choice-button:hover {
+    background: #e0f2f1;
+    color: #00796b;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
   .choice-button.active {
-    background-color: #009688;
+    background: linear-gradient(to right, #009688, #00796b);
     color: white;
-    border-color: #00796b;
+    border-color: #00695c;
+    box-shadow: 0 4px 12px rgba(0, 150, 136, 0.4);
   }
 </style>
   
@@ -114,7 +123,15 @@
       <label for="phone">رقم الهاتف</label>
       <input type="tel" id="phone" placeholder="01XXXXXXXXX" required>
 
-      <label for="branch">اختر الفرع</label>
+      <label>اختر الفرع</label>
+<div class="choice-group" id="branch-buttons">
+  <button type="button" class="choice-button" data-value="إيدن مول - الشيخ زايد">إيدن مول</button>
+  <button type="button" class="choice-button" data-value="أركان مول - الشيخ زايد">أركان مول</button>
+  <button type="button" class="choice-button" data-value="المعادي">المعادي</button>
+  <button type="button" class="choice-button" data-value="المهندسين">المهندسين</button>
+  <button type="button" class="choice-button" data-value="التجمع الخامس">التجمع</button>
+</div>
+<input type="hidden" id="branch" name="branch" required>
       <select id="branch" required>
         <option value="">-- اختر الفرع --</option>
         <option>إيدن مول - الشيخ زايد</option>
@@ -125,13 +142,12 @@
       </select>
 
       <label for="date">التاريخ</label>
-      <input type="date" id="date" required>
-
-      <!-- داخل <form> عدل الشيفت كالتالي -->
-<label>اختيار الشيفت</label>
+      <input type="date" id="date"
+        
+  <label>اختيار الشيفت</label>
 <div class="choice-group" id="shift-buttons">
-  <button type="button" class="choice-button" data-value="صباحي">صباحي (10:30 ص - 4:30 م)</button>
-  <button type="button" class="choice-button" data-value="مسائي">مسائي (4:30 م - 10:30 م)</button>
+  <button type="button" class="choice-button" data-value="صباحي">صباحي</button>
+  <button type="button" class="choice-button" data-value="مسائي">مسائي</button>
 </div>
 <input type="hidden" id="shift" name="shift" required>
       <label for="notes">ملاحظات إضافية</label>
@@ -147,34 +163,35 @@
 
   <!-- داخل <script> في آخر الصفحة -->
 <script>
-  const shiftButtons = document.querySelectorAll('#shift-buttons .choice-button');
-  const shiftInput = document.getElementById('shift');
-
-  shiftButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // إزالة active من الكل
-      shiftButtons.forEach(b => b.classList.remove('active'));
-      // إضافة active للي اتضغط عليه
-      btn.classList.add('active');
-      // تخزين القيمة الفعلية
-      shiftInput.value = btn.dataset.value;
+  function activateChoice(groupId, hiddenInputId) {
+    const buttons = document.querySelectorAll(`#${groupId} .choice-button`);
+    const hiddenInput = document.getElementById(hiddenInputId);
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        hiddenInput.value = btn.dataset.value;
+      });
     });
-  });
+  }
+
+  activateChoice('shift-buttons', 'shift');
+  activateChoice('branch-buttons', 'branch');
 
   document.getElementById('booking-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    if (!shiftInput.value) {
-      alert('يرجى اختيار الشيفت');
+
+    const shift = document.getElementById('shift').value;
+    const branch = document.getElementById('branch').value;
+
+    if (!shift || !branch) {
+      alert('يرجى اختيار الشيفت والفرع');
       return;
     }
-    alert('تم إرسال الحجز بنجاح ✅ سيتم التواصل معك قريبًا');
+
+    alert('✅ تم إرسال الحجز بنجاح - سيتم التواصل معك قريبًا');
   });
 </script>
-    document.getElementById('booking-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('تم إرسال الحجز بنجاح ✅ سيتم التواصل معك قريبًا');
-    });
-  </script>
 
 </body>
 </html>
