@@ -12,10 +12,16 @@
       max-width: 750px; background: white; margin: 40px auto;
       padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    label { display: block; margin: 15px 0 5px; }
+    label { display: block; margin: 15px 0 5px; font-weight: bold; }
     input, select, textarea {
       width: 100%; padding: 12px; border: 1px solid #ccc;
       border-radius: 8px; font-size: 15px;
+    }
+    input[type="date"] {
+      color: #555;
+    }
+    input:focus, textarea:focus {
+      outline: none; border-color: #009688;
     }
     button {
       background: #009688; color: white; border: none; padding: 15px;
@@ -46,7 +52,6 @@
   </style>
 </head>
 <body>
-
 <header>
   <h1>PhysioCare</h1>
   <p>احجز جلستك العلاجية بسهولة وأمان</p>
@@ -135,17 +140,20 @@
   </form>
 </div>
 
-<footer>جميع الحقوق محفوظة &copy; PhysioCare 2025</footer>
+<footer>جميع الحقوق محفوظة &copy; PhysioCare 2025</
 
+  <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
 <script>
+  // إعداد Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyA6_OACwpwaFSiX8jfsjS0_bt_EfIc4rhY",
     authDomain: "physiocare-booking.firebaseapp.com",
     projectId: "physiocare-booking",
-    storageBucket: "physiocare-booking.firebasestorage.app",
+    storageBucket: "physiocare-booking.appspot.com",
     messagingSenderId: "815959251074",
     appId: "1:815959251074:web:cfd13396b4072b90ccbc9b",
     measurementId: "G-HBYJGQRVBB"
@@ -154,6 +162,7 @@
   const storage = firebase.storage();
   const db = firebase.firestore();
 
+  // تفعيل أزرار الخيارات
   function activateChoice(groupId, hiddenId) {
     const buttons = document.querySelectorAll(`#${groupId} .choice-button`);
     const input = document.getElementById(hiddenId);
@@ -186,12 +195,14 @@
   activateChoice('insurance-buttons', 'insurance');
   activateMultiChoice('time-buttons', 'selected-time');
 
+  // إظهار المواعيد فقط في الشيفت المسائي
   document.querySelectorAll('#shift-buttons .choice-button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.getElementById('evening-options').style.display = (btn.dataset.value === 'مسائي') ? 'block' : 'none';
     });
   });
 
+  // إرسال النموذج
   document.getElementById("booking-form").addEventListener("submit", async function(e) {
     e.preventDefault();
     const btn = this.querySelector("button[type='submit']");
@@ -209,6 +220,7 @@
     const time = document.getElementById("selected-time").value.trim();
     const notes = document.getElementById("notes").value.trim();
 
+    // الملفات
     const fileInputs = {
       carnet: document.getElementById("file-carnet"),
       id: document.getElementById("file-id"),
@@ -225,7 +237,8 @@
     const uploadFile = async (label, fileInput) => {
       if (fileInput && fileInput.files.length > 0) {
         const file = fileInput.files[0];
-        const fileRef = storage.ref().child(`bookings/${Date.now()}_${file.name}`);
+        const fileName = `${label}_${Date.now()}_${file.name}`;
+        const fileRef = storage.ref().child(`bookings/${fileName}`);
         await fileRef.put(file);
         const url = await fileRef.getDownloadURL();
         uploadedFiles[label] = url;
@@ -241,11 +254,12 @@
     await db.collection("bookings").add({
       name, phone, altPhone, insurance, branch, date, shift,
       doctors, time, notes, files: uploadedFiles,
-      createdAt: new Date()
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
     window.location.href = "success.html";
   });
 </script>
+
 </body>
 </html>
