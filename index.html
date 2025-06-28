@@ -50,6 +50,25 @@
       box-shadow: 0 4px 12px rgba(0,150,136,0.4);
     }
   </style>
+  .file-box {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+.file-box:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.file-box label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+.file-box input[type="file"] {
+  width: 100%;
+}
 </head>
 <body>
 <header>
@@ -124,18 +143,41 @@
     <label>ملاحظات إضافية</label>
     <textarea id="notes" rows="3" placeholder="لو في حاجة تحب توضحها"></textarea>
 
-    <h3>رفع الملفات</h3>
-    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap:10px;">
-      <div><label>الكارنيه</label><input type="file" id="file-carnet"></div>
-      <div><label>البطاقة</label><input type="file" id="file-id"></div>
-      <div><label>الروشتة</label><input type="file" id="file-prescription"></div>
-      <div><label>الموافقة</label><input type="file" id="file-approval"></div>
-      <div><label>أشعة</label><input type="file" id="file-xray1"></div>
-      <div><label>أشعة أخرى</label><input type="file" id="file-xray2"></div>
-      <div><label>تقرير طبي</label><input type="file" id="file-medical"></div>
-      <div><label>أخرى</label><input type="file" id="file-other"></div>
-    </div>
-
+    <h3>📎 إرفاق الملفات</h3>
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap:15px;">
+  <div class="file-box">
+    <label for="file-carnet">🪪 الكارنيه / Membership</label>
+    <input type="file" id="file-carnet" />
+  </div>
+  <div class="file-box">
+    <label for="file-id">🪪 البطاقة / ID Card</label>
+    <input type="file" id="file-id" />
+  </div>
+  <div class="file-box">
+    <label for="file-prescription">💊 الروشتة / Prescription</label>
+    <input type="file" id="file-prescription" />
+  </div>
+  <div class="file-box">
+    <label for="file-approval">✅ الموافقة / Approval</label>
+    <input type="file" id="file-approval" />
+  </div>
+  <div class="file-box">
+    <label for="file-xray1">🩻 أشعة / X-ray</label>
+    <input type="file" id="file-xray1" />
+  </div>
+  <div class="file-box">
+    <label for="file-xray2">🩻 أشعة أخرى / X-ray 2</label>
+    <input type="file" id="file-xray2" />
+  </div>
+  <div class="file-box">
+    <label for="file-medical">📝 تقرير طبي / Medical Report</label>
+    <input type="file" id="file-medical" />
+  </div>
+  <div class="file-box">
+    <label for="file-other">📎 أخرى / Other</label>
+    <input type="file" id="file-other" />
+  </div>
+</div>
     <button type="submit">احجز الآن</button>
   </form>
 </div>
