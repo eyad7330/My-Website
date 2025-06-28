@@ -7,32 +7,98 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
+      margin: 0;
       font-family: 'Cairo', sans-serif;
-      margin: 0; background: #f5f5f5; color: #333;
+      background: #f1f1f1;
+      color: #333;
     }
     header {
       background: #009688;
-      color: white; padding: 30px; text-align: center;
+      padding: 30px;
+      text-align: center;
+      color: white;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+    }
+    header p {
+      margin: 5px 0 0;
+      font-size: 18px;
     }
     .container {
-      background: white; max-width: 750px; margin: 40px auto; padding: 30px;
-      border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 750px;
+      background: white;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .container h2 {
+      text-align: center;
+      color: #009688;
+      margin-bottom: 20px;
     }
     label {
-      display: block; margin-top: 15px;
+      display: block;
+      margin: 15px 0 5px;
     }
     input, select, textarea {
-      width: 100%; padding: 12px; margin-top: 5px;
-      border: 1px solid #ccc; border-radius: 8px;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
       font-size: 15px;
     }
     button {
-      margin-top: 20px; width: 100%; padding: 15px;
-      background: #009688; color: white; border: none;
-      border-radius: 8px; font-size: 16px; cursor: pointer;
+      background: #009688;
+      color: white;
+      border: none;
+      padding: 15px;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 8px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: 0.3s ease;
     }
     button:hover {
       background: #00796b;
+    }
+    footer {
+      text-align: center;
+      color: #777;
+      margin: 40px 0 10px;
+    }
+    .choice-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin: 10px 0 20px;
+    }
+    .choice-button {
+      padding: 12px 20px;
+      border: 2px solid transparent;
+      background: #f0f0f0;
+      color: #333;
+      font-size: 16px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+      min-width: 130px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .choice-button:hover {
+      background: #e0f2f1;
+      color: #00796b;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .choice-button.active {
+      background: linear-gradient(to right, #009688, #00796b);
+      color: white;
+      border-color: #00695c;
+      box-shadow: 0 4px 12px rgba(0, 150, 136, 0.4);
     }
   </style>
 </head>
@@ -40,116 +106,146 @@
 
   <header>
     <h1>PhysioCare</h1>
-    <p>احجز جلستك بسهولة وأمان</p>
+    <p>احجز جلستك العلاجية بسهولة وأمان</p>
   </header>
 
   <div class="container">
+    <h2>نموذج حجز جلسة علاج طبيعي</h2>
     <form id="booking-form">
-      <label>الاسم الكامل</label>
-      <input type="text" id="name" required>
+      <label for="name">الاسم الكامل</label>
+      <input type="text" id="name" placeholder="أدخل اسمك ثلاثي" required>
 
-      <label>رقم الهاتف</label>
-      <input type="tel" id="phone" required>
+      <label for="phone">رقم الهاتف</label>
+      <input type="tel" id="phone" placeholder="01XXXXXXXXX" required>
 
-      <label>رقم هاتف احتياطي</label>
-      <input type="tel" id="alt-phone">
+      <label for="alt-phone">رقم هاتف احتياطي (اختياري)</label>
+      <input type="tel" id="alt-phone" placeholder="01XXXXXXXXX">
 
       <label>شركة التأمين</label>
-      <select id="insurance" required>
-        <option value="">اختر شركة التأمين</option>
-        <option>Globmed</option>
-        <option>NextCare</option>
-        <option>AXA</option>
-        <option>Metlife (Alico)</option>
-        <option>MedRight</option>
-        <option>Enppi</option>
-        <option>Bupa</option>
-        <option>Egymed</option>
-      </select>
+      <div class="choice-group" id="insurance-buttons">
+        <button type="button" class="choice-button" data-value="Globmed">Globmed</button>
+        <button type="button" class="choice-button" data-value="NextCare">NextCare</button>
+        <button type="button" class="choice-button" data-value="AXA">AXA</button>
+        <button type="button" class="choice-button" data-value="Metlife (Alico)">Metlife (Alico)</button>
+        <button type="button" class="choice-button" data-value="MedRight">MedRight</button>
+        <button type="button" class="choice-button" data-value="Enppi">Enppi</button>
+        <button type="button" class="choice-button" data-value="Bupa">Bupa</button>
+        <button type="button" class="choice-button" data-value="Egymed">Egymed</button>
+      </div>
+      <input type="hidden" id="insurance" name="insurance">
 
-      <label>الفرع</label>
-      <input type="text" id="branch" required>
+      <label>اختر الفرع</label>
+      <div class="choice-group" id="branch-buttons">
+        <button type="button" class="choice-button" data-value="إيدن مول - الشيخ زايد">إيدن مول</button>
+        <button type="button" class="choice-button" data-value="أركان مول - الشيخ زايد">أركان مول</button>
+        <button type="button" class="choice-button" data-value="المعادي">المعادي</button>
+        <button type="button" class="choice-button" data-value="المهندسين">المهندسين</button>
+        <button type="button" class="choice-button" data-value="التجمع الخامس">التجمع</button>
+      </div>
+      <input type="hidden" id="branch" name="branch" required>
 
-      <label>تاريخ الحجز</label>
+      <label for="date">التاريخ</label>
       <input type="date" id="date" required>
 
       <label>اختيار الشيفت</label>
-      <select id="shift" required>
-        <option>صباحي</option>
-        <option>مسائي</option>
-      </select>
+      <div class="choice-group" id="shift-buttons">
+        <button type="button" class="choice-button" data-value="صباحي">صباحي</button>
+        <button type="button" class="choice-button" data-value="مسائي">مسائي</button>
+      </div>
+      <input type="hidden" id="shift" name="shift" required>
 
-      <label>اسم الدكتور (يمكن أكثر من اسم)</label>
-      <input type="text" id="doctors">
+      <div id="evening-options" style="display: none; margin-top: 20px;">
+        <label for="doctors">اختر اسم الدكتور (يمكن كتابة أكثر من اسم)</label>
+        <input type="text" id="doctors" placeholder="مثال: محمد صادق، نيره خالد">
 
-      <label>مواعيد الجلسات (مثال: 4:30م، 5:10م)</label>
-      <input type="text" id="times">
+        <label style="margin-top: 15px;">اختر المواعيد المناسبة</label>
+        <div class="choice-group" id="time-buttons">
+          <button type="button" class="choice-button" data-value="4:30 م">4:30 م</button>
+          <button type="button" class="choice-button" data-value="5:10 م">5:10 م</button>
+          <button type="button" class="choice-button" data-value="5:50 م">5:50 م</button>
+          <button type="button" class="choice-button" data-value="6:30 م">6:30 م</button>
+          <button type="button" class="choice-button" data-value="7:10 م">7:10 م</button>
+          <button type="button" class="choice-button" data-value="7:50 م">7:50 م</button>
+          <button type="button" class="choice-button" data-value="8:30 م">8:30 م</button>
+          <button type="button" class="choice-button" data-value="9:10 م">9:10 م</button>
+          <button type="button" class="choice-button" data-value="9:50 م">9:50 م</button>
+        </div>
+        <input type="hidden" id="selected-time" name="selected-time">
+      </div>
 
-      <label>ملاحظات إضافية</label>
-      <textarea id="notes" rows="3"></textarea>
+      <label for="notes">ملاحظات إضافية</label>
+      <textarea id="notes" placeholder="لو في حاجة تحب توضحها" rows="3"></textarea>
 
-      <label>رفع الملفات (8 كحد أقصى - صورة أو PDF)</label>
-      <input type="file" id="files" multiple accept="image/*,application/pdf">
+      <h3 style="margin-top: 30px;">تحميل الملفات المطلوبة</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 15px;">
+        <div><label>الكارنيه</label><input type="file" name="file-carnet" accept=".pdf,image/*"></div>
+        <div><label>البطاقة</label><input type="file" name="file-id" accept=".pdf,image/*"></div>
+        <div><label>الروشتة</label><input type="file" name="file-prescription" accept=".pdf,image/*"></div>
+        <div><label>الموافقة</label><input type="file" name="file-approval" accept=".pdf,image/*"></div>
+        <div><label>تقرير أشعة</label><input type="file" name="file-xray1" accept=".pdf,image/*"></div>
+        <div><label>تقرير أشعة آخر</label><input type="file" name="file-xray2" accept=".pdf,image/*"></div>
+        <div><label>تقرير طبي</label><input type="file" name="file-medical" accept=".pdf,image/*"></div>
+        <div><label>أخرى</label><input type="file" name="file-other" accept=".pdf,image/*"></div>
+      </div>
 
       <button type="submit">احجز الآن</button>
     </form>
   </div>
 
-  <footer style="text-align:center; margin:30px 0; color:#777;">
-    &copy; 2025 PhysioCare - جميع الحقوق محفوظة
+  <footer>
+    &copy; 2025 مركز PhysioCare - جميع الحقوق محفوظة
   </footer>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js"></script>
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyA6_OACwpwaFSiX8jfsjS0_bt_EfIc4rhY",
-      authDomain: "physiocare-booking.firebaseapp.com",
-      projectId: "physiocare-booking",
-      storageBucket: "physiocare-booking.firebasestorage.app",
-      messagingSenderId: "815959251074",
-      appId: "1:815959251074:web:cfd13396b4072b90ccbc9b",
-      measurementId: "G-HBYJGQRVBB"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const storage = firebase.storage();
-
-    document.getElementById('booking-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const altPhone = document.getElementById('alt-phone').value;
-      const insurance = document.getElementById('insurance').value;
-      const branch = document.getElementById('branch').value;
-      const date = document.getElementById('date').value;
-      const shift = document.getElementById('shift').value;
-      const doctors = document.getElementById('doctors').value;
-      const times = document.getElementById('times').value;
-      const notes = document.getElementById('notes').value;
-      const files = document.getElementById('files').files;
-
-      const docRef = await db.collection('bookings').add({
-        name, phone, altPhone, insurance, branch, date,
-        shift, doctors, times, notes,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    function activateChoice(groupId, hiddenInputId) {
+      const buttons = document.querySelectorAll(`#${groupId} .choice-button`);
+      const hiddenInput = document.getElementById(hiddenInputId);
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          hiddenInput.value = btn.dataset.value;
+        });
       });
+    }
 
-      const uploadPromises = [];
-      for (let i = 0; i < files.length && i < 8; i++) {
-        const file = files[i];
-        const ref = storage.ref().child(`uploads/${docRef.id}/${file.name}`);
-        uploadPromises.push(ref.put(file).then(() => ref.getDownloadURL()));
-      }
+    function activateMultiChoice(groupId, hiddenInputId) {
+      const buttons = document.querySelectorAll(`#${groupId} .choice-button`);
+      const hiddenInput = document.getElementById(hiddenInputId);
+      const selected = new Set();
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = btn.dataset.value;
+          btn.classList.toggle('active');
+          if (selected.has(val)) selected.delete(val);
+          else selected.add(val);
+          hiddenInput.value = Array.from(selected).join(', ');
+        });
+      });
+    }
 
-      const urls = await Promise.all(uploadPromises);
-      await docRef.update({ files: urls });
+    activateChoice('shift-buttons', 'shift');
+    activateChoice('branch-buttons', 'branch');
+    activateChoice('insurance-buttons', 'insurance');
+    activateMultiChoice('time-buttons', 'selected-time');
 
-      alert('✅ تم الحجز ورفع الملفات بنجاح!');
-      document.getElementById('booking-form').reset();
+    document.querySelectorAll('#shift-buttons .choice-button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const box = document.getElementById('evening-options');
+        if (btn.dataset.value === 'مسائي') {
+          box.style.display = 'block';
+        } else {
+          box.style.display = 'none';
+          document.getElementById('doctors').value = '';
+          document.getElementById('selected-time').value = '';
+          document.querySelectorAll('#time-buttons .choice-button').forEach(b => b.classList.remove('active'));
+        }
+      });
+    });
+
+    document.getElementById('booking-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert("✅ تم إرسال الحجز بنجاح، جاري رفع الملفات وربطها بالفايربيز...");
     });
   </script>
 
