@@ -44,6 +44,49 @@
 
 <div class="container">
   <form id="booking-form">
+  <label>الاسم الكامل</label>
+  <input type="text" id="name" required>
+
+  <label>رقم الهاتف</label>
+  <input type="tel" id="phone" required>
+
+  <label>رقم هاتف احتياطي</label>
+  <input type="tel" id="alt-phone">
+
+  <label>شركة التأمين</label>
+  <label style="font-size: 14px; color: #555; margin-top: 5px;">اختر شركة التأمين:</label>
+  <div class="choice-group" id="insurance-buttons">
+    <!-- buttons -->
+  </div>
+  <input type="hidden" id="insurance" required>
+
+  <label>الفرع</label>
+  <label style="font-size: 14px; color: #555;">اختر الفرع:</label>
+  <div class="choice-group" id="branch-buttons">
+    <!-- buttons -->
+  </div>
+  <input type="hidden" id="branch" required>
+
+  <label>اختر التاريخ</label>
+  <input type="date" id="date" required style="margin-bottom: 15px;">
+
+  <label>الشيفت</label>
+  <label style="font-size: 14px; color: #555;">اختر الشيفت:</label>
+  <div class="choice-group" id="shift-buttons">
+    <!-- buttons -->
+  </div>
+  <input type="hidden" id="shift" required>
+
+  <div id="evening-options" style="display: none;">
+    <label>اسم الدكتور (يمكن كتابة أكثر من اسم)</label>
+    <input type="text" id="doctors">
+
+    <label>اختر المواعيد</label>
+    <div class="choice-group" id="time-buttons">
+      <!-- buttons -->
+    </div>
+    <input type="hidden" id="selected-time">
+  </div>
     <label>الاسم الكامل</label>
     <input type="text" id="name" required>
 
