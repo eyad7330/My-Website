@@ -70,42 +70,37 @@
       color: #777;
       margin: 40px 0 10px;
     }
-<style>
-  .choice-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    margin: 10px 0 20px;
-  }
-
-  .choice-button {
-    padding: 12px 20px;
-    border: 2px solid transparent;
-    background: #f0f0f0;
-    color: #333;
-    font-size: 16px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-    min-width: 130px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  }
-
-  .choice-button:hover {
-    background: #e0f2f1;
-    color: #00796b;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
-
-  .choice-button.active {
-    background: linear-gradient(to right, #009688, #00796b);
-    color: white;
-    border-color: #00695c;
-    box-shadow: 0 4px 12px rgba(0, 150, 136, 0.4);
-  }
-</style>
-  
+    .choice-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin: 10px 0 20px;
+    }
+    .choice-button {
+      padding: 12px 20px;
+      border: 2px solid transparent;
+      background: #f0f0f0;
+      color: #333;
+      font-size: 16px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+      min-width: 130px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .choice-button:hover {
+      background: #e0f2f1;
+      color: #00796b;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .choice-button.active {
+      background: linear-gradient(to right, #009688, #00796b);
+      color: white;
+      border-color: #00695c;
+      box-shadow: 0 4px 12px rgba(0, 150, 136, 0.4);
+    }
+  </style>
 </head>
 <body>
 
@@ -124,98 +119,106 @@
       <input type="tel" id="phone" placeholder="01XXXXXXXXX" required>
 
       <label>اختر الفرع</label>
-<div class="choice-group" id="branch-buttons">
-  <button type="button" class="choice-button" data-value="إيدن مول - الشيخ زايد">إيدن مول</button>
-  <button type="button" class="choice-button" data-value="أركان مول - الشيخ زايد">أركان مول</button>
-  <button type="button" class="choice-button" data-value="المعادي">المعادي</button>
-  <button type="button" class="choice-button" data-value="المهندسين">المهندسين</button>
-  <button type="button" class="choice-button" data-value="التجمع الخامس">التجمع</button>
-</div>
-<input type="hidden" id="branch" name="branch" required>
-      </select>
+      <div class="choice-group" id="branch-buttons">
+        <button type="button" class="choice-button" data-value="إيدن مول - الشيخ زايد">إيدن مول</button>
+        <button type="button" class="choice-button" data-value="أركان مول - الشيخ زايد">أركان مول</button>
+        <button type="button" class="choice-button" data-value="المعادي">المعادي</button>
+        <button type="button" class="choice-button" data-value="المهندسين">المهندسين</button>
+        <button type="button" class="choice-button" data-value="التجمع الخامس">التجمع</button>
+      </div>
+      <input type="hidden" id="branch" name="branch" required>
 
       <label for="date">التاريخ</label>
-      <input type="date" id="date"
-        
-  <label>اختيار الشيفت</label>
-<div id="evening-options" style="display: none; margin-top: 20px;">
-  <label for="doctors">اختر اسم الدكتور (يمكن كتابة أكثر من اسم)</label>
-  <input type="text" id="doctors" placeholder="مثال: محمد صادق، نيره خالد">
+      <input type="date" id="date" required>
 
-  <label style="margin-top: 15px;">اختر الموعد المناسب</label>
-  <div class="choice-group" id="time-buttons">
-    <button type="button" class="choice-button" data-value="4:30 م">4:30 م</button>
-    <button type="button" class="choice-button" data-value="5:10 م">5:10 م</button>
-    <button type="button" class="choice-button" data-value="5:50 م">5:50 م</button>
-    <button type="button" class="choice-button" data-value="6:30 م">6:30 م</button>
-    <button type="button" class="choice-button" data-value="7:10 م">7:10 م</button>
-    <button type="button" class="choice-button" data-value="7:50 م">7:50 م</button>
-    <button type="button" class="choice-button" data-value="8:30 م">8:30 م</button>
-    <button type="button" class="choice-button" data-value="9:10 م">9:10 م</button>
-    <button type="button" class="choice-button" data-value="9:50 م">9:50 م</button>
+      <label>اختيار الشيفت</label>
+      <div class="choice-group" id="shift-buttons">
+        <button type="button" class="choice-button" data-value="صباحي">صباحي</button>
+        <button type="button" class="choice-button" data-value="مسائي">مسائي</button>
+      </div>
+      <input type="hidden" id="shift" name="shift" required>
+
+      <div id="evening-options" style="display: none; margin-top: 20px;">
+        <label for="doctors">اختر اسم الدكتور (يمكن كتابة أكثر من اسم)</label>
+        <input type="text" id="doctors" placeholder="مثال: محمد صادق، نيره خالد">
+
+        <label style="margin-top: 15px;">اختر الموعد المناسب</label>
+        <div class="choice-group" id="time-buttons">
+          <button type="button" class="choice-button" data-value="4:30 م">4:30 م</button>
+          <button type="button" class="choice-button" data-value="5:10 م">5:10 م</button>
+          <button type="button" class="choice-button" data-value="5:50 م">5:50 م</button>
+          <button type="button" class="choice-button" data-value="6:30 م">6:30 م</button>
+          <button type="button" class="choice-button" data-value="7:10 م">7:10 م</button>
+          <button type="button" class="choice-button" data-value="7:50 م">7:50 م</button>
+          <button type="button" class="choice-button" data-value="8:30 م">8:30 م</button>
+          <button type="button" class="choice-button" data-value="9:10 م">9:10 م</button>
+          <button type="button" class="choice-button" data-value="9:50 م">9:50 م</button>
+        </div>
+        <input type="hidden" id="selected-time" name="selected-time">
+      </div>
+
+      <label for="notes">ملاحظات إضافية</label>
+      <textarea id="notes" placeholder="لو في حاجة تحب توضحها" rows="3"></textarea>
+
+      <button type="submit">احجز الآن</button>
+    </form>
   </div>
-  <input type="hidden" id="selected-time" name="selected-time">
-</div>
+
   <footer>
     &copy; 2025 مركز PhysioCare - جميع الحقوق محفوظة
   </footer>
 
-  <!-- داخل <script> في آخر الصفحة -->
-<script>
-  function activateChoice(groupId, hiddenInputId) {
-    const buttons = document.querySelectorAll(`#${groupId} .choice-button`);
-    const hiddenInput = document.getElementById(hiddenInputId);
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        buttons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        hiddenInput.value = btn.dataset.value;
+  <script>
+    function activateChoice(groupId, hiddenInputId) {
+      const buttons = document.querySelectorAll(`#${groupId} .choice-button`);
+      const hiddenInput = document.getElementById(hiddenInputId);
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          hiddenInput.value = btn.dataset.value;
+        });
       });
-    });
-  }
-
-  activateChoice('shift-buttons', 'shift');
-  activateChoice('branch-buttons', 'branch');
-  activateChoice('time-buttons', 'selected-time');
-
-  // إظهار أو إخفاء مربع الدكتور والمواعيد حسب الشيفت
-  document.querySelectorAll('#shift-buttons .choice-button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const eveningBox = document.getElementById('evening-options');
-      if (btn.dataset.value === 'مسائي') {
-        eveningBox.style.display = 'block';
-      } else {
-        eveningBox.style.display = 'none';
-        document.getElementById('selected-time').value = '';
-        document.getElementById('doctors').value = '';
-        document.querySelectorAll('#time-buttons .choice-button').forEach(b => b.classList.remove('active'));
-      }
-    });
-  });
-
-  document.getElementById('booking-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const shift = document.getElementById('shift').value;
-    const branch = document.getElementById('branch').value;
-    const doctorNames = document.getElementById('doctors').value;
-    const time = document.getElementById('selected-time').value;
-
-    if (!shift || !branch) {
-      alert('يرجى اختيار الشيفت والفرع');
-      return;
     }
 
-    if (shift === 'مسائي') {
-      if (!doctorNames || !time) {
+    activateChoice('shift-buttons', 'shift');
+    activateChoice('branch-buttons', 'branch');
+    activateChoice('time-buttons', 'selected-time');
+
+    document.querySelectorAll('#shift-buttons .choice-button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const eveningBox = document.getElementById('evening-options');
+        if (btn.dataset.value === 'مسائي') {
+          eveningBox.style.display = 'block';
+        } else {
+          eveningBox.style.display = 'none';
+          document.getElementById('selected-time').value = '';
+          document.getElementById('doctors').value = '';
+          document.querySelectorAll('#time-buttons .choice-button').forEach(b => b.classList.remove('active'));
+        }
+      });
+    });
+
+    document.getElementById('booking-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const shift = document.getElementById('shift').value;
+      const branch = document.getElementById('branch').value;
+      const doctorNames = document.getElementById('doctors').value;
+      const time = document.getElementById('selected-time').value;
+
+      if (!shift || !branch) {
+        alert('يرجى اختيار الشيفت والفرع');
+        return;
+      }
+
+      if (shift === 'مسائي' && (!doctorNames || !time)) {
         alert('يرجى إدخال اسم الدكتور واختيار الموعد');
         return;
       }
-    }
 
-    alert('✅ تم إرسال الحجز بنجاح - سيتم التواصل معك قريبًا');
-  });
-</script>
-
+      alert('✅ تم إرسال الحجز بنجاح - سيتم التواصل معك قريبًا');
+    });
+  </script>
 </body>
 </html>
