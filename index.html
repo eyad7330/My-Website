@@ -113,16 +113,40 @@
     <textarea id="notes" rows="3" placeholder="لو في حاجة تحب توضحها"></textarea>
 
     <h3>رفع الملفات</h3>
-    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap:10px;">
-      <div><label>الكارنيه</label><input type="file" id="file-carnet"></div>
-      <div><label>البطاقة</label><input type="file" id="file-id"></div>
-      <div><label>الروشتة</label><input type="file" id="file-prescription"></div>
-      <div><label>الموافقة</label><input type="file" id="file-approval"></div>
-      <div><label>أشعة</label><input type="file" id="file-xray1"></div>
-      <div><label>أشعة أخرى</label><input type="file" id="file-xray2"></div>
-      <div><label>تقرير طبي</label><input type="file" id="file-medical"></div>
-      <div><label>أخرى</label><input type="file" id="file-other"></div>
-    </div>
+<div class="file-grid">
+  <div class="file-box">
+    <label><span class="icon">📛</span> الكارنيه</label>
+    <input type="file" id="file-carnet">
+  </div>
+  <div class="file-box">
+    <label><span class="icon">🪪</span> البطاقة</label>
+    <input type="file" id="file-id">
+  </div>
+  <div class="file-box">
+    <label><span class="icon">💊</span> الروشتة</label>
+    <input type="file" id="file-prescription">
+  </div>
+  <div class="file-box">
+    <label><span class="icon">📝</span> الموافقة</label>
+    <input type="file" id="file-approval">
+  </div>
+  <div class="file-box">
+    <label><span class="icon">🖼️</span> تقرير الأشعة</label>
+    <input type="file" id="file-xray1">
+  </div>
+  <div class="file-box">
+    <label><span class="icon">🖼️</span> تقرير الأشعة الآخر</label>
+    <input type="file" id="file-xray2">
+  </div>
+  <div class="file-box">
+    <label><span class="icon">📄</span> تقرير طبي</label>
+    <input type="file" id="file-medical">
+  </div>
+  <div class="file-box">
+    <label><span class="icon">📎</span> أخرى</label>
+    <input type="file" id="file-other">
+  </div>
+</div>
 
     <button type="submit">احجز الآن</button>
   </form>
