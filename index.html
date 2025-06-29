@@ -10,14 +10,14 @@
     body {
       margin: 0;
       font-family: 'Cairo', sans-serif;
-      background-color: #f8f9fa; /* Lighter, more modern background */
+      background-color: #f8f9fa;
       color: #343a40;
-      direction: rtl; /* Ensure RTL is set */
+      direction: rtl;
     }
 
     /* Header */
     header {
-      background: linear-gradient(135deg, #005f73 0%, #0a9396 100%); /* Elegant gradient */
+      background: linear-gradient(135deg, #005f73 0%, #0a9396 100%);
       padding: 40px 20px;
       text-align: center;
       color: white;
@@ -39,13 +39,13 @@
 
     /* Main Container */
     .container {
-      max-width: 800px; /* Slightly wider for a more premium feel */
+      max-width: 800px;
       background: white;
       margin: 50px auto;
       padding: 40px;
       border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Softer, deeper shadow */
-      border-top: 5px solid #009688; /* Accent border */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      border-top: 5px solid #009688;
     }
 
     h2 {
@@ -85,7 +85,7 @@
       font-family: 'Cairo', sans-serif;
       background-color: #fdfdff;
       transition: all 0.3s ease-in-out;
-      box-sizing: border-box; /* Important for padding consistency */
+      box-sizing: border-box;
     }
 
     input[type="text"]:focus,
@@ -98,16 +98,33 @@
       box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1);
     }
 
+    /* Input validation styles */
+    input.invalid {
+      border-color: #dc3545;
+      background-color: #fff5f5;
+    }
+
+    input.valid {
+      border-color: #28a745;
+      background-color: #f8fff8;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 0.9rem;
+      margin-top: 5px;
+      display: none;
+    }
+
     textarea {
         resize: vertical;
     }
 
-
-    /* Choice Buttons - The core of interaction */
+    /* Choice Buttons */
     .choice-group {
       display: flex;
       flex-wrap: wrap;
-      justify-content: flex-start; /* Align to the start for better structure */
+      justify-content: flex-start;
       gap: 12px;
       margin: 10px 0 25px;
     }
@@ -118,7 +135,7 @@
       background: #f8f9fa;
       color: #495057;
       font-size: 1rem;
-      border-radius: 50px; /* Pill shape */
+      border-radius: 50px;
       cursor: pointer;
       transition: all 0.3s ease;
       font-weight: 700;
@@ -140,8 +157,7 @@
       transform: translateY(-2px);
     }
 
-
-    /* File Upload Section - Complete Redesign */
+    /* File Upload Section */
     .file-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -158,7 +174,7 @@
         background-color: #fdfdfd;
         transition: all 0.3s ease;
         cursor: pointer;
-        display: flex; /* Use flexbox for alignment */
+        display: flex;
         align-items: center;
         justify-content: center;
         min-height: 120px;
@@ -187,7 +203,7 @@
     }
 
     .file-box .icon, .file-box img {
-        font-size: 2.2rem; /* Make emoji icons larger */
+        font-size: 2.2rem;
         line-height: 1;
         filter: grayscale(50%);
         transition: all 0.3s ease;
@@ -199,11 +215,10 @@
     }
 
     .file-box img {
-        width: 36px; /* Standardize icon size */
+        width: 36px;
         height: 36px;
     }
 
-    /* The magic to hide the default input and make the box clickable */
     .file-box input[type="file"] {
         position: absolute;
         top: 0;
@@ -214,6 +229,14 @@
         cursor: pointer;
     }
 
+    .file-box.has-file {
+        border-color: #28a745;
+        background-color: #f8fff8;
+    }
+
+    .file-box.has-file .icon {
+        color: #28a745;
+    }
 
     /* Submit Button */
     button[type="submit"] {
@@ -232,7 +255,7 @@
       box-shadow: 0 5px 20px rgba(0, 150, 136, 0.3);
     }
 
-    button[type="submit"]:hover {
+    button[type="submit"]:hover:not(:disabled) {
       transform: translateY(-3px);
       box-shadow: 0 8px 25px rgba(0, 150, 136, 0.4);
     }
@@ -242,6 +265,7 @@
         box-shadow: none;
         cursor: not-allowed;
         transform: none;
+        opacity: 0.7;
     }
 
     /* Evening Options Wrapper */
@@ -251,8 +275,78 @@
         margin-top: 20px;
         border-radius: 12px;
         border: 1px solid #e9ecef;
+        animation: slideDown 0.3s ease-out;
     }
 
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Message Notifications */
+    .message {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        z-index: 1000;
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideIn 0.3s ease-out;
+        max-width: 300px;
+    }
+
+    .message.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .message.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .message.info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Loading Spinner */
+    .spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+        margin-left: 10px;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
 
     /* Footer */
     footer {
@@ -260,6 +354,53 @@
       color: #888;
       margin: 50px 0 20px;
       font-size: 0.9rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            margin: 20px;
+            padding: 20px;
+        }
+        
+        header h1 {
+            font-size: 2rem;
+        }
+        
+        .choice-group {
+            flex-direction: column;
+        }
+        
+        .choice-button {
+            width: 100%;
+            text-align: center;
+        }
+        
+        .file-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .message {
+            right: 10px;
+            left: 10px;
+            max-width: none;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .file-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        header {
+            padding: 20px 10px;
+        }
+        
+        .container {
+            margin: 10px;
+            padding: 15px;
+        }
     }
 
   </style>
@@ -276,10 +417,15 @@
   <form id="booking-form">
     <label for="name">الاسم الكامل</label>
     <input type="text" id="name" required placeholder="اكتب اسمك ثلاثي">
+    <div class="error-message" id="name-error">يرجى إدخال الاسم الكامل</div>
+    
     <label for="phone">رقم الهاتف</label>
     <input type="tel" id="phone" required placeholder="01XXXXXXXXX">
+    <div class="error-message" id="phone-error">رقم الهاتف غير صحيح. يجب أن يبدأ بـ 01 ويكون 11 رقم</div>
+    
     <label for="alt-phone">رقم هاتف احتياطي (اختياري)</label>
     <input type="tel" id="alt-phone" placeholder="01XXXXXXXXX">
+    <div class="error-message" id="alt-phone-error">رقم الهاتف الاحتياطي غير صحيح</div>
     
     <label>شركة التأمين</label>
     <div class="choice-group" id="insurance-buttons">
@@ -306,6 +452,7 @@
 
     <label for="date">التاريخ</label>
     <input type="date" id="date" required>
+    <div class="error-message" id="date-error">يرجى اختيار تاريخ صحيح</div>
 
     <label>اختيار الشيفت</label>
     <div class="choice-group" id="shift-buttons">
@@ -339,34 +486,34 @@
     <div class="file-grid">
       <div class="file-box">
         <label for="file-carnet"><span class="icon">📛</span> الكارنيه</label>
-        <input type="file" id="file-carnet">
+        <input type="file" id="file-carnet" accept="image/*,.pdf">
       </div>
       <div class="file-box">
         <label for="file-id"><span class="icon">🪪</span> البطاقة</label>
-        <input type="file" id="file-id">
+        <input type="file" id="file-id" accept="image/*,.pdf">
       </div>
       <div class="file-box">
         <label for="file-prescription"><span class="icon">💊</span> الروشتة</label>
-        <input type="file" id="file-prescription">
+        <input type="file" id="file-prescription" accept="image/*,.pdf">
       </div>
       <div class="file-box">
         <label for="file-approval"><span class="icon">📝</span> الموافقة</label>
-        <input type="file" id="file-approval">
+        <input type="file" id="file-approval" accept="image/*,.pdf">
       </div>
       <div class="file-box">
         <label for="file-xray1">
             <img src="https://cdn-icons-png.flaticon.com/512/3649/3649466.png" alt="تقرير أشعة">
             تقرير أشعة
         </label>
-        <input type="file" id="file-xray1">
+        <input type="file" id="file-xray1" accept="image/*,.pdf">
       </div>
       <div class="file-box">
         <label for="file-medical"><span class="icon">📄</span> تقرير طبي</label>
-        <input type="file" id="file-medical">
+        <input type="file" id="file-medical" accept="image/*,.pdf">
       </div>
       <div class="file-box">
         <label for="file-other"><span class="icon">📎</span> أخرى</label>
-        <input type="file" id="file-other">
+        <input type="file" id="file-other" accept="image/*,.pdf">
       </div>
     </div>
 
@@ -380,6 +527,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 <script>
+  // Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyA6_OACwpwaFSiX8jfsjS0_bt_EfIc4rhY",
     authDomain: "physiocare-booking.firebaseapp.com",
@@ -392,6 +540,107 @@
   const db = firebase.firestore();
   const storage = firebase.storage();
 
+  // Utility Functions
+  function showMessage(message, type = 'info') {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${type}`;
+    messageDiv.textContent = message;
+    document.body.appendChild(messageDiv);
+    
+    setTimeout(() => {
+      messageDiv.style.animation = 'slideIn 0.3s ease-out reverse';
+      setTimeout(() => messageDiv.remove(), 300);
+    }, 5000);
+  }
+
+  function validatePhone(phone) {
+    const phoneRegex = /^01[0-2,5]{1}[0-9]{8}$/;
+    return phoneRegex.test(phone);
+  }
+
+  function validateName(name) {
+    return name.trim().split(' ').length >= 2 && name.trim().length >= 6;
+  }
+
+  function setInputValidation(inputId, isValid, errorId) {
+    const input = document.getElementById(inputId);
+    const error = document.getElementById(errorId);
+    
+    input.classList.remove('valid', 'invalid');
+    input.classList.add(isValid ? 'valid' : 'invalid');
+    error.style.display = isValid ? 'none' : 'block';
+  }
+
+  function setLoadingState(btn, isLoading, text) {
+    btn.disabled = isLoading;
+    if (isLoading) {
+      btn.innerHTML = `${text} <span class="spinner"></span>`;
+      btn.style.opacity = "0.8";
+    } else {
+      btn.innerHTML = "تأكيد و إرسال الحجز";
+      btn.style.opacity = "1";
+    }
+  }
+
+  // Set date constraints
+  function setupDateConstraints() {
+    const dateInput = document.getElementById('date');
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setDate(today.getDate() + 1); // Tomorrow
+    
+    const maxDate = new Date(today);
+    maxDate.setMonth(today.getMonth() + 2); // 2 months from now
+    
+    dateInput.setAttribute('min', minDate.toISOString().split('T')[0]);
+    dateInput.setAttribute('max', maxDate.toISOString().split('T')[0]);
+  }
+
+  // Setup file upload indicators
+  function setupFileIndicators() {
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    fileInputs.forEach(input => {
+      input.addEventListener('change', function() {
+        const fileBox = this.closest('.file-box');
+        if (this.files.length > 0) {
+          fileBox.classList.add('has-file');
+          const label = fileBox.querySelector('label');
+          const originalText = label.textContent;
+          label.innerHTML = label.innerHTML.replace(originalText.split(' ').pop(), `✓ ${this.files[0].name.substring(0, 15)}...`);
+        } else {
+          fileBox.classList.remove('has-file');
+        }
+      });
+    });
+  }
+
+  // Input validation setup
+  function setupInputValidation() {
+    const nameInput = document.getElementById('name');
+    const phoneInput = document.getElementById('phone');
+    const altPhoneInput = document.getElementById('alt-phone');
+
+    nameInput.addEventListener('blur', function() {
+      const isValid = validateName(this.value);
+      setInputValidation('name', isValid, 'name-error');
+    });
+
+    phoneInput.addEventListener('blur', function() {
+      const isValid = validatePhone(this.value);
+      setInputValidation('phone', isValid, 'phone-error');
+    });
+
+    altPhoneInput.addEventListener('blur', function() {
+      if (this.value.trim()) {
+        const isValid = validatePhone(this.value);
+        setInputValidation('alt-phone', isValid, 'alt-phone-error');
+      } else {
+        setInputValidation('alt-phone', true, 'alt-phone-error');
+      }
+    });
+  }
+
+  // Choice button functionality
   const activateChoice = (groupId, hiddenId) => {
     const buttons = document.querySelectorAll(`#${groupId} .choice-button`);
     const input = document.getElementById(hiddenId);
@@ -400,7 +649,7 @@
         buttons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         input.value = btn.dataset.value;
-        input.dispatchEvent(new Event('change')); // Fire change event for potential listeners
+        input.dispatchEvent(new Event('change'));
       });
     });
   };
@@ -423,23 +672,34 @@
     });
   };
 
+  // Initialize choice buttons
   activateChoice('branch-buttons', 'branch');
   activateChoice('shift-buttons', 'shift');
   activateChoice('insurance-buttons', 'insurance');
   activateMultiChoice('time-buttons', 'selected-time');
 
+  // Show/hide evening options
   document.querySelectorAll('#shift-buttons .choice-button').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.getElementById('evening-options').style.display = (btn.dataset.value === 'مسائي') ? 'block' : 'none';
+      const eveningOptions = document.getElementById('evening-options');
+      if (btn.dataset.value === 'مسائي') {
+        eveningOptions.style.display = 'block';
+      } else {
+        eveningOptions.style.display = 'none';
+        // Clear evening selections
+        document.getElementById('doctors').value = '';
+        document.getElementById('selected-time').value = '';
+        document.querySelectorAll('#time-buttons .choice-button').forEach(b => b.classList.remove('active'));
+      }
     });
   });
 
+  // Form submission
   document.getElementById("booking-form").addEventListener("submit", async function(e) {
     e.preventDefault();
     const btn = this.querySelector("button[type='submit']");
-    btn.disabled = true;
-    btn.textContent = "جارٍ إرسال الحجز...";
-
+    
+    // Get form data
     const name = document.getElementById("name").value.trim();
     const phone = document.getElementById("phone").value.trim();
     const altPhone = document.getElementById("alt-phone").value.trim();
@@ -451,19 +711,51 @@
     const time = document.getElementById("selected-time").value.trim();
     const notes = document.getElementById("notes").value.trim();
 
-    if (!name || !phone || !insurance || !branch || !date || !shift) {
-      alert("من فضلك اكمل جميع الحقول المطلوبة.");
-      btn.disabled = false;
-      btn.textContent = "تأكيد و إرسال الحجز";
-      return;
+    // Validation
+    let isValid = true;
+
+    if (!validateName(name)) {
+      setInputValidation('name', false, 'name-error');
+      isValid = false;
+    }
+
+    if (!validatePhone(phone)) {
+      setInputValidation('phone', false, 'phone-error');
+      isValid = false;
+    }
+
+    if (altPhone && !validatePhone(altPhone)) {
+      setInputValidation('alt-phone', false, 'alt-phone-error');
+      isValid = false;
+    }
+
+    if (!insurance || !branch || !date || !shift) {
+      showMessage("من فضلك اكمل جميع الحقول المطلوبة", "error");
+      isValid = false;
     }
 
     if (shift === "مسائي" && (!doctors || !time)) {
-      alert("برجاء اختيار اسم الدكتور والموعد.");
-      btn.disabled = false;
-      btn.textContent = "تأكيد و إرسال الحجز";
+      showMessage("برجاء اختيار اسم الدكتور والموعد للشيفت المسائي", "error");
+      isValid = false;
+    }
+
+    // Check date validity
+    const selectedDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (selectedDate <= today) {
+      setInputValidation('date', false, 'date-error');
+      showMessage("لا يمكن حجز موعد في الماضي", "error");
+      isValid = false;
+    }
+
+    if (!isValid) {
       return;
     }
+
+    // Start loading
+    setLoadingState(btn, true, "جارٍ معالجة الطلب...");
 
     const fileInputs = {
       carnet: document.getElementById("file-carnet"),
@@ -474,13 +766,17 @@
       medical: document.getElementById("file-medical"),
       other: document.getElementById("file-other")
     };
-    // Note: The original HTML did not contain file-xray2, so it has been removed from here.
 
     const uploadedFiles = {};
     const uploadFile = async (label, input) => {
       if (input && input.files.length > 0) {
         const file = input.files[0];
-        // Create a unique path for the file to prevent overwrites
+        
+        // Check file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          throw new Error(`حجم ملف ${label} كبير جداً. الحد الأقصى 5 ميجابايت`);
+        }
+        
         const uniqueId = name.replace(/\s/g, '_') + "_" + Date.now();
         const ref = storage.ref(`bookings/${uniqueId}/${label}_${file.name}`);
         await ref.put(file);
@@ -489,34 +785,70 @@
     };
 
     try {
-      btn.textContent = "جارٍ رفع الملفات...";
+      // Upload files
+      setLoadingState(btn, true, "جارٍ رفع الملفات...");
       await Promise.all(Object.entries(fileInputs).map(([k, v]) => uploadFile(k, v)));
       
-      btn.textContent = "جارٍ حفظ البيانات...";
-      await db.collection("bookings").add({
+      // Save to database
+      setLoadingState(btn, true, "جارٍ حفظ البيانات...");
+      const bookingData = {
         name, phone, altPhone, insurance, branch, date, shift,
         doctors, time, notes, files: uploadedFiles,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        status: 'pending'
+      };
+      
+      await db.collection("bookings").add(bookingData);
 
-      // إرسال تأكيد واتساب
-      const msg = `تم استلام طلب حجز جلستكم في PhysioCare بنجاح ✅\nالاسم: ${name}\nالفرع: ${branch}\nالتاريخ: ${date}\nالشيفت: ${shift}\n\nسوف يتم التواصل معكم للتأكيد النهائي.`;
-      window.open(`https://wa.me/2${phone.replace(/^0/, "")}?text=${encodeURIComponent(msg)}`, '_blank');
+      // Send WhatsApp confirmation
+      const msg = `تم استلام طلب حجز جلستكم في PhysioCare بنجاح ✅
 
-      alert("✅ تم إرسال الحجز بنجاح! سيتم التواصل معكم للتأكيد.");
+الاسم: ${name}
+الفرع: ${branch}
+التاريخ: ${date}
+الشيفت: ${shift}
+${shift === 'مسائي' ? `الدكتور: ${doctors}\nالموعد: ${time}` : ''}
+
+سوف يتم التواصل معكم للتأكيد النهائي.
+
+شكراً لثقتكم في PhysioCare 🏥`;
+
+      // Validate phone number before WhatsApp
+      const cleanPhone = phone.replace(/^0/, "");
+      if (cleanPhone.length === 10) {
+        window.open(`https://wa.me/2${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+      }
+
+      showMessage("✅ تم إرسال الحجز بنجاح! سيتم التواصل معكم للتأكيد", "success");
+      
+      // Reset form
       this.reset();
-      // Reset active buttons visually
       document.querySelectorAll('.choice-button.active').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.file-box.has-file').forEach(box => box.classList.remove('has-file'));
+      document.querySelectorAll('input.valid, input.invalid').forEach(input => {
+        input.classList.remove('valid', 'invalid');
+      });
+      document.querySelectorAll('.error-message').forEach(error => {
+        error.style.display = 'none';
+      });
       document.getElementById('evening-options').style.display = 'none';
 
     } catch (err) {
-      console.error(err);
-      alert("حدث خطأ أثناء إرسال الحجز. يرجى المحاولة مرة أخرى.");
+      console.error('Booking error:', err);
+      showMessage(`حدث خطأ: ${err.message || 'يرجى المحاولة مرة أخرى'}`, "error");
     } finally {
-        btn.disabled = false;
-        btn.textContent = "تأكيد و إرسال الحجز";
+      setLoadingState(btn, false);
     }
   });
+
+  // Initialize everything when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    setupDateConstraints();
+    setupFileIndicators();
+    setupInputValidation();
+    showMessage("مرحباً بكم في PhysioCare! املأ النموذج لحجز جلستك", "info");
+  });
+
 </script>
 
 </body>
