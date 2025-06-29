@@ -238,6 +238,29 @@
         color: #28a745;
     }
 
+    /* Progress Bar */
+    .progress-container {
+        display: none;
+        margin-top: 10px;
+        background-color: #f0f0f0;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 8px;
+        background: linear-gradient(90deg, #007BFF, #0056b3);
+        width: 0%;
+        transition: width 0.3s ease;
+    }
+
+    .progress-text {
+        text-align: center;
+        font-size: 0.9rem;
+        margin-top: 5px;
+        color: #666;
+    }
+
     /* Submit Button */
     button[type="submit"] {
       background: linear-gradient(135deg, #1cc7a8 0%, #009688 100%);
@@ -348,6 +371,32 @@
         to { transform: rotate(360deg); }
     }
 
+    /* Network Status */
+    .network-status {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        z-index: 1001;
+        display: none;
+    }
+
+    .network-status.offline {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        display: block;
+    }
+
+    .network-status.online {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        display: block;
+    }
+
     /* Footer */
     footer {
       text-align: center;
@@ -356,7 +405,7 @@
       font-size: 0.9rem;
     }
 
-    /* Responsive Design */
+    /* Enhanced Responsive Design */
     @media (max-width: 768px) {
         .container {
             margin: 20px;
@@ -368,16 +417,18 @@
         }
         
         .choice-group {
-            flex-direction: column;
+            gap: 8px;
         }
         
         .choice-button {
-            width: 100%;
+            width: calc(50% - 4px);
             text-align: center;
+            padding: 10px 15px;
+            font-size: 0.9rem;
         }
         
         .file-grid {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
         }
         
@@ -386,11 +437,20 @@
             left: 10px;
             max-width: none;
         }
+
+        .file-box {
+            min-height: 100px;
+        }
+
+        .file-box label {
+            font-size: 0.85rem;
+        }
     }
 
     @media (max-width: 480px) {
         .file-grid {
             grid-template-columns: 1fr;
+            gap: 12px;
         }
         
         header {
@@ -401,11 +461,52 @@
             margin: 10px;
             padding: 15px;
         }
+
+        .choice-button {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .choice-group {
+            flex-direction: column;
+        }
+    }
+
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+        body {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        
+        .container {
+            background: #2d2d2d;
+            border-top-color: #4CAF50;
+        }
+        
+        input[type="text"],
+        input[type="tel"],
+        input[type="date"],
+        textarea {
+            background-color: #3a3a3a;
+            color: #e0e0e0;
+            border-color: #555;
+        }
+        
+        .choice-button {
+            background: #3a3a3a;
+            color: #e0e0e0;
+            border-color: #555;
+        }
     }
 
   </style>
 </head>
 <body>
+
+<div class="network-status" id="network-status">
+  <span id="network-text">جارٍ التحقق من الاتصال...</span>
+</div>
 
 <header>
   <h1>PhysioCare</h1>
@@ -416,15 +517,15 @@
   <h2>نموذج حجز جلسة علاج طبيعي</h2>
   <form id="booking-form">
     <label for="name">الاسم الكامل</label>
-    <input type="text" id="name" required placeholder="اكتب اسمك ثلاثي">
+    <input type="text" id="name" required placeholder="اكتب اسمك ثلاثي" autocomplete="name">
     <div class="error-message" id="name-error">يرجى إدخال الاسم الكامل</div>
     
     <label for="phone">رقم الهاتف</label>
-    <input type="tel" id="phone" required placeholder="01XXXXXXXXX">
+    <input type="tel" id="phone" required placeholder="01XXXXXXXXX" autocomplete="tel">
     <div class="error-message" id="phone-error">رقم الهاتف غير صحيح. يجب أن يبدأ بـ 01 ويكون 11 رقم</div>
     
     <label for="alt-phone">رقم هاتف احتياطي (اختياري)</label>
-    <input type="tel" id="alt-phone" placeholder="01XXXXXXXXX">
+    <input type="tel" id="alt-phone" placeholder="01XXXXXXXXX" autocomplete="tel">
     <div class="error-message" id="alt-phone-error">رقم الهاتف الاحتياطي غير صحيح</div>
     
     <label>شركة التأمين</label>
@@ -519,62 +620,114 @@
       </div>
     </div>
 
+    <div class="progress-container" id="upload-progress">
+      <div class="progress-bar" id="progress-bar"></div>
+      <div class="progress-text" id="progress-text">جارٍ رفع الملفات...</div>
+    </div>
+
     <button type="submit">تأكيد و إرسال الحجز</button>
   </form>
 </div>
 
 <footer>جميع الحقوق محفوظة &copy; PhysioCare 2025</footer>
 
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-<script>
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyA6_OACwpwaFSiX8jfsjS0_bt_EfIc4rhY",
-  authDomain: "physiocare-booking.firebaseapp.com",
-  projectId: "physiocare-booking",
-  storageBucket: "physiocare-booking.firebasestorage.app",
-  messagingSenderId: "815959251074",
-  appId: "1:815959251074:web:cfd13396b4072b90ccbc9b",
-  measurementId: "G-HBYJGQRVBB"
-};
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  const storage = firebase.storage();
+<script type="module">
+  // Import Firebase v9+ SDK
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js';
+  import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js';
+  import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js';
 
-  // Utility Functions
-  function showMessage(message, type = 'info') {
+  // Firebase configuration (يفضل استخدام environment variables في production)
+  const firebaseConfig = {
+    apiKey: "AIzaSyA6_OACwpwaFSiX8jfsjS0_bt_EfIc4rhY",
+    authDomain: "physiocare-booking.firebaseapp.com",
+    projectId: "physiocare-booking",
+    storageBucket: "physiocare-booking.firebasestorage.app",
+    messagingSenderId: "815959251074",
+    appId: "1:815959251074:web:cfd13396b4072b90ccbc9b",
+    measurementId: "G-HBYJGQRVBB"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  // Global variables for cleanup
+  let eventListeners = [];
+  let uploadTasks = [];
+
+  // Enhanced utility functions
+  function showMessage(message, type = 'info', duration = 5000) {
+    // Remove existing messages
+    const existingMessages = document.querySelectorAll('.message');
+    existingMessages.forEach(msg => msg.remove());
+
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${type}`;
     messageDiv.textContent = message;
     document.body.appendChild(messageDiv);
     
-    setTimeout(() => {
-      messageDiv.style.animation = 'slideIn 0.3s ease-out reverse';
-      setTimeout(() => messageDiv.remove(), 300);
-    }, 5000);
+    const removeMessage = () => {
+      if (messageDiv.parentNode) {
+        messageDiv.style.animation = 'slideIn 0.3s ease-out reverse';
+        setTimeout(() => {
+          if (messageDiv.parentNode) {
+            messageDiv.remove();
+          }
+        }, 300);
+      }
+    };
+
+    const timeoutId = setTimeout(removeMessage, duration);
+    
+    // Allow manual close
+    messageDiv.addEventListener('click', () => {
+      clearTimeout(timeoutId);
+      removeMessage();
+    });
   }
 
+  // Enhanced phone validation with Egyptian numbers
   function validatePhone(phone) {
     const phoneRegex = /^01[0-2,5]{1}[0-9]{8}$/;
-    return phoneRegex.test(phone);
+    const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
+    return phoneRegex.test(cleanPhone);
   }
 
+  // Enhanced name validation
   function validateName(name) {
-    return name.trim().split(' ').length >= 2 && name.trim().length >= 6;
+    const trimmedName = name.trim();
+    const parts = trimmedName.split(/\s+/);
+    return parts.length >= 2 && trimmedName.length >= 6 && /^[\u0600-\u06FFa-zA-Z\s]+$/.test(trimmedName);
+  }
+
+  // Enhanced date validation with timezone handling
+  function validateDate(dateString) {
+    const selectedDate = new Date(dateString + 'T00:00:00');
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    
+    const maxDate = new Date(today);
+    maxDate.setMonth(today.getMonth() + 3);
+    
+    return selectedDate >= tomorrow && selectedDate <= maxDate;
   }
 
   function setInputValidation(inputId, isValid, errorId) {
     const input = document.getElementById(inputId);
     const error = document.getElementById(errorId);
     
-    input.classList.remove('valid', 'invalid');
-    input.classList.add(isValid ? 'valid' : 'invalid');
-    error.style.display = isValid ? 'none' : 'block';
+    if (input && error) {
+      input.classList.remove('valid', 'invalid');
+      input.classList.add(isValid ? 'valid' : 'invalid');
+      error.style.display = isValid ? 'none' : 'block';
+    }
   }
 
-  function setLoadingState(btn, isLoading, text) {
+  function setLoadingState(btn, isLoading, text = "جارٍ المعالجة...") {
     btn.disabled = isLoading;
     if (isLoading) {
       btn.innerHTML = `${text} <span class="spinner"></span>`;
@@ -585,274 +738,64 @@ const firebaseConfig = {
     }
   }
 
-  // Set date constraints
+  // Enhanced date constraints setup
   function setupDateConstraints() {
     const dateInput = document.getElementById('date');
+    if (!dateInput) return;
+
     const today = new Date();
-    const minDate = new Date(today);
-    minDate.setDate(today.getDate() + 1); // Tomorrow
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
     
     const maxDate = new Date(today);
-    maxDate.setMonth(today.getMonth() + 2); // 2 months from now
+    maxDate.setMonth(today.getMonth() + 3);
     
-    dateInput.setAttribute('min', minDate.toISOString().split('T')[0]);
-    dateInput.setAttribute('max', maxDate.toISOString().split('T')[0]);
+    const formatDate = (date) => date.toISOString().split('T')[0];
+    
+    dateInput.setAttribute('min', formatDate(tomorrow));
+    dateInput.setAttribute('max', formatDate(maxDate));
   }
 
-  // Setup file upload indicators
+  // Enhanced file upload with compression and progress
   function setupFileIndicators() {
     const fileInputs = document.querySelectorAll('input[type="file"]');
+    
     fileInputs.forEach(input => {
-      input.addEventListener('change', function() {
+      const listener = function() {
         const fileBox = this.closest('.file-box');
+        const label = fileBox.querySelector('label');
+        const originalText = label.getAttribute('data-original') || label.textContent;
+        
+        if (!label.getAttribute('data-original')) {
+          label.setAttribute('data-original', originalText);
+        }
+        
         if (this.files.length > 0) {
+          const file = this.files[0];
           fileBox.classList.add('has-file');
-          const label = fileBox.querySelector('label');
-          const originalText = label.textContent;
-          label.innerHTML = label.innerHTML.replace(originalText.split(' ').pop(), `✓ ${this.files[0].name.substring(0, 15)}...`);
+          
+          // Show file size
+          const fileSize = (file.size / 1024 / 1024).toFixed(2);
+          const fileName = file.name.substring(0, 12) + (file.name.length > 12 ? '...' : '');
+          label.innerHTML = `✓ ${fileName}<br><small>${fileSize} MB</small>`;
+          
+          // Validate file size
+          if (file.size > 10 * 1024 * 1024) { // 10MB limit
+            showMessage(`حجم ملف ${originalText} كبير جداً. الحد الأقصى 10 ميجابايت`, 'error');
+            this.value = '';
+            fileBox.classList.remove('has-file');
+            label.innerHTML = originalText;
+          }
         } else {
           fileBox.classList.remove('has-file');
+          label.innerHTML = originalText;
         }
-      });
-    });
-  }
-
-  // Input validation setup
-  function setupInputValidation() {
-    const nameInput = document.getElementById('name');
-    const phoneInput = document.getElementById('phone');
-    const altPhoneInput = document.getElementById('alt-phone');
-
-    nameInput.addEventListener('blur', function() {
-      const isValid = validateName(this.value);
-      setInputValidation('name', isValid, 'name-error');
-    });
-
-    phoneInput.addEventListener('blur', function() {
-      const isValid = validatePhone(this.value);
-      setInputValidation('phone', isValid, 'phone-error');
-    });
-
-    altPhoneInput.addEventListener('blur', function() {
-      if (this.value.trim()) {
-        const isValid = validatePhone(this.value);
-        setInputValidation('alt-phone', isValid, 'alt-phone-error');
-      } else {
-        setInputValidation('alt-phone', true, 'alt-phone-error');
-      }
-    });
-  }
-
-  // Choice button functionality
-  const activateChoice = (groupId, hiddenId) => {
-    const buttons = document.querySelectorAll(`#${groupId} .choice-button`);
-    const input = document.getElementById(hiddenId);
-    buttons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        buttons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        input.value = btn.dataset.value;
-        input.dispatchEvent(new Event('change'));
-      });
-    });
-  };
-
-  const activateMultiChoice = (groupId, hiddenId) => {
-    const buttons = document.querySelectorAll(`#${groupId} .choice-button`);
-    const input = document.getElementById(hiddenId);
-    const selected = new Set();
-    buttons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const val = btn.dataset.value;
-        btn.classList.toggle("active");
-        if (selected.has(val)) {
-            selected.delete(val);
-        } else {
-            selected.add(val);
-        }
-        input.value = Array.from(selected).join(", ");
-      });
-    });
-  };
-
-  // Initialize choice buttons
-  activateChoice('branch-buttons', 'branch');
-  activateChoice('shift-buttons', 'shift');
-  activateChoice('insurance-buttons', 'insurance');
-  activateMultiChoice('time-buttons', 'selected-time');
-
-  // Show/hide evening options
-  document.querySelectorAll('#shift-buttons .choice-button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const eveningOptions = document.getElementById('evening-options');
-      if (btn.dataset.value === 'مسائي') {
-        eveningOptions.style.display = 'block';
-      } else {
-        eveningOptions.style.display = 'none';
-        // Clear evening selections
-        document.getElementById('doctors').value = '';
-        document.getElementById('selected-time').value = '';
-        document.querySelectorAll('#time-buttons .choice-button').forEach(b => b.classList.remove('active'));
-      }
-    });
-  });
-
-  // Form submission
-  document.getElementById("booking-form").addEventListener("submit", async function(e) {
-    e.preventDefault();
-    const btn = this.querySelector("button[type='submit']");
-    
-    // Get form data
-    const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const altPhone = document.getElementById("alt-phone").value.trim();
-    const insurance = document.getElementById("insurance").value.trim();
-    const branch = document.getElementById("branch").value.trim();
-    const date = document.getElementById("date").value;
-    const shift = document.getElementById("shift").value;
-    const doctors = document.getElementById("doctors").value.trim();
-    const time = document.getElementById("selected-time").value.trim();
-    const notes = document.getElementById("notes").value.trim();
-
-    // Validation
-    let isValid = true;
-
-    if (!validateName(name)) {
-      setInputValidation('name', false, 'name-error');
-      isValid = false;
-    }
-
-    if (!validatePhone(phone)) {
-      setInputValidation('phone', false, 'phone-error');
-      isValid = false;
-    }
-
-    if (altPhone && !validatePhone(altPhone)) {
-      setInputValidation('alt-phone', false, 'alt-phone-error');
-      isValid = false;
-    }
-
-    if (!insurance || !branch || !date || !shift) {
-      showMessage("من فضلك اكمل جميع الحقول المطلوبة", "error");
-      isValid = false;
-    }
-
-    if (shift === "مسائي" && (!doctors || !time)) {
-      showMessage("برجاء اختيار اسم الدكتور والموعد للشيفت المسائي", "error");
-      isValid = false;
-    }
-
-    // Check date validity
-    const selectedDate = new Date(date);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    if (selectedDate <= today) {
-      setInputValidation('date', false, 'date-error');
-      showMessage("لا يمكن حجز موعد في الماضي", "error");
-      isValid = false;
-    }
-
-    if (!isValid) {
-      return;
-    }
-
-    // Start loading
-    setLoadingState(btn, true, "جارٍ معالجة الطلب...");
-
-    const fileInputs = {
-      carnet: document.getElementById("file-carnet"),
-      id: document.getElementById("file-id"),
-      prescription: document.getElementById("file-prescription"),
-      approval: document.getElementById("file-approval"),
-      xray1: document.getElementById("file-xray1"),
-      medical: document.getElementById("file-medical"),
-      other: document.getElementById("file-other")
-    };
-
-    const uploadedFiles = {};
-    const uploadFile = async (label, input) => {
-      if (input && input.files.length > 0) {
-        const file = input.files[0];
-        
-        // Check file size (max 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-          throw new Error(`حجم ملف ${label} كبير جداً. الحد الأقصى 5 ميجابايت`);
-        }
-        
-        const uniqueId = name.replace(/\s/g, '_') + "_" + Date.now();
-        const ref = storage.ref(`bookings/${uniqueId}/${label}_${file.name}`);
-        await ref.put(file);
-        uploadedFiles[label] = await ref.getDownloadURL();
-      }
-    };
-
-    try {
-      // Upload files
-      setLoadingState(btn, true, "جارٍ رفع الملفات...");
-      await Promise.all(Object.entries(fileInputs).map(([k, v]) => uploadFile(k, v)));
-      
-      // Save to database
-      setLoadingState(btn, true, "جارٍ حفظ البيانات...");
-      const bookingData = {
-        name, phone, altPhone, insurance, branch, date, shift,
-        doctors, time, notes, files: uploadedFiles,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        status: 'pending'
       };
       
-      await db.collection("bookings").add(bookingData);
+      input.addEventListener('change', listener);
+      eventListeners.push({element: input, event: 'change', listener});
+    });
+  }
 
-      // Send WhatsApp confirmation
-      const msg = `تم استلام طلب حجز جلستكم في PhysioCare بنجاح ✅
-
-الاسم: ${name}
-الفرع: ${branch}
-التاريخ: ${date}
-الشيفت: ${shift}
-${shift === 'مسائي' ? `الدكتور: ${doctors}\nالموعد: ${time}` : ''}
-
-سوف يتم التواصل معكم للتأكيد النهائي.
-
-شكراً لثقتكم في PhysioCare 🏥`;
-
-      // Validate phone number before WhatsApp
-      const cleanPhone = phone.replace(/^0/, "");
-      if (cleanPhone.length === 10) {
-        window.open(`https://wa.me/2${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
-      }
-
-      showMessage("✅ تم إرسال الحجز بنجاح! سيتم التواصل معكم للتأكيد", "success");
-      
-      // Reset form
-      this.reset();
-      document.querySelectorAll('.choice-button.active').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.file-box.has-file').forEach(box => box.classList.remove('has-file'));
-      document.querySelectorAll('input.valid, input.invalid').forEach(input => {
-        input.classList.remove('valid', 'invalid');
-      });
-      document.querySelectorAll('.error-message').forEach(error => {
-        error.style.display = 'none';
-      });
-      document.getElementById('evening-options').style.display = 'none';
-
-    } catch (err) {
-      console.error('Booking error:', err);
-      showMessage(`حدث خطأ: ${err.message || 'يرجى المحاولة مرة أخرى'}`, "error");
-    } finally {
-      setLoadingState(btn, false);
-    }
-  });
-
-  // Initialize everything when page loads
-  document.addEventListener('DOMContentLoaded', function() {
-    setupDateConstraints();
-    setupFileIndicators();
-    setupInputValidation();
-    showMessage("مرحباً بكم في PhysioCare! املأ النموذج لحجز جلستك", "info");
-  });
-
-</script>
-
-</body>
-</html>
+  // Enhanced input validation with real-time feedback
+  function setupInputVali
