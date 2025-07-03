@@ -31,9 +31,6 @@
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- Logo Animation Styles -->
-  <link rel="stylesheet" href="logo-styles.css">
-
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -129,6 +126,52 @@
     .header-content {
       position: relative;
       z-index: 2;
+    }
+
+    /* Logo Styles */
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .logo-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      box-shadow: 0 8px 25px rgba(255,255,255,0.2);
+      transition: var(--transition);
+      animation: logoFloat 3s ease-in-out infinite;
+    }
+
+    .logo-image:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 35px rgba(255,255,255,0.3);
+    }
+
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .logo-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(148, 210, 189, 0.3) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
     }
 
     header h1 {
@@ -1185,20 +1228,10 @@
 
   <header role="banner">
     <div class="header-content">
-      <!-- Animated Logo -->
-      <div class="physiocare-logo-header">
-        <div class="physiocare-logo-container">
-          <img src="/public/eqq.jpg" alt="PhysioCare Logo" class="physiocare-logo-image">
-        </div>
-        <!-- العناصر المتحركة -->
-        <div class="physiocare-logo-ring-1"></div>
-        <div class="physiocare-logo-ring-2"></div>
-        <div class="physiocare-logo-glow-1"></div>
-        <div class="physiocare-logo-glow-2"></div>
-        <div class="physiocare-logo-float-1"></div>
-        <div class="physiocare-logo-float-2"></div>
-        <div class="physiocare-logo-float-3"></div>
-        <div class="physiocare-logo-badge">معتمد</div>
+      <!-- Logo Container -->
+      <div class="logo-container">
+        <div class="logo-glow"></div>
+        <img src="/public/eqq.jpg" alt="PhysioCare Logo" class="logo-image">
       </div>
 
       <h1>PhysioCare</h1>
@@ -1567,7 +1600,7 @@
           <div class="file-grid">
             <div class="file-box">
               <label for="file-carnet">
-                <img src="https://cdn-icons-png.flaticon.com/512/2910/2910791.png" alt="كارنيه التأمين" aria-hidden="true">
+                <i class="fas fa-id-card icon"></i>
                 كارنيه التأمين
               </label>
               <input 
@@ -1583,7 +1616,7 @@
             
             <div class="file-box">
               <label for="file-id">
-                <img src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" alt="البطاقة الشخصية" aria-hidden="true">
+                <i class="fas fa-address-card icon"></i>
                 البطاقة الشخصية
               </label>
               <input 
@@ -1599,7 +1632,7 @@
             
             <div class="file-box">
               <label for="file-prescription">
-                <img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png" alt="الروشتة الطبية" aria-hidden="true">
+                <i class="fas fa-prescription icon"></i>
                 الروشتة الطبية
               </label>
               <input 
@@ -1615,7 +1648,7 @@
             
             <div class="file-box">
               <label for="file-approval">
-                <img src="https://cdn-icons-png.flaticon.com/512/2910/2910814.png" alt="موافقة التأمين" aria-hidden="true">
+                <i class="fas fa-check-circle icon"></i>
                 موافقة التأمين
               </label>
               <input 
@@ -1631,7 +1664,7 @@
             
             <div class="file-box">
               <label for="file-xray1">
-                <img src="https://cdn-icons-png.flaticon.com/512/2966/2966334.png" alt="تقرير أشعة" aria-hidden="true">
+                <i class="fas fa-x-ray icon"></i>
                 تقرير أشعة
               </label>
               <input 
@@ -1647,7 +1680,7 @@
 
             <div class="file-box">
               <label for="file-xray2">
-                <img src="https://cdn-icons-png.flaticon.com/512/2966/2966334.png" alt="تقرير أشعة آخر" aria-hidden="true">
+                <i class="fas fa-x-ray icon"></i>
                 تقرير أشعة آخر
               </label>
               <input 
@@ -1663,7 +1696,7 @@
             
             <div class="file-box">
               <label for="file-medical">
-                <img src="https://cdn-icons-png.flaticon.com/512/2966/2966316.png" alt="تقرير طبي" aria-hidden="true">
+                <i class="fas fa-file-medical icon"></i>
                 تقرير طبي
               </label>
               <input 
@@ -1679,7 +1712,7 @@
             
             <div class="file-box">
               <label for="file-other">
-                <img src="https://cdn-icons-png.flaticon.com/512/2910/2910791.png" alt="ملفات أخرى" aria-hidden="true">
+                <i class="fas fa-file icon"></i>
                 ملفات أخرى
               </label>
               <input 
@@ -2024,11 +2057,6 @@
     </div>
   </footer>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
   <!-- Leaflet JS for maps -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -2039,32 +2067,11 @@
 
       // Configuration
       const CONFIG = {
-        firebase: {
-          apiKey: "AIzaSyA6_OACwpwaFSiX8jfsjS0_bt_EfIc4rhY",
-          authDomain: "physiocare-booking.firebaseapp.com",
-          projectId: "physiocare-booking",
-          storageBucket: "physiocare-booking.firebasestorage.app",
-          messagingSenderId: "815959251074",
-          appId: "1:815959251074:web:cfd13396b4072b90ccbc9b",
-          measurementId: "G-HBYJGQRVBB"
-        },
         maxFileSize: 5 * 1024 * 1024, // 5MB
         allowedFileTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf'],
         debounceDelay: 300,
         maxRetries: 3
       };
-
-      // Initialize Firebase
-      let db, storage;
-      try {
-        firebase.initializeApp(CONFIG.firebase);
-        db = firebase.firestore();
-        storage = firebase.storage();
-        console.log('Firebase initialized successfully');
-      } catch (error) {
-        console.error('Firebase initialization failed:', error);
-        showMessage('خطأ في تهيئة النظام. يرجى إعادة تحميل الصفحة.', 'error');
-      }
 
       // State management
       const state = {
@@ -2792,40 +2799,6 @@
         }
       }
 
-      // File upload to Firebase
-      async function uploadFile(file, path) {
-        if (!file || !storage) return null;
-
-        try {
-          const ref = storage.ref(path);
-          const uploadTask = ref.put(file);
-
-          return new Promise((resolve, reject) => {
-            uploadTask.on('state_changed',
-              (snapshot) => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                // Update progress if needed
-              },
-              (error) => {
-                console.error('Upload error:', error);
-                reject(error);
-              },
-              async () => {
-                try {
-                  const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
-                  resolve(downloadURL);
-                } catch (error) {
-                  reject(error);
-                }
-              }
-            );
-          });
-        } catch (error) {
-          console.error('File upload failed:', error);
-          throw new Error(`فشل في رفع الملف: ${error.message}`);
-        }
-      }
-
       // Form submission
       async function handleFormSubmission(event) {
         event.preventDefault();
@@ -2845,26 +2818,9 @@
             return;
           }
 
-          // Upload files
-          setLoadingState(true, 'جارٍ رفع الملفات...');
-          const uploadedFiles = await uploadFiles(formData);
-
-          // Save to database
+          // Simulate processing
           setLoadingState(true, 'جارٍ حفظ البيانات...');
-          const bookingData = {
-            ...formData,
-            files: uploadedFiles,
-            selectedTimes: state.selectedTimes,
-            selectedDoctors: state.selectedDoctors,
-            rating: state.rating,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            status: 'pending',
-            id: utils.generateUniqueId()
-          };
-
-          await utils.retry(async () => {
-            await db.collection('bookings').add(bookingData);
-          });
+          await new Promise(resolve => setTimeout(resolve, 2000));
 
           // Send WhatsApp confirmation
           sendWhatsAppConfirmation(formData);
@@ -2943,27 +2899,6 @@
           isValid: errors.length === 0,
           errors
         };
-      }
-
-      async function uploadFiles(formData) {
-        const uploadedFiles = {};
-        const uploadPromises = [];
-
-        Object.entries(formData.files).forEach(([key, file]) => {
-          if (file) {
-            const uniqueId = `${formData.name.replace(/\s/g, '_')}_${Date.now()}`;
-            const path = `bookings/${uniqueId}/${key}_${file.name}`;
-
-            uploadPromises.push(
-              uploadFile(file, path).then(url => {
-                if (url) uploadedFiles[key] = url;
-              })
-            );
-          }
-        });
-
-        await Promise.all(uploadPromises);
-        return uploadedFiles;
       }
 
       function sendWhatsAppConfirmation(data) {
@@ -3102,54 +3037,6 @@
         });
       }
 
-      // Performance monitoring
-      function setupPerformanceMonitoring() {
-        if ('performance' in window) {
-          window.addEventListener('load', () => {
-            const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-            console.log(`Page load time: ${loadTime}ms`);
-
-            if (loadTime > 3000) {
-              console.warn('Slow page load detected');
-            }
-          });
-        }
-      }
-
-      // Service Worker for offline functionality
-      function setupServiceWorker() {
-        if ('serviceWorker' in navigator) {
-          window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-              .then(registration => {
-                console.log('SW registered: ', registration);
-              })
-              .catch(registrationError => {
-                console.log('SW registration failed: ', registrationError);
-              });
-          });
-        }
-      }
-
-      // Analytics tracking
-      function setupAnalytics() {
-        // Track form interactions
-        document.addEventListener('click', (e) => {
-          if (e.target.classList.contains('choice-button')) {
-            console.log('Choice button clicked:', e.target.textContent);
-          }
-
-          if (e.target.classList.contains('nav-tab')) {
-            console.log('Tab switched:', e.target.dataset.tab);
-          }
-        });
-
-        // Track form submission
-        document.getElementById('booking-form').addEventListener('submit', () => {
-          console.log('Booking form submitted');
-        });
-      }
-
       // Initialize everything when DOM is ready
       function initialize() {
         try {
@@ -3162,9 +3049,6 @@
           setupContactForm();
           setupKeyboardNavigation();
           setupErrorHandling();
-          setupPerformanceMonitoring();
-          setupServiceWorker();
-          setupAnalytics();
 
           // Form submission
           const form = document.getElementById('booking-form');
@@ -3177,7 +3061,7 @@
             showMessage('مرحباً بكم في PhysioCare! نحن هنا لخدمتكم على مدار الساعة', 'info');
           }, 1000);
 
-          console.log('Enhanced PhysioCare application initialized successfully');
+          console.log('PhysioCare application initialized successfully');
         } catch (error) {
           console.error('Initialization error:', error);
           showMessage('حدث خطأ في تحميل النظام. يرجى إعادة تحميل الصفحة.', 'error');
