@@ -142,13 +142,18 @@
     }
 
     .logo-icon {
-      font-size: 2.5rem;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
       animation: pulse 2s infinite;
+      object-fit: contain;
+      background: var(--white);
+      padding: 5px;
     }
 
     @keyframes pulse {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+      50% { transform: scale(1.05); }
     }
 
     header p {
@@ -564,8 +569,8 @@
     }
 
     .file-box img {
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 50px;
       object-fit: contain;
     }
 
@@ -679,6 +684,56 @@
         transform: translateY(0);
         max-height: 1000px;
       }
+    }
+
+    /* Insurance Options */
+    .insurance-options {
+      background: var(--light-bg);
+      padding: 25px;
+      margin-top: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+      animation: slideDown 0.3s ease-out;
+      display: none;
+    }
+
+    /* Doctor Selection */
+    .doctor-selection {
+      background: var(--light-bg);
+      padding: 25px;
+      margin-top: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+      animation: slideDown 0.3s ease-out;
+      display: none;
+    }
+
+    .doctor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 15px 0;
+    }
+
+    .doctor-card {
+      padding: 15px;
+      border: 2px solid var(--border-light);
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--white);
+    }
+
+    .doctor-card:hover {
+      border-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    .doctor-card.selected {
+      border-color: var(--secondary-color);
+      background: var(--secondary-color);
+      color: var(--white);
     }
 
     /* Message Notifications */
@@ -866,35 +921,6 @@
       box-shadow: var(--shadow-heavy);
     }
 
-    /* Payment Section */
-    .payment-methods {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-      margin: 20px 0;
-    }
-
-    .payment-method {
-      padding: 20px;
-      border: 2px solid var(--border-light);
-      border-radius: 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: var(--transition);
-      background: var(--white);
-    }
-
-    .payment-method:hover {
-      border-color: var(--secondary-color);
-      transform: translateY(-2px);
-    }
-
-    .payment-method.active {
-      border-color: var(--secondary-color);
-      background: var(--secondary-color);
-      color: var(--white);
-    }
-
     /* Calendar */
     .calendar-container {
       background: var(--white);
@@ -937,52 +963,6 @@
     .calendar-day.selected {
       background: var(--primary-color);
       color: var(--white);
-    }
-
-    /* Notifications */
-    .notification-preferences {
-      background: var(--light-bg);
-      padding: 20px;
-      border-radius: 12px;
-      margin: 20px 0;
-    }
-
-    .notification-option {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .toggle-switch {
-      position: relative;
-      width: 50px;
-      height: 25px;
-      background: #ccc;
-      border-radius: 25px;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .toggle-switch.active {
-      background: var(--success-color);
-    }
-
-    .toggle-switch::before {
-      content: '';
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 21px;
-      height: 21px;
-      background: var(--white);
-      border-radius: 50%;
-      transition: var(--transition);
-    }
-
-    .toggle-switch.active::before {
-      transform: translateX(25px);
     }
 
     /* Footer */
@@ -1212,10 +1192,10 @@
   <header role="banner">
     <div class="header-content">
       <h1>
-        <i class="fas fa-heartbeat logo-icon"></i>
+        <img src="/public/eqq.jpg" alt="PhysioCare Logo" class="logo-icon">
         PhysioCare
       </h1>
-      <p>احجز جلستك العلاجية بسهولة وأمان</p>
+      <p>مركز متخصص في العلاج الطبيعي والتأهيل الطبي</p>
     </div>
     
     <!-- Navigation Tabs -->
@@ -1313,15 +1293,31 @@
           </div>
 
           <div class="form-group">
-            <label class="required">شركة التأمين</label>
+            <label class="required">نوع الدفع</label>
+            <div class="choice-group" id="payment-type-buttons" role="radiogroup" aria-label="اختر نوع الدفع">
+              <button type="button" class="choice-button" data-value="تأمين" role="radio" aria-checked="false">
+                <i class="fas fa-shield-alt"></i>
+                تأمين
+              </button>
+              <button type="button" class="choice-button" data-value="كاش" role="radio" aria-checked="false">
+                <i class="fas fa-money-bill-wave"></i>
+                كاش
+              </button>
+            </div>
+            <input type="hidden" id="payment-type" name="payment-type" required>
+            <div class="error-message" id="payment-type-error" role="alert" aria-live="polite"></div>
+          </div>
+
+          <!-- Insurance Options (Hidden by default) -->
+          <div id="insurance-options" class="insurance-options" aria-live="polite">
+            <h3>
+              <i class="fas fa-shield-alt"></i>
+              اختر شركة التأمين
+            </h3>
             <div class="choice-group" id="insurance-buttons" role="radiogroup" aria-label="اختر شركة التأمين">
               <button type="button" class="choice-button" data-value="Globmed" role="radio" aria-checked="false">
                 <i class="fas fa-shield-alt"></i>
                 Globmed
-              </button>
-              <button type="button" class="choice-button" data-value="CASH 💰" role="radio" aria-checked="false">
-                <i class="fas fa-money-bill-wave"></i>
-                CASH 💰
               </button>
               <button type="button" class="choice-button" data-value="NextCare" role="radio" aria-checked="false">
                 <i class="fas fa-shield-alt"></i>
@@ -1351,23 +1347,23 @@
                 <i class="fas fa-shield-alt"></i>
                 Egymed
               </button>
-              <button type="button" class="choice-button" data-value="LimilessCare" role="radio" aria-checked="false">
+              <button type="button" class="choice-button" data-value="LimitlessCare" role="radio" aria-checked="false">
                 <i class="fas fa-shield-alt"></i>
-                LimilessCare
+                LimitlessCare
               </button>
             </div>
-            <input type="hidden" id="insurance" name="insurance" required>
+            <input type="hidden" id="insurance" name="insurance">
             <div class="error-message" id="insurance-error" role="alert" aria-live="polite"></div>
           </div>
 
           <div class="form-group">
             <label class="required">اختر الفرع</label>
             <div class="choice-group" id="branch-buttons" role="radiogroup" aria-label="اختر الفرع">
-              <button type="button" class="choice-button" data-value="إيدن مول - الشيخ زايد" role="radio" aria-checked="false">
+              <button type="button" class="choice-button" data-value="الشيخ زايد - إيدن مول" role="radio" aria-checked="false">
                 <i class="fas fa-building"></i>
                 إيدن مول
               </button>
-              <button type="button" class="choice-button" data-value="أركان مول - الشيخ زايد" role="radio" aria-checked="false">
+              <button type="button" class="choice-button" data-value="الشيخ زايد - أركان مول" role="radio" aria-checked="false">
                 <i class="fas fa-building"></i>
                 أركان مول
               </button>
@@ -1446,7 +1442,11 @@
             </h3>
             
             <div class="form-group">
-              <label>اختيار الموعد الصباحي</label>
+              <label>اختيار المواعيد الصباحية (يمكنك اختيار أكثر من موعد)</label>
+              <p style="font-size: 0.9rem; color: var(--gray-text); margin-bottom: 15px;">
+                <i class="fas fa-info-circle"></i>
+                يمكنك اختيار عدة مواعيد وسيتم التواصل معك لتأكيد الموعد المناسب
+              </p>
               <div class="time-slots" id="morning-time-slots">
                 <div class="time-slot" data-value="10:30 ص">10:30 ص</div>
                 <div class="time-slot" data-value="11:10 ص">11:10 ص</div>
@@ -1471,7 +1471,11 @@
             </h3>
             
             <div class="form-group">
-              <label>اختيار الموعد المسائي</label>
+              <label>اختيار المواعيد المسائية (يمكنك اختيار أكثر من موعد)</label>
+              <p style="font-size: 0.9rem; color: var(--gray-text); margin-bottom: 15px;">
+                <i class="fas fa-info-circle"></i>
+                يمكنك اختيار عدة مواعيد وسيتم التواصل معك لتأكيد الموعد المناسب
+              </p>
               <div class="time-slots" id="evening-time-slots">
                 <div class="time-slot" data-value="4:30 م">4:30 م</div>
                 <div class="time-slot" data-value="5:10 م">5:10 م</div>
@@ -1488,6 +1492,52 @@
             </div>
           </div>
 
+          <!-- Doctor Selection (Hidden by default) -->
+          <div id="doctor-selection" class="doctor-selection" aria-live="polite">
+            <h3>
+              <i class="fas fa-user-md"></i>
+              اختيار الطبيب المعالج
+            </h3>
+            <p style="font-size: 0.9rem; color: var(--gray-text); margin-bottom: 15px;">
+              <i class="fas fa-info-circle"></i>
+              يمكنك اختيار أكثر من طبيب وسيتم تحديد الطبيب المتاح حسب الموعد المختار
+            </p>
+            
+            <div class="doctor-grid" id="doctor-grid">
+              <div class="doctor-card" data-value="د. أحمد محمد">
+                <i class="fas fa-user-md" style="font-size: 2rem; margin-bottom: 10px; color: var(--primary-color);"></i>
+                <h4>د. أحمد محمد</h4>
+                <p>أخصائي العلاج الطبيعي</p>
+              </div>
+              <div class="doctor-card" data-value="د. سارة أحمد">
+                <i class="fas fa-user-md" style="font-size: 2rem; margin-bottom: 10px; color: var(--secondary-color);"></i>
+                <h4>د. سارة أحمد</h4>
+                <p>أخصائية العلاج الطبيعي</p>
+              </div>
+              <div class="doctor-card" data-value="د. محمد علي">
+                <i class="fas fa-user-md" style="font-size: 2rem; margin-bottom: 10px; color: var(--primary-color);"></i>
+                <h4>د. محمد علي</h4>
+                <p>أخصائي العلاج الطبيعي</p>
+              </div>
+              <div class="doctor-card" data-value="د. فاطمة حسن">
+                <i class="fas fa-user-md" style="font-size: 2rem; margin-bottom: 10px; color: var(--secondary-color);"></i>
+                <h4>د. فاطمة حسن</h4>
+                <p>أخصائية العلاج الطبيعي</p>
+              </div>
+              <div class="doctor-card" data-value="د. عمر خالد">
+                <i class="fas fa-user-md" style="font-size: 2rem; margin-bottom: 10px; color: var(--primary-color);"></i>
+                <h4>د. عمر خالد</h4>
+                <p>أخصائي العلاج الطبيعي</p>
+              </div>
+              <div class="doctor-card" data-value="أي طبيب متاح">
+                <i class="fas fa-users" style="font-size: 2rem; margin-bottom: 10px; color: var(--accent-color);"></i>
+                <h4>أي طبيب متاح</h4>
+                <p>حسب التوفر</p>
+              </div>
+            </div>
+            <input type="hidden" id="selected-doctors" name="selected-doctors">
+          </div>
+
           <div class="form-group">
             <label for="notes">ملاحظات إضافية</label>
             <textarea 
@@ -1501,26 +1551,6 @@
             <div id="notes-counter" class="character-counter">0/500 حرف</div>
           </div>
 
-          <!-- Payment Method -->
-          <div class="form-group">
-            <label>طريقة الدفع</label>
-            <div class="payment-methods">
-              <div class="payment-method" data-value="cash">
-                <i class="fas fa-money-bill-wave" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                <div>نقداً</div>
-              </div>
-              <div class="payment-method" data-value="card">
-                <i class="fas fa-credit-card" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                <div>بطاقة ائتمان</div>
-              </div>
-              <div class="payment-method" data-value="insurance">
-                <i class="fas fa-shield-alt" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                <div>تأمين</div>
-              </div>
-            </div>
-            <input type="hidden" id="payment-method" name="payment-method">
-          </div>
-
           <h3>
             <i class="fas fa-upload"></i>
             رفع الملفات الطبية
@@ -1530,8 +1560,8 @@
           <div class="file-grid">
             <div class="file-box">
               <label for="file-carnet">
-                <span class="icon" aria-hidden="true">📛</span> 
-                الكارنيه
+                <img src="https://cdn-icons-png.flaticon.com/512/2910/2910791.png" alt="كارنيه التأمين" aria-hidden="true">
+                كارنيه التأمين
               </label>
               <input 
                 type="file" 
@@ -1541,13 +1571,13 @@
                 aria-describedby="carnet-help"
               >
               <div class="file-progress"></div>
-              <div id="carnet-help" class="sr-only">رفع صورة الكارنيه</div>
+              <div id="carnet-help" class="sr-only">رفع صورة كارنيه التأمين</div>
             </div>
             
             <div class="file-box">
               <label for="file-id">
-                <span class="icon" aria-hidden="true">🪪</span> 
-                البطاقة
+                <img src="https://cdn-icons-png.flaticon.com/512/2910/2910768.png" alt="البطاقة الشخصية" aria-hidden="true">
+                البطاقة الشخصية
               </label>
               <input 
                 type="file" 
@@ -1562,8 +1592,8 @@
             
             <div class="file-box">
               <label for="file-prescription">
-                <span class="icon" aria-hidden="true">💊</span> 
-                الروشتة
+                <img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png" alt="الروشتة الطبية" aria-hidden="true">
+                الروشتة الطبية
               </label>
               <input 
                 type="file" 
@@ -1578,8 +1608,8 @@
             
             <div class="file-box">
               <label for="file-approval">
-                <span class="icon" aria-hidden="true">📝</span> 
-                الموافقة
+                <img src="https://cdn-icons-png.flaticon.com/512/2910/2910814.png" alt="موافقة التأمين" aria-hidden="true">
+                موافقة التأمين
               </label>
               <input 
                 type="file" 
@@ -1594,7 +1624,7 @@
             
             <div class="file-box">
               <label for="file-xray1">
-                <img src="https://cdn-icons-png.flaticon.com/512/3649/3649466.png" alt="" aria-hidden="true">
+                <img src="https://cdn-icons-png.flaticon.com/512/2966/2966334.png" alt="تقرير أشعة" aria-hidden="true">
                 تقرير أشعة
               </label>
               <input 
@@ -1607,10 +1637,26 @@
               <div class="file-progress"></div>
               <div id="xray-help" class="sr-only">رفع تقرير الأشعة</div>
             </div>
+
+            <div class="file-box">
+              <label for="file-xray2">
+                <img src="https://cdn-icons-png.flaticon.com/512/2966/2966334.png" alt="تقرير أشعة آخر" aria-hidden="true">
+                تقرير أشعة آخر
+              </label>
+              <input 
+                type="file" 
+                id="file-xray2" 
+                name="file-xray2"
+                accept="image/*,.pdf"
+                aria-describedby="xray2-help"
+              >
+              <div class="file-progress"></div>
+              <div id="xray2-help" class="sr-only">رفع تقرير أشعة إضافي</div>
+            </div>
             
             <div class="file-box">
               <label for="file-medical">
-                <span class="icon" aria-hidden="true">📄</span> 
+                <img src="https://cdn-icons-png.flaticon.com/512/2966/2966316.png" alt="تقرير طبي" aria-hidden="true">
                 تقرير طبي
               </label>
               <input 
@@ -1626,8 +1672,8 @@
             
             <div class="file-box">
               <label for="file-other">
-                <span class="icon" aria-hidden="true">📎</span> 
-                أخرى
+                <img src="https://cdn-icons-png.flaticon.com/512/2910/2910791.png" alt="ملفات أخرى" aria-hidden="true">
+                ملفات أخرى
               </label>
               <input 
                 type="file" 
@@ -1656,26 +1702,6 @@
             </div>
           </div>
 
-          <!-- Notification Preferences -->
-          <div class="notification-preferences">
-            <h4>
-              <i class="fas fa-bell"></i>
-              تفضيلات الإشعارات
-            </h4>
-            <div class="notification-option">
-              <span>إشعارات الواتساب</span>
-              <div class="toggle-switch active" data-pref="whatsapp"></div>
-            </div>
-            <div class="notification-option">
-              <span>إشعارات الرسائل النصية</span>
-              <div class="toggle-switch" data-pref="sms"></div>
-            </div>
-            <div class="notification-option">
-              <span>إشعارات البريد الإلكتروني</span>
-              <div class="toggle-switch" data-pref="email"></div>
-            </div>
-          </div>
-
           <div class="submit-container">
             <button type="submit" id="submit-btn">
               <i class="fas fa-paper-plane"></i>
@@ -1697,38 +1723,38 @@
         <div class="services-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin: 30px 0;">
           <div class="service-card" style="background: var(--white); padding: 30px; border-radius: 12px; box-shadow: var(--shadow-medium); text-align: center;">
             <i class="fas fa-walking" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 20px;"></i>
-            <h3>العلاج الطبيعي للعظام</h3>
-            <p>علاج شامل لمشاكل العظام والمفاصل باستخدام أحدث التقنيات والأجهزة المتطورة.</p>
+            <h3>العلاج الطبيعي للعظام والمفاصل</h3>
+            <p>علاج شامل لمشاكل العظام والمفاصل والعمود الفقري باستخدام أحدث التقنيات والأجهزة المتطورة.</p>
           </div>
           
           <div class="service-card" style="background: var(--white); padding: 30px; border-radius: 12px; box-shadow: var(--shadow-medium); text-align: center;">
             <i class="fas fa-heartbeat" style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 20px;"></i>
-            <h3>العلاج الطبيعي للقلب</h3>
+            <h3>العلاج الطبيعي للقلب والأوعية الدموية</h3>
             <p>برامج تأهيل متخصصة لمرضى القلب والأوعية الدموية تحت إشراف طبي متخصص.</p>
           </div>
           
           <div class="service-card" style="background: var(--white); padding: 30px; border-radius: 12px; box-shadow: var(--shadow-medium); text-align: center;">
             <i class="fas fa-brain" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 20px;"></i>
             <h3>العلاج الطبيعي العصبي</h3>
-            <p>علاج متخصص للحالات العصبية والسكتات الدماغية وإصابات الحبل الشوكي.</p>
+            <p>علاج متخصص للحالات العصبية والسكتات الدماغية وإصابات الحبل الشوكي والشلل الدماغي.</p>
           </div>
           
           <div class="service-card" style="background: var(--white); padding: 30px; border-radius: 12px; box-shadow: var(--shadow-medium); text-align: center;">
-            <i class="fas fa-child" style="font-size: 3rem; color: var(--female-color); margin-bottom: 20px;"></i>
+            <i class="fas fa-child" style="font-size: 3rem; color: var(--warning-color); margin-bottom: 20px;"></i>
             <h3>العلاج الطبيعي للأطفال</h3>
-            <p>برامج علاجية مخصصة للأطفال لعلاج تأخر النمو الحركي والمشاكل التطورية.</p>
+            <p>برامج علاجية مخصصة للأطفال لعلاج تأخر النمو الحركي والمشاكل التطورية والإعاقات الحركية.</p>
           </div>
           
           <div class="service-card" style="background: var(--white); padding: 30px; border-radius: 12px; box-shadow: var(--shadow-medium); text-align: center;">
-            <i class="fas fa-dumbbell" style="font-size: 3rem; color: var(--male-color); margin-bottom: 20px;"></i>
+            <i class="fas fa-dumbbell" style="font-size: 3rem; color: var(--info-color); margin-bottom: 20px;"></i>
             <h3>العلاج الطبيعي الرياضي</h3>
-            <p>علاج وتأهيل الإصابات الرياضية وبرامج الوقاية للرياضيين المحترفين.</p>
+            <p>علاج وتأهيل الإصابات الرياضية وبرامج الوقاية للرياضيين المحترفين والهواة.</p>
           </div>
           
           <div class="service-card" style="background: var(--white); padding: 30px; border-radius: 12px; box-shadow: var(--shadow-medium); text-align: center;">
-            <i class="fas fa-female" style="font-size: 3rem; color: var(--warning-color); margin-bottom: 20px;"></i>
+            <i class="fas fa-female" style="font-size: 3rem; color: var(--error-color); margin-bottom: 20px;"></i>
             <h3>العلاج الطبيعي النسائي</h3>
-            <p>برامج متخصصة للسيدات قبل وبعد الولادة وعلاج مشاكل قاع الحوض.</p>
+            <p>برامج متخصصة للسيدات قبل وبعد الولادة وعلاج مشاكل قاع الحوض وسلس البول.</p>
           </div>
         </div>
       </div>
@@ -1748,21 +1774,23 @@
           <div class="branch-card" style="background: var(--white); padding: 25px; border-radius: 12px; box-shadow: var(--shadow-medium);">
             <h3>
               <i class="fas fa-building"></i>
-              فرع إيدن مول
+              فرع إيدن مول - الشيخ زايد
             </h3>
-            <p><i class="fas fa-map-marker-alt"></i> الشيخ زايد - إيدن مول</p>
-            <p><i class="fas fa-phone"></i> 01234567890</p>
-            <p><i class="fas fa-clock"></i> 9:00 ص - 10:00 م</p>
+            <p><i class="fas fa-map-marker-alt"></i> الشيخ زايد - إيدن مول - الدور الثاني</p>
+            <p><i class="fas fa-phone"></i> 01012345678</p>
+            <p><i class="fas fa-clock"></i> السبت - الخميس: 9:00 ص - 10:00 م</p>
+            <p><i class="fas fa-clock"></i> الجمعة: 2:00 م - 10:00 م</p>
           </div>
           
           <div class="branch-card" style="background: var(--white); padding: 25px; border-radius: 12px; box-shadow: var(--shadow-medium);">
             <h3>
               <i class="fas fa-building"></i>
-              فرع أركان مول
+              فرع أركان مول - الشيخ زايد
             </h3>
-            <p><i class="fas fa-map-marker-alt"></i> الشيخ زايد - أركان مول</p>
-            <p><i class="fas fa-phone"></i> 01234567891</p>
-            <p><i class="fas fa-clock"></i> 9:00 ص - 10:00 م</p>
+            <p><i class="fas fa-map-marker-alt"></i> الشيخ زايد - أركان مول - الدور الأول</p>
+            <p><i class="fas fa-phone"></i> 01012345679</p>
+            <p><i class="fas fa-clock"></i> السبت - الخميس: 9:00 ص - 10:00 م</p>
+            <p><i class="fas fa-clock"></i> الجمعة: 2:00 م - 10:00 م</p>
           </div>
           
           <div class="branch-card" style="background: var(--white); padding: 25px; border-radius: 12px; box-shadow: var(--shadow-medium);">
@@ -1770,9 +1798,10 @@
               <i class="fas fa-building"></i>
               فرع المعادي
             </h3>
-            <p><i class="fas fa-map-marker-alt"></i> المعادي - شارع 9</p>
-            <p><i class="fas fa-phone"></i> 01234567892</p>
-            <p><i class="fas fa-clock"></i> 9:00 ص - 10:00 م</p>
+            <p><i class="fas fa-map-marker-alt"></i> المعادي - شارع 9 - بجوار مترو المعادي</p>
+            <p><i class="fas fa-phone"></i> 01012345680</p>
+            <p><i class="fas fa-clock"></i> السبت - الخميس: 9:00 ص - 10:00 م</p>
+            <p><i class="fas fa-clock"></i> الجمعة: 2:00 م - 10:00 م</p>
           </div>
           
           <div class="branch-card" style="background: var(--white); padding: 25px; border-radius: 12px; box-shadow: var(--shadow-medium);">
@@ -1780,9 +1809,10 @@
               <i class="fas fa-building"></i>
               فرع المهندسين
             </h3>
-            <p><i class="fas fa-map-marker-alt"></i> المهندسين - شارع السودان</p>
-            <p><i class="fas fa-phone"></i> 01234567893</p>
-            <p><i class="fas fa-clock"></i> 9:00 ص - 10:00 م</p>
+            <p><i class="fas fa-map-marker-alt"></i> المهندسين - شارع السودان - أمام مترو البحوث</p>
+            <p><i class="fas fa-phone"></i> 01012345681</p>
+            <p><i class="fas fa-clock"></i> السبت - الخميس: 9:00 ص - 10:00 م</p>
+            <p><i class="fas fa-clock"></i> الجمعة: 2:00 م - 10:00 م</p>
           </div>
           
           <div class="branch-card" style="background: var(--white); padding: 25px; border-radius: 12px; box-shadow: var(--shadow-medium);">
@@ -1790,9 +1820,10 @@
               <i class="fas fa-building"></i>
               فرع التجمع الخامس
             </h3>
-            <p><i class="fas fa-map-marker-alt"></i> التجمع الخامس - الحي الأول</p>
-            <p><i class="fas fa-phone"></i> 01234567894</p>
-            <p><i class="fas fa-clock"></i> 9:00 ص - 10:00 م</p>
+            <p><i class="fas fa-map-marker-alt"></i> التجمع الخامس - الحي الأول - شارع التسعين الشمالي</p>
+            <p><i class="fas fa-phone"></i> 01012345682</p>
+            <p><i class="fas fa-clock"></i> السبت - الخميس: 9:00 ص - 10:00 م</p>
+            <p><i class="fas fa-clock"></i> الجمعة: 2:00 م - 10:00 م</p>
           </div>
         </div>
       </div>
@@ -1807,43 +1838,48 @@
         </h2>
         
         <div style="text-align: center; margin: 40px 0;">
-          <img src="https://via.placeholder.com/400x300/005f73/ffffff?text=PhysioCare" alt="PhysioCare" style="border-radius: 12px; max-width: 100%; height: auto;">
+          <img src="/public/eqq.jpg" alt="PhysioCare" style="border-radius: 12px; max-width: 100%; height: auto; max-height: 300px;">
         </div>
         
         <div style="font-size: 1.1rem; line-height: 1.8; text-align: justify;">
           <p>
-            <strong>PhysioCare</strong> هو مركز متخصص في العلاج الطبيعي والتأهيل الطبي، نقدم خدمات طبية متميزة باستخدام أحدث التقنيات والأجهزة الطبية المتطورة. نحن نؤمن بأن كل مريض يستحق أفضل رعاية طبية ممكنة.
+            <strong>PhysioCare</strong> هو مركز متخصص في العلاج الطبيعي والتأهيل الطبي، تأسس عام 2015 بهدف تقديم خدمات طبية متميزة في مجال العلاج الطبيعي. نحن نؤمن بأن كل مريض يستحق أفضل رعاية طبية ممكنة، ولذلك نسعى دائماً لتطوير خدماتنا ومواكبة أحدث التطورات في مجال العلاج الطبيعي.
           </p>
           
           <h3>رؤيتنا</h3>
           <p>
-            أن نكون الخيار الأول في مجال العلاج الطبيعي في مصر والشرق الأوسط، من خلال تقديم خدمات طبية عالية الجودة تساعد المرضى على استعادة صحتهم وحيويتهم.
+            أن نكون الخيار الأول في مجال العلاج الطبيعي في مصر والشرق الأوسط، من خلال تقديم خدمات طبية عالية الجودة تساعد المرضى على استعادة صحتهم وحيويتهم والعودة إلى حياتهم الطبيعية بأفضل شكل ممكن.
           </p>
           
           <h3>مهمتنا</h3>
           <p>
-            نسعى لتقديم خدمات علاج طبيعي شاملة ومتخصصة باستخدام أحدث الطرق العلاجية والتقنيات المتطورة، مع فريق طبي مؤهل وذو خبرة عالية لضمان أفضل النتائج العلاجية.
+            نسعى لتقديم خدمات علاج طبيعي شاملة ومتخصصة باستخدام أحدث الطرق العلاجية والتقنيات المتطورة، مع فريق طبي مؤهل وذو خبرة عالية لضمان أفضل النتائج العلاجية. كما نهتم بالتعليم المستمر لفريقنا الطبي ونشر الوعي الصحي في المجتمع.
           </p>
           
           <h3>قيمنا</h3>
           <ul style="list-style: none; padding: 0;">
             <li style="margin: 10px 0; padding: 10px; background: var(--light-bg); border-radius: 8px;">
               <i class="fas fa-heart" style="color: var(--error-color); margin-left: 10px;"></i>
-              <strong>الرعاية المتميزة:</strong> نضع المريض في المقدمة ونهتم بكل التفاصيل
+              <strong>الرعاية المتميزة:</strong> نضع المريض في المقدمة ونهتم بكل التفاصيل لضمان راحته وشفائه
             </li>
             <li style="margin: 10px 0; padding: 10px; background: var(--light-bg); border-radius: 8px;">
               <i class="fas fa-star" style="color: var(--warning-color); margin-left: 10px;"></i>
-              <strong>الجودة:</strong> نلتزم بأعلى معايير الجودة في جميع خدماتنا
+              <strong>الجودة:</strong> نلتزم بأعلى معايير الجودة في جميع خدماتنا ونسعى للتحسين المستمر
             </li>
             <li style="margin: 10px 0; padding: 10px; background: var(--light-bg); border-radius: 8px;">
               <i class="fas fa-users" style="color: var(--primary-color); margin-left: 10px;"></i>
-              <strong>العمل الجماعي:</strong> نعمل كفريق واحد لتحقيق أفضل النتائج
+              <strong>العمل الجماعي:</strong> نعمل كفريق واحد متكامل لتحقيق أفضل النتائج للمرضى
             </li>
             <li style="margin: 10px 0; padding: 10px; background: var(--light-bg); border-radius: 8px;">
               <i class="fas fa-lightbulb" style="color: var(--secondary-color); margin-left: 10px;"></i>
-              <strong>الابتكار:</strong> نواكب أحدث التطورات في مجال العلاج الطبيعي
+              <strong>الابتكار:</strong> نواكب أحدث التطورات في مجال العلاج الطبيعي ونستخدم أحدث التقنيات
             </li>
           </ul>
+
+          <h3>إنجازاتنا</h3>
+          <p>
+            خلال أكثر من 8 سنوات من العمل، تمكنا من علاج أكثر من 50,000 مريض بنجاح، وحصلنا على اعتماد وزارة الصحة المصرية وشهادات الجودة الدولية. كما نتعاون مع أكبر شركات التأمين في مصر لتوفير خدماتنا لأكبر عدد من المرضى.
+          </p>
         </div>
       </div>
     </div>
@@ -1869,14 +1905,15 @@
               أرقام التواصل
             </h3>
             <p>الخط الساخن: 16123</p>
-            <p>موبايل: 01234567890</p>
+            <p>موبايل: 01012345678</p>
+            <p>واتساب: 01012345678</p>
             
             <h3>
               <i class="fas fa-envelope"></i>
               البريد الإلكتروني
             </h3>
-            <p>info@physiocare.com</p>
-            <p>support@physiocare.com</p>
+            <p>info@physiocare-eg.com</p>
+            <p>support@physiocare-eg.com</p>
             
             <h3>
               <i class="fas fa-clock"></i>
@@ -1977,7 +2014,7 @@
         </a>
       </div>
       
-      <p>للدعم الفني: <a href="tel:+201234567890">01234567890</a> | <a href="mailto:support@physiocare.com">support@physiocare.com</a></p>
+      <p>للدعم الفني: <a href="tel:+201012345678">01012345678</a> | <a href="mailto:support@physiocare-eg.com">support@physiocare-eg.com</a></p>
     </div>
   </footer>
 
@@ -2031,13 +2068,9 @@
         validationErrors: {},
         currentTab: 'booking',
         selectedShift: null,
-        selectedTime: null,
-        rating: 0,
-        notifications: {
-          whatsapp: true,
-          sms: false,
-          email: false
-        }
+        selectedTimes: [],
+        selectedDoctors: [],
+        rating: 0
       };
 
       // Utility Functions
@@ -2359,14 +2392,72 @@
 
       // Choice button functionality
       function setupChoiceButtons() {
-        setupSingleChoice('insurance-buttons', 'insurance');
+        setupPaymentTypeButtons();
         setupSingleChoice('branch-buttons', 'branch');
         setupSingleChoice('days-buttons', 'selected-days');
         setupSingleChoice('shift-buttons', 'shift');
-        setupPaymentMethods();
+        setupInsuranceButtons();
         setupTimeSlots();
+        setupDoctorSelection();
         setupRatingSystem();
-        setupNotificationToggles();
+      }
+
+      function setupPaymentTypeButtons() {
+        const buttons = document.querySelectorAll('#payment-type-buttons .choice-button');
+        const input = document.getElementById('payment-type');
+        const insuranceOptions = document.getElementById('insurance-options');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            // Update ARIA states
+            buttons.forEach(b => {
+              b.classList.remove('active');
+              b.setAttribute('aria-checked', 'false');
+            });
+            
+            btn.classList.add('active');
+            btn.setAttribute('aria-checked', 'true');
+            input.value = btn.dataset.value;
+            
+            // Show/hide insurance options
+            if (btn.dataset.value === 'تأمين') {
+              insuranceOptions.style.display = 'block';
+            } else {
+              insuranceOptions.style.display = 'none';
+              // Clear insurance selection
+              document.getElementById('insurance').value = '';
+              document.querySelectorAll('#insurance-buttons .choice-button').forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-checked', 'false');
+              });
+            }
+            
+            state.formData['payment-type'] = btn.dataset.value;
+            updateProgress();
+          });
+        });
+      }
+
+      function setupInsuranceButtons() {
+        const buttons = document.querySelectorAll('#insurance-buttons .choice-button');
+        const input = document.getElementById('insurance');
+        
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            // Update ARIA states
+            buttons.forEach(b => {
+              b.classList.remove('active');
+              b.setAttribute('aria-checked', 'false');
+            });
+            
+            btn.classList.add('active');
+            btn.setAttribute('aria-checked', 'true');
+            input.value = btn.dataset.value;
+            
+            state.formData['insurance'] = btn.dataset.value;
+            updateProgress();
+          });
+        });
       }
 
       function setupSingleChoice(groupId, hiddenId) {
@@ -2405,44 +2496,56 @@
         });
       }
 
-      function setupPaymentMethods() {
-        const paymentMethods = document.querySelectorAll('.payment-method');
-        const hiddenInput = document.getElementById('payment-method');
-        
-        paymentMethods.forEach(method => {
-          method.addEventListener('click', () => {
-            paymentMethods.forEach(m => m.classList.remove('active'));
-            method.classList.add('active');
-            hiddenInput.value = method.dataset.value;
-            state.formData['payment-method'] = method.dataset.value;
-          });
-        });
-      }
-
       function setupTimeSlots() {
-        // Morning time slots
+        // Morning time slots - allow multiple selection
         const morningSlots = document.querySelectorAll('#morning-time-slots .time-slot');
         const morningInput = document.getElementById('morning-time');
         
         morningSlots.forEach(slot => {
           slot.addEventListener('click', () => {
-            morningSlots.forEach(s => s.classList.remove('active'));
-            slot.classList.add('active');
-            morningInput.value = slot.dataset.value;
-            state.selectedTime = slot.dataset.value;
+            slot.classList.toggle('active');
+            
+            // Get all selected morning times
+            const selectedTimes = Array.from(document.querySelectorAll('#morning-time-slots .time-slot.active'))
+              .map(s => s.dataset.value);
+            
+            morningInput.value = selectedTimes.join(', ');
+            state.selectedTimes = selectedTimes;
           });
         });
 
-        // Evening time slots
+        // Evening time slots - allow multiple selection
         const eveningSlots = document.querySelectorAll('#evening-time-slots .time-slot');
         const eveningInput = document.getElementById('evening-time');
         
         eveningSlots.forEach(slot => {
           slot.addEventListener('click', () => {
-            eveningSlots.forEach(s => s.classList.remove('active'));
-            slot.classList.add('active');
-            eveningInput.value = slot.dataset.value;
-            state.selectedTime = slot.dataset.value;
+            slot.classList.toggle('active');
+            
+            // Get all selected evening times
+            const selectedTimes = Array.from(document.querySelectorAll('#evening-time-slots .time-slot.active'))
+              .map(s => s.dataset.value);
+            
+            eveningInput.value = selectedTimes.join(', ');
+            state.selectedTimes = selectedTimes;
+          });
+        });
+      }
+
+      function setupDoctorSelection() {
+        const doctorCards = document.querySelectorAll('.doctor-card');
+        const selectedDoctorsInput = document.getElementById('selected-doctors');
+        
+        doctorCards.forEach(card => {
+          card.addEventListener('click', () => {
+            card.classList.toggle('selected');
+            
+            // Get all selected doctors
+            const selectedDoctors = Array.from(document.querySelectorAll('.doctor-card.selected'))
+              .map(c => c.dataset.value);
+            
+            selectedDoctorsInput.value = selectedDoctors.join(', ');
+            state.selectedDoctors = selectedDoctors;
           });
         });
       }
@@ -2489,34 +2592,17 @@
         });
       }
 
-      function setupNotificationToggles() {
-        const toggles = document.querySelectorAll('.toggle-switch');
-        
-        toggles.forEach(toggle => {
-          toggle.addEventListener('click', () => {
-            const pref = toggle.dataset.pref;
-            const isActive = toggle.classList.contains('active');
-            
-            if (isActive) {
-              toggle.classList.remove('active');
-              state.notifications[pref] = false;
-            } else {
-              toggle.classList.add('active');
-              state.notifications[pref] = true;
-            }
-          });
-        });
-      }
-
       function handleShiftChange(shiftValue) {
         const morningOptions = document.getElementById('morning-options');
         const eveningOptions = document.getElementById('evening-options');
+        const doctorSelection = document.getElementById('doctor-selection');
         
         if (shiftValue === 'صباحي') {
           morningOptions.style.display = 'block';
           morningOptions.setAttribute('aria-hidden', 'false');
           eveningOptions.style.display = 'none';
           eveningOptions.setAttribute('aria-hidden', 'true');
+          doctorSelection.style.display = 'block';
           
           // Clear evening selections
           clearEveningSelections();
@@ -2525,6 +2611,7 @@
           eveningOptions.setAttribute('aria-hidden', 'false');
           morningOptions.style.display = 'none';
           morningOptions.setAttribute('aria-hidden', 'true');
+          doctorSelection.style.display = 'block';
           
           // Clear morning selections
           clearMorningSelections();
@@ -2536,11 +2623,13 @@
       function clearMorningSelections() {
         document.getElementById('morning-time').value = '';
         document.querySelectorAll('#morning-time-slots .time-slot').forEach(s => s.classList.remove('active'));
+        state.selectedTimes = [];
       }
 
       function clearEveningSelections() {
         document.getElementById('evening-time').value = '';
         document.querySelectorAll('#evening-time-slots .time-slot').forEach(s => s.classList.remove('active'));
+        state.selectedTimes = [];
       }
 
       // Input validation setup
@@ -2642,7 +2731,7 @@
 
         function getBotResponse(message) {
           const responses = {
-            'مرحبا': 'مرحباً بك! كيف يمكنني مساعدتك؟',
+            'مرحبا': 'مرحباً بك في PhysioCare! كيف يمكنني مساعدتك؟',
             'حجز': 'يمكنك حجز موعد من خلال ملء النموذج أعلاه. هل تحتاج مساعدة في شيء معين؟',
             'أسعار': 'أسعارنا تختلف حسب نوع العلاج وشركة التأمين. يرجى الاتصال بنا للاستفسار عن الأسعار.',
             'مواعيد': 'نعمل من السبت للخميس من 9 صباحاً حتى 10 مساءً، والجمعة من 2 ظهراً حتى 10 مساءً.',
@@ -2762,7 +2851,8 @@
           const bookingData = {
             ...formData,
             files: uploadedFiles,
-            notifications: state.notifications,
+            selectedTimes: state.selectedTimes,
+            selectedDoctors: state.selectedDoctors,
             rating: state.rating,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             status: 'pending',
@@ -2795,6 +2885,7 @@
           name: utils.sanitizeInput(document.getElementById('name').value),
           phone: utils.sanitizeInput(document.getElementById('phone').value),
           altPhone: utils.sanitizeInput(document.getElementById('alt-phone').value),
+          paymentType: document.getElementById('payment-type').value,
           insurance: document.getElementById('insurance').value,
           branch: document.getElementById('branch').value,
           date: document.getElementById('date').value,
@@ -2802,7 +2893,7 @@
           shift: document.getElementById('shift').value,
           morningTime: document.getElementById('morning-time').value,
           eveningTime: document.getElementById('evening-time').value,
-          paymentMethod: document.getElementById('payment-method').value,
+          selectedDoctors: document.getElementById('selected-doctors').value,
           notes: utils.sanitizeInput(document.getElementById('notes').value),
           files: {
             carnet: document.getElementById('file-carnet').files[0],
@@ -2810,6 +2901,7 @@
             prescription: document.getElementById('file-prescription').files[0],
             approval: document.getElementById('file-approval').files[0],
             xray1: document.getElementById('file-xray1').files[0],
+            xray2: document.getElementById('file-xray2').files[0],
             medical: document.getElementById('file-medical').files[0],
             other: document.getElementById('file-other').files[0]
           }
@@ -2822,7 +2914,8 @@
         // Required field validation
         if (!validators.name(data.name)) errors.push('الاسم');
         if (!validators.phone(data.phone)) errors.push('رقم الهاتف');
-        if (!data.insurance) errors.push('شركة التأمين');
+        if (!data.paymentType) errors.push('نوع الدفع');
+        if (data.paymentType === 'تأمين' && !data.insurance) errors.push('شركة التأمين');
         if (!data.branch) errors.push('الفرع');
         if (!validators.date(data.date)) errors.push('التاريخ');
         if (!data.selectedDays) errors.push('الأيام');
@@ -2879,12 +2972,17 @@
 الأيام: ${data.selectedDays}
 الشيفت: ${data.shift}`;
 
-          if (data.shift === 'صباحي') {
+          if (data.shift === 'صباحي' && data.morningTime) {
             message += `
-الموعد: ${data.morningTime}`;
-          } else if (data.shift === 'مسائي') {
+المواعيد المفضلة: ${data.morningTime}`;
+          } else if (data.shift === 'مسائي' && data.eveningTime) {
             message += `
-الموعد: ${data.eveningTime}`;
+المواعيد المفضلة: ${data.eveningTime}`;
+          }
+
+          if (data.selectedDoctors) {
+            message += `
+الأطباء المفضلون: ${data.selectedDoctors}`;
           }
 
           message += `
@@ -2916,14 +3014,14 @@
           btn.setAttribute('aria-checked', 'false');
         });
         
-        // Reset payment methods
-        document.querySelectorAll('.payment-method.active').forEach(method => {
-          method.classList.remove('active');
-        });
-        
         // Reset time slots
         document.querySelectorAll('.time-slot.active').forEach(slot => {
           slot.classList.remove('active');
+        });
+
+        // Reset doctor cards
+        document.querySelectorAll('.doctor-card.selected').forEach(card => {
+          card.classList.remove('selected');
         });
         
         // Reset file boxes
@@ -2942,9 +3040,11 @@
           msg.style.display = 'none';
         });
         
-        // Hide shift options
+        // Hide options
         document.getElementById('morning-options').style.display = 'none';
         document.getElementById('evening-options').style.display = 'none';
+        document.getElementById('insurance-options').style.display = 'none';
+        document.getElementById('doctor-selection').style.display = 'none';
         
         // Reset rating
         document.querySelectorAll('.star').forEach(star => {
@@ -2962,7 +3062,8 @@
         state.formData = {};
         state.validationErrors = {};
         state.selectedShift = null;
-        state.selectedTime = null;
+        state.selectedTimes = [];
+        state.selectedDoctors = [];
         state.rating = 0;
       }
 
