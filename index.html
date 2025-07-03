@@ -18,8 +18,7 @@
   <!-- Preconnect to external domains for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://www.gstatic.com">
-  <link rel="preconnect" href="https://cdn-icons-png.flaticon.com">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="preconnect" href="https://unpkg.com">
 
   <!-- Fonts -->
@@ -32,8 +31,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
 
   <style>
     /* CSS Custom Properties for better maintainability */
@@ -129,49 +128,154 @@
     }
 
     /* Logo Styles */
-    .logo-container {
+    .physiocare-logo-header {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 15px;
       margin-bottom: 20px;
       position: relative;
     }
 
-    .logo-image {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      box-shadow: 0 8px 25px rgba(255,255,255,0.2);
-      transition: var(--transition);
+    .physiocare-logo-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 20px;
       animation: logoFloat 3s ease-in-out infinite;
     }
 
-    .logo-image:hover {
-      transform: scale(1.1);
-      box-shadow: 0 12px 35px rgba(255,255,255,0.3);
+    .physiocare-logo-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+      box-shadow: 0 8px 32px rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: var(--transition);
     }
 
+    .physiocare-logo-image:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 40px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Logo Animation Rings */
+    .physiocare-logo-ring-1,
+    .physiocare-logo-ring-2 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      animation: logoRing 4s linear infinite;
+    }
+
+    .physiocare-logo-ring-1 {
+      width: 140px;
+      height: 140px;
+      animation-delay: 0s;
+    }
+
+    .physiocare-logo-ring-2 {
+      width: 160px;
+      height: 160px;
+      animation-delay: 2s;
+    }
+
+    /* Logo Glow Effects */
+    .physiocare-logo-glow-1,
+    .physiocare-logo-glow-2 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: logoGlow 2s ease-in-out infinite alternate;
+    }
+
+    .physiocare-logo-glow-1 {
+      width: 130px;
+      height: 130px;
+      background: radial-gradient(circle, rgba(148, 210, 189, 0.3) 0%, transparent 70%);
+      animation-delay: 0s;
+    }
+
+    .physiocare-logo-glow-2 {
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, rgba(26, 188, 156, 0.2) 0%, transparent 70%);
+      animation-delay: 1s;
+    }
+
+    /* Floating Elements */
+    .physiocare-logo-float-1,
+    .physiocare-logo-float-2,
+    .physiocare-logo-float-3 {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: logoFloat 3s ease-in-out infinite;
+    }
+
+    .physiocare-logo-float-1 {
+      top: 20px;
+      right: 20px;
+      animation-delay: 0s;
+    }
+
+    .physiocare-logo-float-2 {
+      bottom: 20px;
+      left: 20px;
+      animation-delay: 1s;
+    }
+
+    .physiocare-logo-float-3 {
+      top: 50%;
+      right: 10px;
+      animation-delay: 2s;
+    }
+
+    /* Badge */
+    .physiocare-logo-badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: var(--success-color);
+      color: var(--white);
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+
+    /* Keyframe Animations */
     @keyframes logoFloat {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-10px); }
     }
 
-    .logo-glow {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 120px;
-      height: 120px;
-      background: radial-gradient(circle, rgba(148, 210, 189, 0.3) 0%, transparent 70%);
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
+    @keyframes logoRing {
+      0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { transform: translate(-50%, -50%) rotate(360deg) scale(1.1); opacity: 0; }
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-      50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+    @keyframes logoGlow {
+      0% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
     }
 
     header h1 {
@@ -590,24 +694,16 @@
       z-index: 2;
     }
 
-    .file-box .icon,
-    .file-box img {
+    .file-box .icon {
       font-size: 2.5rem;
       line-height: 1;
       filter: grayscale(50%);
       transition: var(--transition);
     }
 
-    .file-box:hover .icon,
-    .file-box:hover img {
+    .file-box:hover .icon {
       filter: grayscale(0%);
       transform: scale(1.1);
-    }
-
-    .file-box img {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
     }
 
     .file-box input[type="file"] {
@@ -1166,6 +1262,21 @@
         bottom: 10px;
         left: 5%;
       }
+
+      .physiocare-logo-container {
+        width: 100px;
+        height: 100px;
+      }
+
+      .physiocare-logo-ring-1 {
+        width: 120px;
+        height: 120px;
+      }
+
+      .physiocare-logo-ring-2 {
+        width: 140px;
+        height: 140px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -1189,6 +1300,11 @@
 
       .time-slots {
         grid-template-columns: 1fr;
+      }
+
+      .physiocare-logo-container {
+        width: 80px;
+        height: 80px;
       }
     }
 
@@ -1228,10 +1344,21 @@
 
   <header role="banner">
     <div class="header-content">
-      <!-- Logo Container -->
-      <div class="logo-container">
-        <div class="logo-glow"></div>
-        <img src="/public/eqq.jpg" alt="PhysioCare Logo" class="logo-image">
+      <!-- Animated Logo -->
+      <div class="physiocare-logo-header">
+        <div class="physiocare-logo-container">
+          <!-- Using a data URL for the logo to ensure it works on GitHub Pages -->
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iOTAiIGZpbGw9IndoaXRlIiBzdHJva2U9IiM2NjY2NjYiIHN0cm9rZS13aWR0aD0iNCIvPgo8cGF0aCBkPSJNMTAwIDMwQzEwMCAzMCAxMDAgNTAgMTAwIDcwQzEwMCA5MCAxMDAgMTEwIDEwMCAxMzBDMTAwIDE1MCAxMDAgMTcwIDEwMCAxNzAiIHN0cm9rZT0iIzc3QzY2MyIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGVSBG0iPSJNODAgNjBDODAgNjAgOTAgNTAgMTAwIDUwQzExMCA1MCAxMjAgNjAgMTIwIDYwIiBzdHJva2U9IiM3N0M2NjMiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxlbGxpcHNlIGN4PSI3MCIgY3k9IjgwIiByeD0iMTUiIHJ5PSI4IiBmaWxsPSIjNzdDNjYzIi8+CjxlbGxpcHNlIGN4PSIxMzAiIGN5PSI4MCIgcng9IjE1IiByeT0iOCIgZmlsbD0iIzc3QzY2MyIvPgo8ZWxsaXBzZSBjeD0iNjAiIGN5PSIxMjAiIHJ4PSIxMiIgcnk9IjYiIGZpbGw9IiM3N0M2NjMiLz4KPGVsbGlwc2UgY3g9IjE0MCIgY3k9IjEyMCIgcng9IjEyIiByeT0iNiIgZmlsbD0iIzc3QzY2MyIvPgo8cGF0aCBkPSJNNTAgMTUwQzUwIDE1MCA3MCAxNDAgMTAwIDE0MEMxMzAgMTQwIDE1MCAxNTAgMTUwIDE1MCIgc3Ryb2tlPSIjMzM5OUNDIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8cGF0aCBkPSJNNjAgMTYwQzYwIDE2MCA4MCAxNTUgMTAwIDE1NUMxMjAgMTU1IDE0MCAxNjAgMTQwIDE2MCIgc3Ryb2tlPSIjMzM5OUNDIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSIxMDAiIHk9IjE5MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzMzOTlDQyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UEhZU0lPQ0FSRTU8L3RleHQ+Cjwvc3ZnPgo=" alt="PhysioCare Logo" class="physiocare-logo-image">
+        </div>
+        <!-- العناصر المتحركة -->
+        <div class="physiocare-logo-ring-1"></div>
+        <div class="physiocare-logo-ring-2"></div>
+        <div class="physiocare-logo-glow-1"></div>
+        <div class="physiocare-logo-glow-2"></div>
+        <div class="physiocare-logo-float-1"></div>
+        <div class="physiocare-logo-float-2"></div>
+        <div class="physiocare-logo-float-3"></div>
+        <div class="physiocare-logo-badge">معتمد</div>
       </div>
 
       <h1>PhysioCare</h1>
@@ -1632,7 +1759,7 @@
             
             <div class="file-box">
               <label for="file-prescription">
-                <i class="fas fa-prescription icon"></i>
+                <i class="fas fa-prescription-bottle-alt icon"></i>
                 الروشتة الطبية
               </label>
               <input 
@@ -1878,7 +2005,7 @@
         </h2>
         
         <div style="text-align: center; margin: 40px 0;">
-          <img src="/public/eqq.jpg" alt="PhysioCare" style="border-radius: 12px; max-width: 100%; height: auto; max-height: 300px;">
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjVmN2ZhIiByeD0iMTIiLz4KPHN2ZyB4PSI1MCIgeT0iNDAiIHdpZHRoPSIyMDAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMjAwIDEyMCIgZmlsbD0ibm9uZSI+CjxjaXJjbGUgY3g9IjEwMCIgY3k9IjYwIiByPSI0NSIgZmlsbD0id2hpdGUiIHN0cm9rZT0iIzY2NjY2NiIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxwYXRoIGQ9Ik0xMDAgMjBDMTAwIDIwIDEwMCAzNSAxMDAgNTBDMTAwIDY1IDEwMCA4MCAxMDAgOTVDMTAwIDExMCAxMDAgMTAwIDEwMCAxMDAiIHN0cm9rZT0iIzc3QzY2MyIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGVsbGlwc2UgY3g9Ijc1IiBjeT0iNDAiIHJ4PSIxMCIgcnk9IjUiIGZpbGw9IiM3N0M2NjMiLz4KPGVsbGlwc2UgY3g9IjEyNSIgY3k9IjQwIiByeD0iMTAiIHJ5PSI1IiBmaWxsPSIjNzdDNjYzIi8+CjxlbGxpcHNlIGN4PSI2NSIgY3k9IjcwIiByeD0iOCIgcnk9IjQiIGZpbGw9IiM3N0M2NjMiLz4KPGVsbGlwc2UgY3g9IjEzNSIgY3k9IjcwIiByeD0iOCIgcnk9IjQiIGZpbGw9IiM3N0M2NjMiLz4KPHN2ZyB4PSIyMCIgeT0iODAiIHdpZHRoPSIxNjAiIGhlaWdodD0iMzAiPgo8cGF0aCBkPSJNMTAgMTVDMTAgMTUgNDAgMTAgODAgMTBDMTIwIDEwIDE1MCAxNSAxNTAgMTUiIHN0cm9rZT0iIzMzOTlDQyIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHN2ZyB4PSIzMCIgeT0iMTAiIHdpZHRoPSIxNDAiIGhlaWdodD0iMTAiPgo8cGF0aCBkPSJNMTAgNUM1IDUgNzAgNSAxMzAgNSIgc3Ryb2tlPSIjMzM5OUNDIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4KPC9zdmc+Cjwvc3ZnPgo8dGV4dCB4PSIxNTAiIHk9IjE4NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzMzOTlDQyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UGh5c2lvQ2FyZTwvdGV4dD4KPC9zdmc+" alt="PhysioCare" style="border-radius: 12px; max-width: 100%; height: auto; max-height: 300px;">
         </div>
         
         <div style="font-size: 1.1rem; line-height: 1.8; text-align: justify;">
@@ -2114,17 +2241,6 @@
 
         generateUniqueId() {
           return Date.now().toString(36) + Math.random().toString(36).substr(2);
-        },
-
-        async retry(fn, maxRetries = CONFIG.maxRetries) {
-          for (let i = 0; i < maxRetries; i++) {
-            try {
-              return await fn();
-            } catch (error) {
-              if (i === maxRetries - 1) throw error;
-              await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
-            }
-          }
         }
       };
 
@@ -2820,6 +2936,7 @@
 
           // Simulate processing
           setLoadingState(true, 'جارٍ حفظ البيانات...');
+          
           await new Promise(resolve => setTimeout(resolve, 2000));
 
           // Send WhatsApp confirmation
@@ -2853,17 +2970,7 @@
           morningTime: document.getElementById('morning-time').value,
           eveningTime: document.getElementById('evening-time').value,
           selectedDoctors: document.getElementById('selected-doctors').value,
-          notes: utils.sanitizeInput(document.getElementById('notes').value),
-          files: {
-            carnet: document.getElementById('file-carnet').files[0],
-            id: document.getElementById('file-id').files[0],
-            prescription: document.getElementById('file-prescription').files[0],
-            approval: document.getElementById('file-approval').files[0],
-            xray1: document.getElementById('file-xray1').files[0],
-            xray2: document.getElementById('file-xray2').files[0],
-            medical: document.getElementById('file-medical').files[0],
-            other: document.getElementById('file-other').files[0]
-          }
+          notes: utils.sanitizeInput(document.getElementById('notes').value)
         };
       }
 
@@ -2886,14 +2993,6 @@
         } else if (data.shift === 'مسائي') {
           if (!data.eveningTime) errors.push('الموعد المسائي');
         }
-
-        // File validation
-        Object.values(data.files).forEach(file => {
-          if (file) {
-            const fileError = validators.file(file);
-            if (fileError) errors.push(fileError);
-          }
-        });
 
         return {
           isValid: errors.length === 0,
