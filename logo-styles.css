@@ -1,0 +1,291 @@
+/* PhysioCare Logo Animation Styles */
+.physiocare-logo-header {
+    position: relative;
+    display: inline-block;
+    padding: 40px;
+}
+
+.physiocare-logo-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.3);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.physiocare-logo-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+    filter: brightness(1.1) contrast(1.1);
+}
+
+.physiocare-logo-container:hover .physiocare-logo-image {
+    transform: scale(1.05);
+    filter: brightness(1.2) contrast(1.2);
+}
+
+/* الحلقات المتحركة */
+.physiocare-logo-ring-1,
+.physiocare-logo-ring-2 {
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid;
+    border-top-color: rgba(0, 95, 115, 0.8);
+    border-right-color: rgba(0, 95, 115, 0.6);
+    border-bottom-color: rgba(0, 95, 115, 0.4);
+    border-left-color: rgba(0, 95, 115, 0.2);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.physiocare-logo-ring-1 {
+    width: 160px;
+    height: 160px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotate 4s linear infinite;
+}
+
+.physiocare-logo-ring-2 {
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotate-reverse 6s linear infinite;
+    border-top-color: rgba(0, 150, 136, 0.8);
+    border-right-color: rgba(0, 150, 136, 0.6);
+    border-bottom-color: rgba(0, 150, 136, 0.4);
+    border-left-color: rgba(0, 150, 136, 0.2);
+}
+
+/* التوهجات */
+.physiocare-logo-glow-1,
+.physiocare-logo-glow-2 {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 95, 115, 0.3), transparent);
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.physiocare-logo-glow-1 {
+    width: 180px;
+    height: 180px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: 0s;
+}
+
+.physiocare-logo-glow-2 {
+    width: 220px;
+    height: 220px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(0, 150, 136, 0.2), transparent);
+    animation-delay: 1.5s;
+}
+
+/* العناصر العائمة */
+.physiocare-logo-float-1,
+.physiocare-logo-float-2,
+.physiocare-logo-float-3 {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, rgba(148, 210, 189, 0.8), rgba(0, 150, 136, 0.6));
+    animation: float 4s ease-in-out infinite;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.physiocare-logo-float-1 {
+    top: 20%;
+    right: 20%;
+    animation-delay: 0s;
+}
+
+.physiocare-logo-float-2 {
+    bottom: 25%;
+    left: 15%;
+    animation-delay: 1.3s;
+    background: linear-gradient(45deg, rgba(255, 193, 7, 0.8), rgba(255, 152, 0, 0.6));
+}
+
+.physiocare-logo-float-3 {
+    top: 60%;
+    right: 10%;
+    animation-delay: 2.6s;
+    background: linear-gradient(45deg, rgba(0, 123, 255, 0.8), rgba(0, 95, 115, 0.6));
+}
+
+/* شارة معتمد */
+.physiocare-logo-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: linear-gradient(135deg, #ffd700, #ffb347);
+    color: #8B4513;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    animation: badge-pulse 2s ease-in-out infinite;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    z-index: 15;
+}
+
+/* الحركات والتأثيرات */
+@keyframes rotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes rotate-reverse {
+    from {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    50% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.7;
+    }
+    33% {
+        transform: translateY(-15px) rotate(120deg);
+        opacity: 1;
+    }
+    66% {
+        transform: translateY(-5px) rotate(240deg);
+        opacity: 0.8;
+    }
+}
+
+@keyframes badge-pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+    }
+}
+
+/* تأثيرات الهوفر */
+.physiocare-logo-header:hover .physiocare-logo-ring-1 {
+    animation-duration: 2s;
+    border-top-color: rgba(0, 95, 115, 1);
+}
+
+.physiocare-logo-header:hover .physiocare-logo-ring-2 {
+    animation-duration: 3s;
+    border-top-color: rgba(0, 150, 136, 1);
+}
+
+.physiocare-logo-header:hover .physiocare-logo-glow-1,
+.physiocare-logo-header:hover .physiocare-logo-glow-2 {
+    animation-duration: 1.5s;
+}
+
+.physiocare-logo-header:hover .physiocare-logo-float-1,
+.physiocare-logo-header:hover .physiocare-logo-float-2,
+.physiocare-logo-header:hover .physiocare-logo-float-3 {
+    animation-duration: 2s;
+}
+
+/* تجاوب مع الشاشات المختلفة */
+@media (max-width: 768px) {
+    .physiocare-logo-header {
+        padding: 20px;
+        transform: scale(0.8);
+    }
+    
+    .physiocare-logo-container {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .physiocare-logo-image {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .physiocare-logo-ring-1 {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .physiocare-logo-ring-2 {
+        width: 170px;
+        height: 170px;
+    }
+    
+    .physiocare-logo-badge {
+        font-size: 0.7rem;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .physiocare-logo-header {
+        transform: scale(0.7);
+    }
+}
+
+/* تحسينات الأداء */
+.physiocare-logo-header * {
+    will-change: transform, opacity;
+}
+
+/* دعم الحركة المخفضة */
+@media (prefers-reduced-motion: reduce) {
+    .physiocare-logo-ring-1,
+    .physiocare-logo-ring-2,
+    .physiocare-logo-glow-1,
+    .physiocare-logo-glow-2,
+    .physiocare-logo-float-1,
+    .physiocare-logo-float-2,
+    .physiocare-logo-float-3,
+    .physiocare-logo-badge {
+        animation: none;
+    }
+    
+    .physiocare-logo-glow-1,
+    .physiocare-logo-glow-2 {
+        opacity: 0.3;
+    }
+}
