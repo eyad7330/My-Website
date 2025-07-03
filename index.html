@@ -14,30 +14,30 @@
   <meta property="og:image" content="https://physiocare.com/images/logo.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <title>PhysioCare | حجز جلسة علاج طبيعي</title>
-  
+
   <!-- Preconnect to external domains for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.gstatic.com">
   <link rel="preconnect" href="https://cdn-icons-png.flaticon.com">
   <link rel="preconnect" href="https://unpkg.com">
-  
+
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  
+
   <!-- Leaflet CSS for maps -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  
+
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  
+
   <!-- Logo Animation Styles -->
   <link rel="stylesheet" href="logo-styles.css">
-  
+
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  
+
   <style>
     /* CSS Custom Properties for better maintainability */
     :root {
@@ -105,7 +105,7 @@
     /* Header */
     header {
       background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
-      padding: 40px 20px;
+      padding: 20px 20px 40px;
       text-align: center;
       color: var(--white);
       box-shadow: var(--shadow-heavy);
@@ -132,7 +132,7 @@
     }
 
     header h1 {
-      margin: 0;
+      margin: 20px 0 10px;
       font-size: clamp(2rem, 5vw, 3rem);
       font-weight: 800;
       letter-spacing: 1px;
@@ -141,14 +141,6 @@
       align-items: center;
       justify-content: center;
       gap: 15px;
-    }
-
-    /* Updated logo styles to integrate with animated logo */
-    .logo-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 10px;
     }
 
     header p {
@@ -1193,24 +1185,22 @@
 
   <header role="banner">
     <div class="header-content">
-      <!-- Animated Logo Integration -->
-      <div class="logo-container">
-        <div class="physiocare-logo-header">
-          <div class="physiocare-logo-container">
-            <img src="/public/eqq.jpg" alt="PhysioCare Logo" class="physiocare-logo-image">
-          </div>
-          <!-- العناصر المتحركة -->
-          <div class="physiocare-logo-ring-1"></div>
-          <div class="physiocare-logo-ring-2"></div>
-          <div class="physiocare-logo-glow-1"></div>
-          <div class="physiocare-logo-glow-2"></div>
-          <div class="physiocare-logo-float-1"></div>
-          <div class="physiocare-logo-float-2"></div>
-          <div class="physiocare-logo-float-3"></div>
-          <div class="physiocare-logo-badge">معتمد</div>
+      <!-- Animated Logo -->
+      <div class="physiocare-logo-header">
+        <div class="physiocare-logo-container">
+          <img src="/public/eqq.jpg" alt="PhysioCare Logo" class="physiocare-logo-image">
         </div>
+        <!-- العناصر المتحركة -->
+        <div class="physiocare-logo-ring-1"></div>
+        <div class="physiocare-logo-ring-2"></div>
+        <div class="physiocare-logo-glow-1"></div>
+        <div class="physiocare-logo-glow-2"></div>
+        <div class="physiocare-logo-float-1"></div>
+        <div class="physiocare-logo-float-2"></div>
+        <div class="physiocare-logo-float-3"></div>
+        <div class="physiocare-logo-badge">معتمد</div>
       </div>
-      
+
       <h1>PhysioCare</h1>
       <p>مركز متخصص في العلاج الطبيعي والتأهيل الطبي</p>
     </div>
@@ -2342,7 +2332,6 @@
       // File upload handling
       function setupFileHandling() {
         const fileInputs = document.querySelectorAll('input[type="file"]');
-
         fileInputs.forEach(input => {
           input.addEventListener('change', handleFileChange);
           input.addEventListener('dragover', handleDragOver);
